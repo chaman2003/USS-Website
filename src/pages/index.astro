@@ -59,7 +59,7 @@ const starsNear = makeStars(22, 200);
 
 <BaseLayout title={title} description={description}>
   <!-- ════════════════ Hero ════════════════ -->
-  <section class="grain relative flex min-h-[100svh] items-start overflow-hidden bg-gradient-to-b from-[var(--color-hero-from)] via-[var(--color-hero-to)] to-[var(--color-surface-raised)] lg:items-center">
+  <section class="grain relative flex lg:min-h-[100svh] items-start overflow-hidden bg-gradient-to-b from-[var(--color-hero-from)] via-[var(--color-hero-to)] to-[var(--color-surface-raised)] lg:items-center">
     <GlowField variant="hero" grid />
 
     <div class="relative mx-auto grid w-full max-w-[1400px] items-center gap-12 px-5 py-20 sm:px-8 sm:py-24 lg:grid-cols-[1.1fr_0.9fr]">
@@ -225,8 +225,8 @@ const starsNear = makeStars(22, 200);
       </div>
     </div>
 
-    <!-- scroll cue -->
-    <div class="absolute bottom-20 left-1/2 -translate-x-1/2 sm:bottom-24" aria-hidden="true">
+    <!-- scroll cue: absolute at bottom of hero on all sizes -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 lg:bottom-24" aria-hidden="true">
       <div class="flex h-10 w-6 items-start justify-center rounded-full border border-[var(--color-text-muted)]/40 p-1.5">
         <div class="h-2 w-1 animate-bounce rounded-full bg-[var(--color-brand-gold)]"></div>
       </div>
