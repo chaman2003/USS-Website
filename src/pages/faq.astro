@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+import FaqItem from '../components/ui/FaqItem.astro';
+import Button from '../components/ui/Button.astro';
+import ClosingCTA from '../components/ui/ClosingCTA.astro';
+import { faq, faqCategories } from '../data/faq';
+
+const title = 'FAQ: Common Questions';
+const description =
+  'Answers to common questions about Unity Software Solution: our services, timelines, process, pricing, support, tech stack, location, and getting started.';
+
+// FAQPage structured data — lets Google surface these Q&As as rich results.
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+
+// Jump-to rail entries, derived from the FAQ categories.
+const sections = faqCategories.map((category) => ({
+  id: category.id,
+  label: category.label,
+}));
+---
+
+<BaseLayout title={title} description={description}>
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(faqJsonLd)}
+  />
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:py-24">
+      <p class="eyebrow reveal">FAQ</p>
+      <h1 class="reveal mt-3 font-display text-4xl font-semibold leading-[1.05] sm:text-5xl md:text-6xl">
+        Questions, <span class="text-gold-gradient">answered</span>
+      </h1>
+      <p class="reveal mx-auto mt-5 max-w-2xl text-lg text-[var(--color-text-secondary)]">
+        Quick answers to the questions we hear most often.
+      </p>
+    </div>
+  </section>
+
+  <section class="relative" aria-labelledby="faq-heading">
+    <div class="bg-dots absolute inset-0 opacity-25" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-[1400px] px-5 py-20 sm:px-8">
+      <h2 id="faq-heading" class="sr-only">Questions and answers</h2>
+      <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-16">
+        <!-- Sticky anchor rail -->
+        <aside class="hidden lg:block">
+          <nav aria-label="On this page" class="sticky top-28">
+            <p class="eyebrow mb-4">Jump to</p>
+            <ul class="space-y-1">
+              {
+                sections.map((s) => (
+                  <li>
+                    <a
+                      href={`#${s.id}`}
+                      data-spy-link
+                      class="block border-l-2 border-[var(--color-surface-line)] py-1.5 pl-4 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)] data-[active=true]:border-[var(--color-brand-gold)] data-[active=true]:text-[var(--color-text-gold)]"
+                    >
+                      {s.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </aside>
+
+        <div class="min-w-0">
+          {
+            faqCategories.map((category, i) => (
+              <section
+                id={category.id}
+                class:list={[
+                  'reveal scroll-mt-28',
+                  i === 0 ? 'pb-12' : 'border-t border-[var(--color-surface-line)] py-12',
+                ]}
+                aria-labelledby={`${category.id}-heading`}
+              >
+                <p class="eyebrow">{String(i + 1).padStart(2, '0')} / {category.label}</p>
+                <h3
+                  id={`${category.id}-heading`}
+                  class="mt-3 font-display text-2xl font-semibold sm:text-3xl"
+                >
+                  {category.label}
+                </h3>
+                <div class="mt-6 space-y-3">
+                  {category.entries.map((item) => (
+                    <FaqItem question={item.question} answer={item.answer} />
+                  ))}
+                </div>
+              </section>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <ClosingCTA>
+    <h2 class="reveal font-display text-4xl font-semibold sm:text-5xl">
+      Still have a <span class="text-gold-gradient">question?</span>
+    </h2>
+    <p class="reveal mx-auto mt-4 max-w-xl text-[var(--color-text-secondary)]">
+      If your question isn't answered here, reach out and we'll get back to you within 24-48 hours.
+    </p>
+    <div class="reveal mt-8">
+      <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Contact Us</Button></span>
+    </div>
+  </ClosingCTA>
+</BaseLayout>

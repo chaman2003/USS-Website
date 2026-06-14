@@ -1,0 +1,585 @@
+@import "tailwindcss";
+
+/* Dark theme activates on html.dark, toggled by the theme switch. Light is default. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ───────────────────────── Constant design tokens ───────────────────────── */
+@theme {
+  /* Brand gold scale: single hue (44°) + saturation (80%), lightness only */
+  --color-brand-black: #000000;
+  --color-brand-gold: #c19315;
+  --color-brand-gold-light: #dca819;
+  --color-brand-gold-bright: #e9b935;
+  --color-brand-gold-dark: #9c7711;
+  --color-brand-white: #ffffff;
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", "Georgia", ui-serif, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Radius */
+  --radius-card: 1.25rem;
+  --radius-btn: 0.625rem;
+  --radius-pill: 9999px;
+
+  /* Spacing */
+  --spacing-section: 7rem;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ───────────────────────── Themed semantic tokens ───────────────────────── */
+/* Light is the default. Values are plain CSS vars so arbitrary utilities
+   like bg-[var(--color-surface-base)] resolve per active theme. */
+:root {
+  --color-surface-base: #ffffff;
+  --color-surface-raised: #f6f4ef; /* warm off-white band */
+  --color-surface-card: #ffffff;
+  --color-surface-sunken: #f0ede6;
+  --color-surface-muted: #f0ede6; /* alias of sunken (back-compat) */
+  --color-surface-card-hover: #faf7f0;
+  --color-surface-line: #e6e2da;
+  --color-surface-invert: #0c0b09; /* dark sections inside light theme */
+
+  --color-text-primary: #1a1714;
+  --color-text-secondary: #4d4843;
+  --color-text-muted: #76706a;
+  --color-text-inverse: #f7f4ee;
+  --color-text-gold: #e9b935; /* same gold family as dark theme */
+  --color-text-gold-strong: #f0c84d;
+
+  --color-hero-from: #fbf9f4;
+  --color-hero-to: #f3efe6;
+
+  --glow-1: rgba(193, 147, 21, 0.16);
+  --glow-2: rgba(220, 168, 25, 0.13);
+  --glow-3: rgba(193, 147, 21, 0.1);
+  --grain-opacity: 0.04;
+
+  --shadow-card: 0 1px 2px rgb(26 23 20 / 0.04), 0 8px 24px -12px rgb(26 23 20 / 0.18);
+  --shadow-card-hover: 0 12px 40px -10px rgb(193 147 21 / 0.35);
+  --shadow-glow-sm: 0 0 20px -4px rgb(193 147 21 / 0.35);
+  --shadow-glow-md: 0 0 40px -6px rgb(193 147 21 / 0.4);
+  --shadow-glow-lg: 0 0 80px -10px rgb(193 147 21 / 0.45);
+
+  color-scheme: light;
+}
+
+html.dark {
+  --color-surface-base: #08080a;
+  --color-surface-raised: #101013;
+  --color-surface-card: #16161a;
+  --color-surface-sunken: #050506;
+  --color-surface-line: #26262c;
+  --color-surface-invert: #f7f4ee;
+
+  --color-text-primary: #ededed;
+  --color-text-secondary: #b6b6bb;
+  --color-text-muted: #86868d;
+  --color-text-inverse: #0a0a0a;
+  --color-text-gold: #e9b935;
+  --color-text-gold-strong: #f0c84d;
+
+  --color-hero-from: #0c0c10;
+  --color-hero-to: #050506;
+
+  --glow-1: rgba(233, 185, 53, 0.22);
+  --glow-2: rgba(193, 147, 21, 0.18);
+  --glow-3: rgba(240, 200, 77, 0.14);
+  --grain-opacity: 0.05;
+
+  --shadow-card: 0 2px 12px rgb(0 0 0 / 0.5);
+  --shadow-card-hover: 0 16px 50px -10px rgb(233 185 53 / 0.4);
+  --shadow-glow-sm: 0 0 22px -3px rgb(233 185 53 / 0.45);
+  --shadow-glow-md: 0 0 44px -5px rgb(233 185 53 / 0.5);
+  --shadow-glow-lg: 0 0 90px -8px rgb(233 185 53 / 0.55);
+
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background-color: var(--color-surface-base);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    overflow-x: hidden;
+    /* No color transition here: theme changes are animated by the View
+       Transition clip-path wipe (see below). A 0.4s all-element color
+       transition repainted the whole page and felt laggy on mobile. */
+  }
+
+  :target {
+    scroll-margin-top: 7rem;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-gold);
+    color: var(--color-brand-white);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+  }
+}
+
+/* ───────────────────────── Display & text utilities ───────────────────────── */
+@utility font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+@utility font-mono {
+  font-family: var(--font-mono);
+}
+
+@utility text-gold-gradient {
+  background-image: linear-gradient(
+    135deg,
+    var(--color-text-gold-strong) 0%,
+    var(--color-brand-gold-light) 50%,
+    var(--color-brand-gold) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* prevent serif descenders (g, y, p) being clipped by background-clip:text */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-gold);
+}
+
+/* full-bleed helper: break out of any centered container to the viewport edges */
+@utility full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* ───────────────────────── Ambient effects ───────────────────────── */
+@utility grain {
+  position: relative;
+}
+@utility grain-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@utility spotlight {
+  position: relative;
+  overflow: hidden;
+}
+@utility spotlight-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(193 147 21 / 0.16),
+    transparent 70%
+  );
+}
+
+/* ───────────────────────── Keyframes ───────────────────────── */
+@keyframes aurora-drift {
+  0% { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+  33% { transform: translate3d(6%,-4%,0) rotate(40deg) scale(1.15); }
+  66% { transform: translate3d(-5%,5%,0) rotate(-30deg) scale(0.95); }
+  100% { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+}
+@keyframes float-slow {
+  0%,100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-24px) translateX(12px); }
+}
+@keyframes shimmer {
+  0% { background-position: -150% 0; }
+  100% { background-position: 250% 0; }
+}
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-x-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes word-rise {
+  from { opacity: 0; transform: translateY(0.5em); filter: blur(8px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes pulse-glow {
+  0%,100% { box-shadow: var(--shadow-glow-sm); }
+  50% { box-shadow: var(--shadow-glow-md); }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes orbit-revolve {
+  to { transform: rotate(360deg); }
+}
+@keyframes orbit-counter {
+  to { transform: rotate(-360deg); }
+}
+@keyframes grid-pan {
+  to { background-position: 60px 60px; }
+}
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.15; }
+  50%      { opacity: 1; }
+}
+@keyframes orb-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(9%, -7%, 0) scale(1.18); }
+}
+@keyframes halo-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ───────────────────────── Animation utilities ───────────────────────── */
+@utility animate-aurora { animation: aurora-drift 22s ease-in-out infinite; }
+@utility animate-float { animation: float-slow 14s ease-in-out infinite; }
+@utility animate-marquee { animation: marquee-x 38s linear infinite; }
+@utility animate-marquee-reverse { animation: marquee-x-reverse 38s linear infinite; }
+@utility animate-marquee-fast { animation: marquee-x 24s linear infinite; }
+@utility animate-pulse-glow { animation: pulse-glow 3.5s ease-in-out infinite; }
+@utility animate-spin-slow { animation: spin-slow 28s linear infinite; }
+@utility animate-orbit { animation: orbit-revolve 26s linear infinite; }
+@utility animate-orbit-counter { animation: orbit-counter 26s linear infinite; }
+@utility animate-orbit-mid { animation: orbit-revolve 20s linear infinite reverse; }
+@utility animate-orbit-mid-counter { animation: orbit-counter 20s linear infinite reverse; }
+@utility animate-star-twinkle { animation: star-twinkle 3.5s ease-in-out infinite; }
+@utility animate-orb-drift { animation: orb-drift 18s ease-in-out infinite; }
+
+/* ───── Hero orbit: 3D tilt stage ───── */
+.orbit-stage {
+  perspective: 1100px;
+  /* Isolate the orbit's internal layout so its many continuously-animating
+     children can't trigger layout/style recalc for the rest of the page.
+     Note: NOT `paint`, that would clip the icons' hover-scale and tooltips,
+     which intentionally overflow the stage box. */
+  contain: layout style;
+}
+/* When the hero scrolls out of view, an IntersectionObserver sets data-paused so
+   none of the ~80 orbit elements burn paint/compositing while you scroll the page.
+   Descendant-selector specificity beats the single-class animation utilities. */
+.orbit-stage[data-paused],
+.orbit-stage[data-paused] * {
+  animation-play-state: paused !important;
+}
+.orbit-tilt {
+  transform: rotateX(var(--ox, 0deg)) rotateY(var(--oy, 0deg));
+  transition: transform 0.5s var(--ease-out-expo);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Counter-rotating gradient halo behind the emblem (centered by a flex wrapper,
+   so this element only ever uses transform for its own spin, no collision). */
+.orbit-halo {
+  border-radius: 9999px;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    color-mix(in srgb, var(--color-brand-gold-bright) 45%, transparent),
+    transparent 40%,
+    color-mix(in srgb, var(--color-brand-gold) 32%, transparent),
+    transparent 75%
+  );
+  filter: blur(20px);
+  animation: halo-spin 14s linear infinite;
+  opacity: 0.75;
+}
+
+@utility text-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-brand-gold) 20%,
+    var(--color-brand-gold-bright) 45%,
+    var(--color-text-gold-strong) 50%,
+    var(--color-brand-gold-bright) 55%,
+    var(--color-brand-gold) 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+  /* prevent serif descenders being clipped by background-clip:text */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.word-rise > span {
+  display: inline-block;
+  opacity: 0;
+  /* inline-block trims trailing whitespace, restore inter-word spacing */
+  margin-right: 0.22em;
+  animation: word-rise 0.9s var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--i, 0) * 90ms + 150ms);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(6px);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo),
+    filter 0.8s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.tilt {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.25s var(--ease-out-expo);
+  transform-style: preserve-3d;
+}
+
+/* Hero orbit load-in: fade + de-blur only (NO transform, the stage already uses
+   transform for scroll parallax and the inner tilt, so animating transform here
+   would fight them). Runs once on first paint, matching the word-rise cadence of
+   the headline so the whole hero arrives together. */
+@keyframes hero-rise {
+  from { opacity: 0; filter: blur(10px); }
+  to { opacity: 1; filter: blur(0); }
+}
+.hero-rise {
+  opacity: 0;
+  animation: hero-rise 1s var(--ease-out-expo) forwards;
+  animation-delay: var(--rise-delay, 600ms);
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(var(--p, 0));
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--color-brand-gold), var(--color-brand-gold-bright));
+  z-index: 100;
+  box-shadow: var(--shadow-glow-sm);
+}
+
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+/* ───────────────────────── Header: glass navbar → floating pill on scroll ─────────
+   At the top: transparent, full-width, no blur (hero shows through cleanly).
+   Scrolled: the inner bar becomes a centered rounded glass pill. The pill props
+   transition only once when crossing the scroll threshold (the .is-scrolled class
+   toggles), never per frame. Bar height is fixed and the logo never resizes, so
+   content never jumps. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transform: translateZ(0); /* own compositor layer */
+}
+.header-bar {
+  height: 4.5rem;
+  border: 1px solid transparent;
+  /* Pill radius is always on; invisible at the top because the bar is
+     transparent there, so it never has to animate (paint-free). */
+  border-radius: var(--radius-pill);
+  transform: translateZ(0);
+  transform-origin: top center;
+  /* Only compositor-friendly (transform) + cheap paint (color/shadow) props
+     animate. No max-width / margin / padding here, so the morph never triggers
+     layout reflow, which is what made it stutter on low-end hardware. */
+  transition:
+    transform 0.45s var(--ease-out-expo),
+    border-color 0.35s var(--ease-out-expo),
+    background-color 0.35s var(--ease-out-expo),
+    box-shadow 0.35s var(--ease-out-expo);
+  will-change: transform;
+}
+.site-header.is-scrolled .header-bar {
+  /* Float down + a barely-there shrink: reads as "settling into a pill"
+     but is a single GPU transform, zero layout. */
+  transform: translateY(0.55rem) scale(0.985);
+  border-color: color-mix(in srgb, var(--color-brand-gold) 28%, var(--color-surface-line));
+  background-color: color-mix(in srgb, var(--color-surface-base) 85%, transparent);
+  box-shadow: 0 12px 40px -16px rgb(0 0 0 / 0.45), var(--shadow-glow-sm);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  backdrop-filter: blur(10px) saturate(1.4);
+}
+
+/* Decorative dotted/grid backdrop for filling space */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-surface-line) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-surface-line) 70%, transparent) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.bg-dots {
+  background-image: radial-gradient(color-mix(in srgb, var(--color-brand-gold) 35%, transparent) 1px, transparent 1.5px);
+  background-size: 26px 26px;
+}
+
+/* ───────────────────────── Equal-height card grids ─────────────────────────
+   CSS Grid (not flexbox): grid rows stretch every card in a row to the SAME
+   height automatically, so two cards side by side always match, flexbox can't
+   guarantee that. Column count + gap are driven by custom properties so each
+   breakpoint just flips a variable. `align-content: start` stops the rows from
+   ballooning vertically when the grid sits inside a taller parent (e.g. the
+   "Why USS" split layout). A lone trailing card spans the full row instead of
+   sitting half-width; at wider breakpoints it returns to a normal cell. */
+.card-grid {
+  --cg-gap: 0.75rem;
+  --cg-cols: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--cg-cols), minmax(0, 1fr));
+  align-content: start;
+  gap: var(--cg-gap);
+}
+/* A lone last card in the 2-up layout spans the full row (no slim orphan). */
+.card-grid > *:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 640px) {
+  .card-grid { --cg-gap: 1.25rem; }
+}
+@media (min-width: 768px) {
+  .card-grid--md3 { --cg-cols: 3; }
+  .card-grid--md5 { --cg-cols: 5; }
+  /* 3-col: a lone last card spans all 3 columns to fill the row */
+  .card-grid--md3 > *:last-child:nth-child(3n+1) { grid-column: 1 / -1; }
+  /* reset the base 2-col orphan rule for md3 (e.g. the 3rd of 3 cards) */
+  .card-grid--md3 > *:last-child:nth-child(odd):not(:nth-child(3n+1)) { grid-column: auto; }
+  /* 5-col: reset the base orphan rule; lone last stays in its cell */
+  .card-grid--md5 > *:last-child:nth-child(odd) { grid-column: auto; }
+}
+@media (min-width: 1024px) {
+  .card-grid--lg3 { --cg-cols: 3; }
+  .card-grid--lg4 { --cg-cols: 4; }
+  /* 3-col: a lone last card spans all 3 columns to fill the row */
+  .card-grid--lg3 > *:last-child:nth-child(3n+1) { grid-column: 1 / -1; }
+  /* reset the base 2-col orphan rule for lg3/lg4 */
+  .card-grid--lg3 > *:last-child:nth-child(odd):not(:nth-child(3n+1)),
+  .card-grid--lg4 > *:last-child:nth-child(odd) { grid-column: auto; }
+}
+
+/* ───────────────────────── Mobile menu: smooth reveal ─────────────────────────
+   Animates open/closed with grid-template-rows 0fr→1fr (transitions to content
+   height without measuring it) plus a fade. The inner wrapper clips overflow so
+   the rows collapse fully. */
+.mobile-menu {
+  /* Float over the page so opening never pushes the hero/content down. The
+     sticky, transform'd .site-header is the containing block, so top:100%
+     anchors the sheet just below the bar. */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  box-shadow: 0 24px 48px -20px rgb(0 0 0 / 0.55);
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    grid-template-rows 0.38s var(--ease-out-expo),
+    opacity 0.3s ease;
+}
+.mobile-menu.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+.mobile-menu > div {
+  overflow: hidden;
+  min-height: 0;
+  max-height: calc(100dvh - 4.5rem);
+  overflow-y: auto;
+}
+/* Stagger the links in as the sheet opens */
+.mobile-menu li {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s var(--ease-out-expo);
+}
+.mobile-menu.is-open li {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(var(--i, 0) * 40ms + 80ms);
+}
+
+/* Hamburger ↔ close cross-fade, driven purely by the button's aria-expanded */
+.menu-icon {
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s var(--ease-out-expo);
+}
+#menu-toggle .icon-open {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+#menu-toggle .icon-close {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}
+#menu-toggle[aria-expanded='true'] .icon-open {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+#menu-toggle[aria-expanded='true'] .icon-close {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+/* ───────────────────────── Reduced motion ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
+  .word-rise > span { opacity: 1 !important; animation: none !important; }
+  .hero-rise { opacity: 1 !important; animation: none !important; filter: none !important; }
+  .tilt { transform: none !important; }
+}

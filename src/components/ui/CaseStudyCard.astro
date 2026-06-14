@@ -1,0 +1,121 @@
+---
+interface Props {
+  title: string;
+  industry: string;
+  challenge: string;
+  approach: string;
+  outcome: string;
+  url?: string;
+  tech?: string[];
+  featured?: boolean;
+  slug?: string;
+  status?: 'live' | 'in-progress' | 'delivered';
+}
+
+const {
+  title,
+  industry,
+  challenge,
+  approach,
+  outcome,
+  url,
+  tech = [],
+  featured = false,
+  slug,
+  status = 'live',
+} = Astro.props;
+
+const statusLabel: Record<string, string> = {
+  live: 'Live',
+  'in-progress': 'In Progress',
+  delivered: 'Delivered',
+};
+---
+
+<article
+  data-spotlight
+  class:list={[
+    'spotlight group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5 text-[var(--color-text-primary)] shadow-[var(--shadow-card)] transition-colors duration-300 hover:border-[var(--color-brand-gold)]/50 sm:p-7',
+    featured && 'lg:col-span-2',
+  ]}
+>
+  <span class="spotlight-glow rounded-[var(--radius-card)]"></span>
+
+  <div class="relative flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <h3 class="font-display text-2xl font-semibold text-[var(--color-text-gold)]">
+        {slug ? <a href={`/work/${slug}`} class="before:absolute before:inset-0 before:content-['']">{title}</a> : title}
+      </h3>
+      <span
+        class:list={[
+          'inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border px-2.5 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider',
+          status === 'live'
+            ? 'border-green-500/40 bg-green-500/10 text-green-400'
+            : 'border-[var(--color-brand-gold)]/30 bg-[var(--color-brand-gold)]/10 text-[var(--color-text-gold)]',
+        ]}
+      >
+        {status === 'live' && <span class="h-1.5 w-1.5 animate-pulse-glow rounded-full bg-green-400" />}
+        {statusLabel[status]}
+      </span>
+    </div>
+    <span
+      class="shrink-0 rounded-[var(--radius-pill)] border border-[var(--color-brand-gold)]/30 bg-[var(--color-brand-gold)]/10 px-3 py-1 font-mono text-xs uppercase tracking-wider text-[var(--color-text-gold)]"
+    >
+      {industry}
+    </span>
+  </div>
+
+  <dl class:list={['relative mt-6 space-y-5 text-sm leading-relaxed', featured && 'lg:grid lg:grid-cols-3 lg:gap-6 lg:space-y-0']}>
+    <div>
+      <dt class="eyebrow">Challenge</dt>
+      <dd class="mt-1.5 text-[var(--color-text-secondary)]">{challenge}</dd>
+    </div>
+    <div>
+      <dt class="eyebrow">Approach</dt>
+      <dd class="mt-1.5 text-[var(--color-text-secondary)]">{approach}</dd>
+    </div>
+    <div>
+      <dt class="eyebrow">Outcome</dt>
+      <dd class="mt-1.5 text-[var(--color-text-secondary)]">{outcome}</dd>
+    </div>
+  </dl>
+
+  {
+    tech.length > 0 && (
+      <ul class="relative mt-6 flex flex-wrap gap-2">
+        {tech.map((item) => (
+          <li class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-3 py-1 font-mono text-xs text-[var(--color-text-muted)]">
+            {item}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <div class="relative z-10 mt-6 flex flex-wrap items-center gap-5">
+    {
+      slug && (
+        <a
+          href={`/work/${slug}`}
+          class="inline-flex items-center gap-1.5 font-medium text-[var(--color-text-gold)] transition-colors hover:text-[var(--color-text-gold-strong)]"
+        >
+          View full case study
+          <span class="transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true">→</span>
+        </a>
+      )
+    }
+    {
+      url && (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] underline-offset-4 transition-colors hover:text-[var(--color-text-gold)] hover:underline"
+        >
+          Visit live site ↗
+          <span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      )
+    }
+  </div>
+</article>

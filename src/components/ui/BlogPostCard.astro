@@ -1,0 +1,75 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  author: string;
+  slug: string;
+  tags?: string[];
+  category?: string;
+}
+
+const { title, description, pubDate, author, slug, tags = [], category } = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: '2-digit',
+}).format(pubDate);
+const isoDate = pubDate.toISOString();
+const href = `/blog/${slug}`;
+---
+
+<article
+  data-spotlight
+  data-category={category}
+  class="spotlight group relative flex h-full w-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5 transition-colors duration-300 hover:border-[var(--color-brand-gold)]/40 sm:p-6"
+>
+  <span class="spotlight-glow rounded-[var(--radius-card)]"></span>
+
+  <div class="relative flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-[var(--color-text-muted)]">
+    {
+      category && (
+        <span class="rounded-[var(--radius-pill)] border border-[var(--color-brand-gold)]/30 bg-[var(--color-brand-gold)]/10 px-2 py-0.5 uppercase tracking-wider text-[var(--color-text-gold)]">
+          {category}
+        </span>
+      )
+    }
+    <time datetime={isoDate}>{formattedDate}</time>
+  </div>
+
+  <h3 class="relative mt-3 font-display text-xl font-semibold leading-snug">
+    <a
+      href={href}
+      class="text-[var(--color-text-primary)] transition-colors before:absolute before:inset-0 before:z-10 before:content-[''] hover:text-[var(--color-text-gold)]"
+    >
+      {title}
+    </a>
+  </h3>
+
+  <p class="relative mt-2 flex-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+    {description}
+  </p>
+
+  {
+    tags.length > 0 && (
+      <ul class="relative mt-4 flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <li class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-2.5 py-1 font-mono text-[0.7rem] text-[var(--color-text-muted)]">
+            {tag}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <!-- Read More is a real link, raised above the card overlay so it always works -->
+  <a
+    href={href}
+    class="relative z-20 mt-5 inline-flex w-fit items-center text-sm font-medium text-[var(--color-text-gold)] transition-colors hover:text-[var(--color-text-gold-strong)]"
+  >
+    Read More
+    <span class="ml-1 transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true">→</span>
+    <span class="sr-only">: {title}</span>
+  </a>
+</article>

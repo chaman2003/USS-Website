@@ -1,0 +1,48 @@
+---
+/*
+ * Inline SVG icon per service id. Hand-authored single-path/stroke icons -
+ * zero runtime requests, inherit currentColor. Falls back to a generic mark.
+ */
+interface Props {
+  id: string;
+  class?: string;
+}
+
+const { id, class: className = 'h-6 w-6' } = Astro.props;
+
+const paths: Record<string, string> = {
+  'web-development':
+    'M3 5.5h18M3 5.5v13h18v-13M7.5 12l2.5 2.5L7.5 17M13 17h3.5',
+  'mobile-app':
+    'M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1ZM10.5 18h3',
+  'custom-software':
+    'M9 7 4 12l5 5M15 7l5 5-5 5M13 4l-2 16',
+  'ai-applications':
+    'M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z',
+  'erp-systems':
+    'M4 6h16M4 6v12h16V6M9 6v12M4 12h5M14 9.5h3M14 13.5h3',
+  ecommerce:
+    'M4 5h2l2 11h9l2-7H7M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM17 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
+  'api-integration':
+    'M8 7a4 4 0 0 0 0 10M16 7a4 4 0 0 1 0 10M9 12h6M9 12l-2-2M9 12l-2 2M15 12l2-2M15 12l2 2',
+  'cloud-devops':
+    'M7 18a4 4 0 0 1-.5-7.97A5 5 0 0 1 16 9.5a3.5 3.5 0 0 1 1 6.86M9.5 14.5 12 12l2.5 2.5M12 12v7',
+  cybersecurity:
+    'M12 3 5 6v5c0 4 3 7.5 7 9 4-1.5 7-5 7-9V6l-7-3ZM9.5 12l1.8 1.8 3.2-3.6',
+};
+
+const d = paths[id] ?? 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 8v8M8 12h8';
+---
+
+<svg
+  class={className}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <path d={d}></path>
+</svg>

@@ -1,0 +1,41 @@
+---
+/*
+ * Dual-row infinite marquee of capability labels sliding in opposite
+ * directions. Seamless loop: each item carries its own trailing spacing
+ * (no flex `gap`), and the list is duplicated exactly, so translateX(-50%)
+ * lands copy 2 precisely where copy 1 began - no jump. Pauses on hover;
+ * static under reduced-motion (handled in CSS).
+ */
+interface Props {
+  rowOne: string[];
+  rowTwo: string[];
+}
+
+const { rowOne, rowTwo } = Astro.props;
+const dot = '✦';
+---
+
+<div class="marquee-mask group relative flex flex-col gap-4 overflow-hidden py-2" aria-hidden="true">
+  <!-- Row 1 → -->
+  <div class="animate-marquee flex w-max shrink-0 group-hover:[animation-play-state:paused]">
+    {
+      [...rowOne, ...rowOne].map((item) => (
+        <span class="flex shrink-0 items-center gap-6 pr-6 text-2xl font-medium text-[var(--color-text-secondary)] sm:text-3xl">
+          {item}
+          <span class="text-[var(--color-brand-gold)]">{dot}</span>
+        </span>
+      ))
+    }
+  </div>
+  <!-- Row 2 ← -->
+  <div class="animate-marquee-reverse flex w-max shrink-0 group-hover:[animation-play-state:paused]">
+    {
+      [...rowTwo, ...rowTwo].map((item) => (
+        <span class="flex shrink-0 items-center gap-6 pr-6 font-display text-2xl italic text-[var(--color-text-muted)] sm:text-3xl">
+          {item}
+          <span class="not-italic text-[var(--color-brand-gold-dark)]">{dot}</span>
+        </span>
+      ))
+    }
+  </div>
+</div>

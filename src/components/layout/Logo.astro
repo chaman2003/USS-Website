@@ -1,0 +1,41 @@
+---
+/*
+ * USS brand lockup: the transparent dragon emblem (logo.png - works on any
+ * background) enlarged, paired with the wordmark. The wordmark stays visible
+ * at all times, including when the header shrinks on scroll.
+ */
+interface Props {
+  variant?: 'full' | 'compact';
+  class?: string;
+}
+const { variant = 'full', class: className = '' } = Astro.props;
+---
+
+<span class={`flex items-center gap-3 ${className}`}>
+  <img
+    src="/logo-opt.webp"
+    alt="Unity Software Solution logo"
+    width="56"
+    height="56"
+    class="header-logo-emblem h-10 w-10 shrink-0 object-contain drop-shadow-[0_0_14px_rgba(193,147,21,0.45)] sm:h-12 sm:w-12"
+  />
+  {
+    variant === 'full' && (
+      <span class="header-logo-wordmark flex flex-col leading-none">
+        <span class="font-display text-base font-semibold tracking-tight text-[var(--color-text-primary)] sm:text-lg">
+          Unity <span class="text-gold-gradient">Software</span>
+        </span>
+        <span class="mt-0.5 font-mono text-[0.55rem] uppercase tracking-[0.28em] text-[var(--color-text-gold)] sm:text-[0.6rem] sm:tracking-[0.3em]">
+          Solution
+        </span>
+      </span>
+    )
+  }
+  {
+    variant === 'compact' && (
+      <span class="font-display text-lg font-bold tracking-tight text-[var(--color-text-primary)]">
+        USS
+      </span>
+    )
+  }
+</span>

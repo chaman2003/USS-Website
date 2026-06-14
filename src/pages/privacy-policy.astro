@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+
+const privacyEmail = 'privacy@unitysoftwaresolution.com';
+
+const title = 'Privacy Policy';
+const description =
+  'How Unity Software Solution collects, uses, and protects personal data submitted through our website contact form, including processors and your rights.';
+
+// Jump-to rail entries.
+const sections = [
+  { id: 'data-we-collect', label: 'Data We Collect' },
+  { id: 'purpose', label: 'Purpose of Collection' },
+  { id: 'processors', label: 'Third-Party Processors' },
+  { id: 'retention', label: 'Data Retention' },
+  { id: 'your-rights', label: 'Your Rights' },
+  { id: 'contact', label: 'Contact' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-3xl px-5 py-20 text-center">
+      <p class="eyebrow reveal">Legal</p>
+      <h1 class="reveal mt-3 font-display text-4xl font-semibold leading-[1.1] sm:text-5xl">
+        Privacy Policy
+      </h1>
+      <p class="reveal mt-3 font-mono text-sm text-[var(--color-text-muted)]">
+        Last updated: June 2026
+      </p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-[1400px] px-5 py-14 sm:px-8">
+    <div class="lg:grid lg:grid-cols-[240px_1fr] lg:gap-16">
+      <!-- Sticky anchor rail -->
+      <aside class="hidden lg:block">
+        <nav aria-label="On this page" class="sticky top-28">
+          <p class="eyebrow mb-4">Jump to</p>
+          <ul class="space-y-1">
+            {
+              sections.map((s) => (
+                <li>
+                  <a
+                    href={`#${s.id}`}
+                    data-spy-link
+                    class="block border-l-2 border-[var(--color-surface-line)] py-1.5 pl-4 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)] data-[active=true]:border-[var(--color-brand-gold)] data-[active=true]:text-[var(--color-text-gold)]"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="min-w-0">
+        <article class="rich-text reveal">
+        <p>
+          This Privacy Policy explains how Unity Software Solution ("USS", "we", "us") handles personal
+          information you provide through this website. We keep data collection to the minimum needed to
+          respond to your enquiries.
+        </p>
+
+        <h2 id="data-we-collect" class="scroll-mt-28">1. Data We Collect</h2>
+        <p>
+          When you submit our contact form, we collect the information you choose to provide: your name,
+          email address, phone number (optional), the project type you select, and the message you write.
+          We do not collect this information unless you submit it yourself.
+        </p>
+
+        <h2 id="purpose" class="scroll-mt-28">2. Purpose of Collection</h2>
+        <p>
+          We use the information you submit solely to respond to your enquiry, discuss your project, and
+          follow up where relevant. We do not sell your personal data or use it for unrelated marketing.
+        </p>
+
+        <h2 id="processors" class="scroll-mt-28">3. Third-Party Processors</h2>
+        <p>
+          Contact form submissions are processed by <strong>Formspree</strong>, a third-party form
+          backend that delivers your message to us by email. Your submission passes through Formspree's
+          systems subject to their own privacy practices. We recommend reviewing Formspree's privacy
+          policy for details on how they handle data in transit.
+        </p>
+
+        <h2 id="retention" class="scroll-mt-28">4. Data Retention</h2>
+        <p>
+          We retain enquiry messages only as long as needed to handle your request and maintain a
+          reasonable record of our correspondence. You may ask us to delete your enquiry data at any time.
+        </p>
+
+        <h2 id="your-rights" class="scroll-mt-28">5. Your Rights</h2>
+        <p>
+          You have the right to request access to the personal data we hold about you, to ask for
+          corrections, and to request deletion. To exercise any of these rights, contact us using the
+          details below and we will respond within a reasonable timeframe.
+        </p>
+
+        <h2 id="contact" class="scroll-mt-28">6. Contact for Privacy Enquiries</h2>
+        <p>
+          For any questions about this policy or your data, email us at
+          <a href={`mailto:${privacyEmail}`}>{privacyEmail}</a>.
+        </p>
+        </article>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

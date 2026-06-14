@@ -1,0 +1,162 @@
+---
+// TODO: Set PUBLIC_FORMSPREE_ENDPOINT in your .env file (see .env.example).
+// Until set, the form action is empty and submissions will not be delivered.
+const FORMSPREE_ENDPOINT = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT ?? '';
+
+const projectTypes = [
+  'Web Development',
+  'Mobile App',
+  'Custom Software',
+  'AI Application',
+  'ERP',
+  'E-Commerce',
+  'API Integration',
+  'Cloud & DevOps',
+  'Cybersecurity',
+  'Other',
+];
+
+const fieldClass =
+  'w-full rounded-[var(--radius-btn)] border border-[var(--color-surface-line)] bg-[var(--color-surface-base)]/60 px-4 py-3 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] transition-colors focus:border-[var(--color-brand-gold)]/60 focus:outline-none focus:ring-1 focus:ring-[var(--color-brand-gold)]/60 aria-[invalid=true]:border-red-500';
+
+const labelClass = 'mb-1.5 block text-sm font-medium text-[var(--color-text-primary)]';
+---
+
+<form id="contact-form" action={FORMSPREE_ENDPOINT} method="POST" novalidate class="space-y-6">
+  <!-- Name -->
+  <div>
+    <label for="name" class={labelClass}>
+      Full Name <span aria-hidden="true" class="text-[var(--color-text-gold)]">*</span>
+    </label>
+    <input id="name" name="name" type="text" required autocomplete="name" class={fieldClass} />
+    <p class="mt-1.5 hidden text-sm text-red-400" id="name-error" role="alert"></p>
+  </div>
+
+  <!-- Email -->
+  <div>
+    <label for="email" class={labelClass}>
+      Email Address <span aria-hidden="true" class="text-[var(--color-text-gold)]">*</span>
+    </label>
+    <input id="email" name="email" type="email" required autocomplete="email" class={fieldClass} />
+    <p class="mt-1.5 hidden text-sm text-red-400" id="email-error" role="alert"></p>
+  </div>
+
+  <!-- Phone -->
+  <div>
+    <label for="phone" class={labelClass}>
+      Phone <span class="text-xs font-normal text-[var(--color-text-muted)]">(optional)</span>
+    </label>
+    <input id="phone" name="phone" type="tel" autocomplete="tel" class={fieldClass} />
+  </div>
+
+  <!-- Project Type -->
+  <div>
+    <label for="project-type" class={labelClass}>
+      Project Type <span aria-hidden="true" class="text-[var(--color-text-gold)]">*</span>
+    </label>
+    <select id="project-type" name="project_type" required class={fieldClass}>
+      <option value="">Select a service...</option>
+      {projectTypes.map((type) => <option value={type}>{type}</option>)}
+    </select>
+    <p class="mt-1.5 hidden text-sm text-red-400" id="project-type-error" role="alert"></p>
+  </div>
+
+  <!-- Message -->
+  <div>
+    <label for="message" class={labelClass}>
+      Project Details <span aria-hidden="true" class="text-[var(--color-text-gold)]">*</span>
+    </label>
+    <textarea id="message" name="message" required rows="5" class={`${fieldClass} resize-y`}></textarea>
+    <p class="mt-1.5 hidden text-sm text-red-400" id="message-error" role="alert"></p>
+  </div>
+
+  <!-- Honeypot (spam prevention) -->
+  <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <button
+    type="submit"
+    data-magnetic
+    class="group/btn relative w-full overflow-hidden rounded-[var(--radius-btn)] bg-[var(--color-brand-gold)] px-6 py-3.5 font-semibold text-[var(--color-brand-black)] shadow-[var(--shadow-glow-sm)] transition-all duration-300 hover:bg-[var(--color-brand-gold-light)] hover:shadow-[var(--shadow-glow-md)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-gold-light)]"
+  >
+    Send Message
+  </button>
+
+  <div
+    id="form-success"
+    class="hidden rounded-[var(--radius-btn)] border border-[var(--color-brand-gold)]/40 bg-[var(--color-brand-gold)]/10 p-4 text-[var(--color-text-gold)]"
+    role="status"
+    aria-live="polite"
+  >
+    Message sent! We'll get back to you within 24-48 hours.
+  </div>
+  <div
+    id="form-error"
+    class="hidden rounded-[var(--radius-btn)] border border-red-500/40 bg-red-500/10 p-4 text-red-400"
+    role="alert"
+    aria-live="assertive"
+  >
+    Something went wrong. Please try again or email us directly.
+  </div>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const successEl = document.getElementById('form-success');
+  const errorEl = document.getElementById('form-error');
+
+  if (form && successEl && errorEl) {
+    const requiredFields = ['name', 'email', 'project-type', 'message'];
+
+    const validateForm = (): boolean => {
+      let valid = true;
+      for (const id of requiredFields) {
+        const field = document.getElementById(id) as
+          | HTMLInputElement
+          | HTMLSelectElement
+          | HTMLTextAreaElement
+          | null;
+        const fieldError = document.getElementById(`${id}-error`);
+        if (!field) continue;
+
+        if (!field.value.trim()) {
+          if (fieldError) {
+            fieldError.textContent = 'This field is required.';
+            fieldError.classList.remove('hidden');
+          }
+          field.setAttribute('aria-invalid', 'true');
+          valid = false;
+        } else {
+          if (fieldError) {
+            fieldError.textContent = '';
+            fieldError.classList.add('hidden');
+          }
+          field.removeAttribute('aria-invalid');
+        }
+      }
+      return valid;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validateForm()) return;
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          form.reset();
+          successEl.classList.remove('hidden');
+          errorEl.classList.add('hidden');
+        } else {
+          throw new Error('Server error');
+        }
+      } catch {
+        errorEl.classList.remove('hidden');
+        successEl.classList.add('hidden');
+      }
+    });
+  }
+</script>

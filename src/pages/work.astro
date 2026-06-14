@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+import CaseStudyCard from '../components/ui/CaseStudyCard.astro';
+import PlaceholderCard from '../components/ui/PlaceholderCard.astro';
+import Button from '../components/ui/Button.astro';
+import ClosingCTA from '../components/ui/ClosingCTA.astro';
+import { getCollection } from 'astro:content';
+
+const workEntries = await getCollection('work');
+const sorted = workEntries.sort((a, b) => a.data.order - b.data.order);
+
+// Jump-to rail: one entry per case study + the lab section.
+const sections = [
+  ...sorted.map((entry) => ({ id: entry.id, label: entry.data.title })),
+  { id: 'lab', label: 'Capabilities in the Lab' },
+];
+
+const title = 'Our Work & Portfolio';
+const description =
+  "See the work Unity Software Solution delivers: the live PVS Promoters platform and an in-progress fashion commerce ecosystem, plus our AI capabilities.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:py-24">
+      <p class="eyebrow reveal">Selected Work</p>
+      <h1 class="reveal mt-3 font-display text-4xl font-semibold leading-[1.05] sm:text-5xl md:text-6xl">
+        Work we're <span class="text-gold-gradient">proud of</span>
+      </h1>
+      <p class="reveal mx-auto mt-5 max-w-2xl text-lg text-[var(--color-text-secondary)]">
+        Our portfolio is growing. Here's a look at the kind of work we do and how we approach it.
+        Reach out to discuss similar projects we've delivered.
+      </p>
+    </div>
+  </section>
+
+  <section class="relative" aria-label="Portfolio">
+    <div class="bg-dots absolute inset-0 opacity-25" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-[1400px] px-5 py-20 sm:px-8">
+      <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-16">
+
+        <!-- Sticky anchor rail -->
+        <aside class="hidden lg:block">
+          <nav aria-label="On this page" class="sticky top-28">
+            <p class="eyebrow mb-4">Jump to</p>
+            <ul class="space-y-1">
+              {
+                sections.map((s) => (
+                  <li>
+                    <a
+                      href={`#${s.id}`}
+                      data-spy-link
+                      class="block border-l-2 border-[var(--color-surface-line)] py-1.5 pl-4 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)] data-[active=true]:border-[var(--color-brand-gold)] data-[active=true]:text-[var(--color-text-gold)]"
+                    >
+                      {s.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Content -->
+        <div class="min-w-0">
+          {
+            sorted.map((entry, i) => (
+              <section
+                id={entry.id}
+                class:list={[
+                  'reveal scroll-mt-28',
+                  i === 0 ? 'pb-12' : 'border-t border-[var(--color-surface-line)] py-12',
+                ]}
+                aria-label={entry.data.title}
+              >
+                <CaseStudyCard
+                  title={entry.data.title}
+                  industry={entry.data.industry}
+                  challenge={entry.data.challenge}
+                  approach={entry.data.approach}
+                  outcome={entry.data.outcome}
+                  url={entry.data.url}
+                  tech={entry.data.tech}
+                  slug={entry.id}
+                  status={entry.data.status}
+                  featured
+                />
+              </section>
+            ))
+          }
+
+          <!-- Lab -->
+          <section
+            id="lab"
+            class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-12"
+            aria-labelledby="lab-heading"
+          >
+            <p class="eyebrow mb-5">Capabilities in the lab</p>
+            <div class="card-grid">
+              <PlaceholderCard
+                title="AI Voice Agent Demo"
+                description="A multilingual voice assistant capable of handling appointment booking and customer queries via phone, built using modern voice AI pipelines with sub-second response times."
+              />
+              <PlaceholderCard
+                title="RAG-Based Knowledge Assistant"
+                description="A document-aware AI assistant that answers questions based on a company's internal documentation, reducing time spent searching for information."
+              />
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <ClosingCTA>
+    <h2 class="reveal font-display text-4xl font-semibold sm:text-5xl">
+      Want to be our <span class="text-gold-gradient">next case study?</span>
+    </h2>
+    <p class="reveal mx-auto mt-4 max-w-xl text-[var(--color-text-secondary)]">
+      We're taking on new projects across web, mobile, and AI. Let's talk about yours.
+    </p>
+    <div class="reveal mt-8">
+      <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Contact Us</Button></span>
+    </div>
+  </ClosingCTA>
+</BaseLayout>

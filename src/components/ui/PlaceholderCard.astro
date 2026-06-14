@@ -1,0 +1,31 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<article
+  class="group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-dashed border-[var(--color-brand-gold)]/30 bg-[var(--color-surface-card)]/40 p-5 text-[var(--color-text-primary)] transition-colors duration-300 hover:border-[var(--color-brand-gold)]/50 sm:p-7"
+>
+  <div
+    class="pointer-events-none absolute inset-0 opacity-50"
+    style="background: radial-gradient(120% 80% at 50% 0%, rgba(193,147,21,0.07), transparent 60%);"
+    aria-hidden="true"
+  >
+  </div>
+  <span
+    class="relative inline-flex w-fit items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--color-brand-gold)]/20 bg-[var(--color-brand-gold)]/10 px-3 py-1 font-mono text-xs uppercase tracking-wider text-[var(--color-text-gold)]"
+  >
+    <span class="animate-pulse-glow inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-brand-gold-light)]"></span>
+    Coming Soon
+  </span>
+  <h3 class="relative mt-4 font-display text-lg font-semibold text-[var(--color-text-primary)]">
+    {title}
+  </h3>
+  <p class="relative mt-2 flex-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+    {description}
+  </p>
+</article>

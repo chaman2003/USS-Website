@@ -1,0 +1,30 @@
+---
+interface Props {
+  title: string;
+  body: string;
+  index?: number;
+}
+
+const { title, body, index } = Astro.props;
+const label = typeof index === 'number' ? String(index + 1).padStart(2, '0') : undefined;
+---
+
+<div
+  data-spotlight
+  class="spotlight group relative flex h-full flex-col rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5 transition-colors duration-300 hover:border-[var(--color-brand-gold)]/40 sm:p-7"
+>
+  <span class="spotlight-glow rounded-[var(--radius-card)]"></span>
+  {
+    label && (
+      <span class="relative font-mono text-sm text-[var(--color-brand-gold)]/70">{label}</span>
+    )
+  }
+  <h3 class="relative mt-3 font-display text-xl font-semibold text-[var(--color-text-primary)]">
+    {title}
+  </h3>
+  <p class="relative mt-2 text-sm leading-relaxed text-[var(--color-text-secondary)]">{body}</p>
+  <span
+    class="relative mt-6 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-[var(--color-brand-gold)] to-transparent transition-transform duration-500 group-hover:scale-x-100"
+    aria-hidden="true"
+  ></span>
+</div>

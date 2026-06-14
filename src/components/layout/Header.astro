@@ -1,0 +1,153 @@
+---
+import Logo from './Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'About', href: '/about' },
+  { label: 'Work', href: '/work' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Careers', href: '/careers' },
+];
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+---
+
+<header data-header class="site-header text-[var(--color-text-primary)]">
+  <div class="header-bar mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-8">
+    <a href="/" class="group flex items-center" aria-label="Unity Software Solution home">
+      <Logo />
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav aria-label="Primary navigation" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+                class:list={[
+                  'group relative px-3 py-2 text-sm font-medium transition-colors',
+                  isActive(link.href)
+                    ? 'text-[var(--color-text-gold)]'
+                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
+                ]}
+              >
+                {link.label}
+                <span
+                  class:list={[
+                    'absolute inset-x-3 -bottom-0.5 h-px origin-left bg-[var(--color-brand-gold)] transition-transform duration-300',
+                    isActive(link.href) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100',
+                  ]}
+                  aria-hidden="true"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href="/contact"
+        class="hidden rounded-[var(--radius-btn)] bg-[var(--color-brand-gold-light)] px-4 py-2 text-sm font-semibold text-[var(--color-brand-black)] shadow-[var(--shadow-glow-sm)] transition-all hover:bg-[var(--color-brand-gold)] hover:shadow-[var(--shadow-glow-md)] lg:inline-flex"
+      >
+        Contact Us
+      </a>
+      <ThemeToggle />
+
+      <!-- Mobile hamburger -->
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open navigation menu"
+        class="relative inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-btn)] text-[var(--color-text-primary)] transition-colors hover:text-[var(--color-text-gold)] lg:hidden"
+      >
+        <svg class="menu-icon icon-open absolute h-6 w-6" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        <svg class="menu-icon icon-close absolute h-6 w-6" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile overlay menu -->
+  <nav
+    id="mobile-menu"
+    aria-label="Mobile navigation"
+    class="mobile-menu border-t border-[var(--color-surface-line)] bg-[var(--color-surface-base)]/95 backdrop-blur-xl lg:hidden"
+  >
+    <div>
+      <ul class="space-y-1 px-5 py-4">
+        {
+          navLinks.map((link, i) => (
+            <li style={`--i: ${i}`}>
+              <a
+                href={link.href}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+                class:list={[
+                  'block rounded-[var(--radius-btn)] px-3 py-3 text-base font-medium transition-colors',
+                  isActive(link.href)
+                    ? 'bg-[var(--color-brand-gold)]/10 text-[var(--color-text-gold)]'
+                    : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)]',
+                ]}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="pt-2" style={`--i: ${navLinks.length}`}>
+          <a
+            href="/contact"
+            class="block rounded-[var(--radius-btn)] bg-[var(--color-brand-gold-light)] px-3 py-3 text-center text-base font-semibold text-[var(--color-brand-black)]"
+          >
+            Contact Us
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  if (toggle && menu) {
+    const firstLink = menu.querySelector<HTMLAnchorElement>('a');
+
+    const setOpen = (open: boolean) => {
+      menu.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+      if (open && firstLink) firstLink.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Close the sheet after tapping a link (in-page nav / same-route anchors)
+    menu.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>

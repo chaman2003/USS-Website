@@ -1,0 +1,25 @@
+---
+interface Props {
+  question: string;
+  answer: string;
+}
+
+const { question, answer } = Astro.props;
+---
+
+<details
+  class="faq-item group rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)]/60 px-6 transition-colors duration-300 hover:border-[var(--color-brand-gold)]/30 open:border-[var(--color-brand-gold)]/40 open:bg-[var(--color-surface-card)]"
+>
+  <summary
+    class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-display text-lg font-semibold text-[var(--color-text-primary)] transition-colors group-open:text-[var(--color-text-gold)]"
+  >
+    {question}
+    <span
+      class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[var(--color-brand-gold)]/30 text-[var(--color-text-gold)] transition-transform duration-300 group-open:rotate-45"
+      aria-hidden="true"
+    >
+      +
+    </span>
+  </summary>
+  <p class="pb-6 leading-relaxed text-[var(--color-text-secondary)]">{answer}</p>
+</details>

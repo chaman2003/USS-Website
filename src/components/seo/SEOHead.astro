@@ -1,0 +1,34 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  ogType?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+}
+
+const siteUrl = import.meta.env.SITE;
+const { title, description, ogType = 'website', ogImage, canonicalUrl } = Astro.props;
+
+const fullTitle = `${title} | Unity Software Solution`;
+const resolvedOgImage = ogImage
+  ? new URL(ogImage, siteUrl).href
+  : new URL('/og-default.jpg', siteUrl).href;
+const resolvedCanonical = canonicalUrl ?? Astro.url.href;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={resolvedCanonical} />
+
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={resolvedCanonical} />
+<meta property="og:type" content={ogType} />
+<meta property="og:image" content={resolvedOgImage} />
+<meta property="og:site_name" content="Unity Software Solution" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={resolvedOgImage} />

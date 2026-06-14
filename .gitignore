@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Astro cache
+.astro/
+
+# Wrangler / Cloudflare
+.wrangler/
+
+# Kiro / agent tooling
+.kiro/
+.agents/
+agents.md
+skills-lock.json
+
+# Environment — never commit real secrets
+.env
+# .env.example is committed so teammates know what vars are needed
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+*.suo
+*.user

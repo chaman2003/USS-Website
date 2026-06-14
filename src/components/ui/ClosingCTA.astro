@@ -1,0 +1,29 @@
+---
+/*
+ * Closing call-to-action band that sits above the footer on every page.
+ * Shared chrome: dotted-grid backdrop + ambient glow + grain overlay.
+ * Theme-aware surface — full white in light theme, the dark "sunken" tone in
+ * dark theme (matches the finished home-page look). Page-specific heading,
+ * copy, and button go in the default slot.
+ */
+---
+
+<section
+  class="grain relative overflow-hidden border-t border-[var(--color-surface-line)] bg-white dark:bg-[var(--color-surface-sunken)]"
+>
+  <div
+    class="bg-grid absolute inset-0 opacity-50 [mask-image:radial-gradient(ellipse_at_center,#000,transparent_75%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute left-1/2 top-1/2 h-[40vh] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]"
+    style="background: radial-gradient(ellipse, var(--glow-1), transparent 70%);"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="relative mx-auto max-w-4xl px-5 py-24 text-center sm:py-28">
+    <slot />
+  </div>
+  <div class="grain-overlay"></div>
+</section>

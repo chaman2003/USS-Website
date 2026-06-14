@@ -1,0 +1,75 @@
+---
+import ServiceIcon from './ServiceIcon.astro';
+
+interface Props {
+  id: string;
+  name: string;
+  description: string;
+  href: string;
+  index?: number;
+  featured?: boolean;
+}
+
+const { id, name, description, href, index, featured = false } = Astro.props;
+const num = typeof index === 'number' ? String(index + 1).padStart(2, '0') : undefined;
+---
+
+<a
+  href={href}
+  data-spotlight
+  data-tilt
+  class:list={[
+    'tilt spotlight group relative flex h-full overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] text-[var(--color-text-primary)] shadow-[var(--shadow-card)] transition-colors duration-300 hover:border-[var(--color-brand-gold)]/50',
+    featured
+      ? 'flex-col justify-between gap-6 p-8 sm:flex-row sm:items-end'
+      : 'flex-col p-5 sm:p-6',
+  ]}
+>
+  <span class="spotlight-glow rounded-[var(--radius-card)]"></span>
+
+  <!-- top accent line that sweeps on hover -->
+  <span
+    class="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-[var(--color-brand-gold)] via-[var(--color-brand-gold-bright)] to-transparent transition-transform duration-500 group-hover:scale-x-100"
+    aria-hidden="true"
+  ></span>
+
+  <!-- ghosted index number -->
+  {
+    num && (
+      <span
+        class="pointer-events-none absolute right-4 top-3 font-display text-5xl font-semibold text-[var(--color-text-gold)] opacity-[0.08] transition-opacity duration-300 group-hover:opacity-[0.16]"
+        aria-hidden="true"
+      >
+        {num}
+      </span>
+    )
+  }
+
+  <div class:list={['relative flex flex-col', featured && 'sm:max-w-md']}>
+    <span
+      class="flex h-12 w-12 items-center justify-center rounded-[var(--radius-btn)] border border-[var(--color-brand-gold)]/25 bg-gradient-to-br from-[var(--color-brand-gold)]/15 to-transparent text-[var(--color-text-gold)] transition-all duration-300 group-hover:scale-110 group-hover:border-[var(--color-brand-gold)]/60 group-hover:shadow-[var(--shadow-glow-sm)]"
+    >
+      <ServiceIcon id={id} class="h-6 w-6" />
+    </span>
+
+    <h3
+      class:list={[
+        'mt-5 font-display font-semibold text-[var(--color-text-primary)]',
+        featured ? 'text-2xl' : 'text-xl',
+      ]}
+    >
+      {name}
+    </h3>
+    <p class="mt-2 flex-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+      {description}
+    </p>
+  </div>
+
+  <span
+    class="relative mt-5 inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-[var(--color-text-gold)]"
+    aria-hidden="true"
+  >
+    Learn more
+    <span class="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+  </span>
+</a>

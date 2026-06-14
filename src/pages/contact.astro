@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+import ContactForm from '../components/ui/ContactForm.astro';
+
+const title = 'Contact Us: Start Your Project';
+const description =
+  'Get in touch with Unity Software Solution. Whether you have a scoped project or just an idea, we respond within 24-48 hours. Based in Bengaluru.';
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:py-24">
+      <p class="eyebrow reveal">Contact</p>
+      <h1 class="reveal mt-3 font-display text-4xl font-semibold leading-[1.05] sm:text-5xl md:text-6xl">
+        Let's build <span class="text-gold-gradient">something together</span>
+      </h1>
+      <p class="reveal mx-auto mt-5 max-w-2xl text-lg text-[var(--color-text-secondary)]">
+        Whether you have a fully scoped project or just an idea you want to explore, we're happy to
+        talk. Reach out and we'll get back to you within 24-48 hours.
+      </p>
+    </div>
+  </section>
+
+  <section class="relative overflow-hidden">
+    <div class="bg-dots absolute inset-0 opacity-25" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-5 py-20">
+    <div class="grid gap-12 lg:grid-cols-2">
+      <!-- Form -->
+      <div class="reveal">
+        <h2 class="font-display text-2xl font-semibold">Send us a message</h2>
+        <p class="mt-2 text-sm text-[var(--color-text-muted)]">
+          Fields marked with <span class="text-[var(--color-text-gold)]">*</span> are required.
+        </p>
+        <div class="mt-6">
+          <ContactForm />
+        </div>
+      </div>
+
+      <!-- Direct contact -->
+      <div class="reveal">
+        <h2 class="font-display text-2xl font-semibold">Other ways to reach us</h2>
+        <dl class="mt-6 space-y-5">
+          <div class="rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5">
+            <dt class="eyebrow">Location</dt>
+            <dd class="mt-1.5 text-[var(--color-text-primary)]">Bengaluru, Karnataka, India</dd>
+          </div>
+          <div class="rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5">
+            <dt class="eyebrow">Instagram</dt>
+            <dd class="mt-1.5">
+              <a
+                href="https://www.instagram.com/unitysoftwaresolutionuss_25/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[var(--color-text-gold)] underline-offset-4 hover:underline"
+              >
+                @unitysoftwaresolutionuss_25
+              </a>
+            </dd>
+          </div>
+          <div class="rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5">
+            <dt class="eyebrow">LinkedIn</dt>
+            <dd class="mt-1.5">
+              <a
+                href="https://www.linkedin.com/company/unity-software-solution/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[var(--color-text-gold)] underline-offset-4 hover:underline"
+              >
+                Unity Software Solution
+              </a>
+            </dd>
+          </div>
+        </dl>
+
+        <div class="mt-6 rounded-[var(--radius-card)] border border-[var(--color-brand-gold)]/20 bg-[var(--color-brand-gold)]/5 p-6">
+          <p class="text-sm leading-relaxed text-[var(--color-text-secondary)]">
+            Prefer email or a call? Mention it in your message and we'll set up whatever works best
+            for you.
+          </p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+</BaseLayout>

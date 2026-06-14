@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+import Button from '../components/ui/Button.astro';
+
+const title = 'Page Not Found';
+const description =
+  "The page you're looking for doesn't exist or has moved. Head back home or explore our work, services, and blog.";
+
+// Handy links to keep visitors moving instead of bouncing.
+const helpfulLinks = [
+  { label: 'Services', href: '/services' },
+  { label: 'Our Work', href: '/work' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="grain relative flex min-h-[70vh] items-center overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-3xl px-5 py-24 text-center">
+      <p class="eyebrow reveal">Error 404</p>
+      <p class="reveal mt-4 font-display text-7xl font-semibold leading-none text-gold-gradient sm:text-8xl md:text-9xl">
+        404
+      </p>
+      <h1 class="reveal mt-6 font-display text-3xl font-semibold leading-[1.1] sm:text-4xl md:text-5xl">
+        This page went <span class="text-gold-gradient">missing</span>
+      </h1>
+      <p class="reveal mx-auto mt-5 max-w-xl text-lg text-[var(--color-text-secondary)]">
+        The page you're looking for doesn't exist, may have moved, or the link might be broken.
+        Let's get you back on track.
+      </p>
+      <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-4">
+        <span class="inline-block"><Button href="/" variant="primary" size="lg" magnetic>Back to Home</Button></span>
+        <span class="inline-block"><Button href="/contact" variant="secondary" size="lg">Contact Us</Button></span>
+      </div>
+
+      <div class="reveal mt-12">
+        <p class="eyebrow">Or try one of these</p>
+        <ul class="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-mono text-sm">
+          {
+            helpfulLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-[var(--color-text-gold)] underline-offset-4 transition-colors hover:text-[var(--color-brand-gold-bright)] hover:underline"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

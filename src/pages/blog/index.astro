@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GlowField from '../../components/fx/GlowField.astro';
+import BlogPostCard from '../../components/ui/BlogPostCard.astro';
+import Button from '../../components/ui/Button.astro';
+import ClosingCTA from '../../components/ui/ClosingCTA.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const sorted = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Show at most 6 posts per category (most recent first).
+const PER_CATEGORY = 6;
+const perCatCount = new Map<string, number>();
+const limited = sorted.filter((p) => {
+  const cat = p.data.category ?? '';
+  const n = (perCatCount.get(cat) ?? 0) + 1;
+  perCatCount.set(cat, n);
+  return n <= PER_CATEGORY;
+});
+
+// Group the limited posts by category, in a fixed display order.
+const order = ['AI', 'Web Development', 'Startups', 'Cybersecurity', 'E-Commerce'];
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const groups = order
+  .map((cat) => ({
+    cat,
+    id: slug(cat),
+    posts: limited.filter((p) => p.data.category === cat),
+  }))
+  .filter((g) => g.posts.length > 0);
+
+const title = 'Blog & Insights: AI, Web Dev, Startups & More';
+const description =
+  'Articles from Unity Software Solution on AI, web development, startups, cybersecurity, and e-commerce: practical insights from our Bengaluru team.';
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:py-24">
+      <p class="eyebrow reveal">Insights &amp; Ideas</p>
+      <h1 class="reveal mt-3 font-display text-4xl font-semibold leading-[1.05] sm:text-5xl md:text-6xl">
+        Thinking out <span class="text-gold-gradient">loud</span>
+      </h1>
+      <p class="reveal mx-auto mt-5 max-w-2xl text-lg text-[var(--color-text-secondary)]">
+        Practical thinking on AI, web development, startups, security, and commerce: {limited.length} articles and counting.
+      </p>
+    </div>
+  </section>
+
+  <section class="relative">
+    <div class="bg-dots pointer-events-none absolute inset-0 opacity-25" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-[1400px] px-5 py-16 sm:px-8">
+      {
+        groups.length > 0 ? (
+          <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-16">
+            <!-- Sticky category rail -->
+            <aside class="hidden lg:block">
+              <nav aria-label="Jump to category" class="sticky top-28">
+                <p class="eyebrow mb-4">Categories</p>
+                <ul class="space-y-1">
+                  {groups.map((g) => (
+                    <li>
+                      <a
+                        href={`#${g.id}`}
+                        data-spy-link
+                        class="flex items-center justify-between gap-2 border-l-2 border-[var(--color-surface-line)] py-1.5 pl-4 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)] data-[active=true]:border-[var(--color-brand-gold)] data-[active=true]:text-[var(--color-text-gold)]"
+                      >
+                        {g.cat}
+                        <span class="font-mono text-xs opacity-70">{g.posts.length}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </aside>
+
+            <div class="min-w-0 space-y-16">
+              {groups.map((g) => (
+                <section id={g.id} class="reveal scroll-mt-28">
+                  <div class="mb-6 flex items-baseline justify-between gap-4 border-b border-[var(--color-surface-line)] pb-4">
+                    <h2 class="font-display text-2xl font-semibold sm:text-3xl">{g.cat}</h2>
+                    <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
+                      {g.posts.length} {g.posts.length === 1 ? 'article' : 'articles'}
+                    </span>
+                  </div>
+                  <ul class="flex flex-wrap gap-5">
+                    {g.posts.map((post) => (
+                      <li class="flex grow basis-[300px]">
+                        <BlogPostCard
+                          title={post.data.title}
+                          description={post.data.description}
+                          pubDate={post.data.pubDate}
+                          author={post.data.author}
+                          slug={post.id}
+                          tags={post.data.tags}
+                          category={post.data.category}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p class="text-center text-[var(--color-text-muted)]">No posts yet. Check back soon.</p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <ClosingCTA>
+    <h2 class="reveal font-display text-4xl font-semibold sm:text-5xl">
+      Have a project <span class="text-gold-gradient">in mind?</span>
+    </h2>
+    <p class="reveal mx-auto mt-4 max-w-xl text-[var(--color-text-secondary)]">
+      Let's talk about how we can bring it to life: scalable, secure, and built around your goals.
+    </p>
+    <div class="reveal mt-8">
+      <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Contact Us</Button></span>
+    </div>
+  </ClosingCTA>
+</BaseLayout>

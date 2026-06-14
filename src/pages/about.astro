@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+import TeamMemberCard from '../components/ui/TeamMemberCard.astro';
+import PillarCard from '../components/ui/PillarCard.astro';
+import Button from '../components/ui/Button.astro';
+import ClosingCTA from '../components/ui/ClosingCTA.astro';
+import { team } from '../data/team';
+import { values } from '../data/values';
+import { processSteps } from '../data/processSteps';
+
+const segments = [
+  {
+    title: 'Startups',
+    body: 'Building their first product and need a partner who can move fast without cutting corners.',
+  },
+  {
+    title: 'SMEs',
+    body: 'Looking to modernise operations with software that fits how the business actually works.',
+  },
+  {
+    title: 'Enterprises',
+    body: 'Needing custom integrations or scalable infrastructure built to a high standard.',
+  },
+];
+
+const title = 'About Us: Bengaluru-Based Software Startup';
+const description =
+  'Learn about Unity Software Solution: our founding story, mission, team, working process, and the values that guide how we build software in Bengaluru.';
+
+// Jump-to rail entries.
+const sections = [
+  { id: 'story', label: 'Our Story' },
+  { id: 'mission', label: 'Mission' },
+  { id: 'segments', label: 'Who We Work With' },
+  { id: 'team', label: 'Team' },
+  { id: 'process', label: 'Process' },
+  { id: 'values', label: 'Values' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:py-28">
+      <p class="eyebrow reveal">About USS</p>
+      <h1 class="reveal mt-3 font-display text-4xl font-semibold leading-[1.05] sm:text-5xl md:text-6xl xl:text-7xl">
+        Practical software, <span class="text-gold-gradient">built to last</span>
+      </h1>
+      <p class="reveal mx-auto mt-5 max-w-2xl text-lg text-[var(--color-text-secondary)]">
+        A Bengaluru-based team building reliable software for businesses of every size.
+      </p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-[1400px] px-5 py-14 sm:px-8">
+    <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-16">
+      <!-- Sticky anchor rail -->
+      <aside class="hidden lg:block">
+        <nav aria-label="On this page" class="sticky top-28">
+          <p class="eyebrow mb-4">Jump to</p>
+          <ul class="space-y-1">
+            {
+              sections.map((s) => (
+                <li>
+                  <a
+                    href={`#${s.id}`}
+                    data-spy-link
+                    class="block border-l-2 border-[var(--color-surface-line)] py-1.5 pl-4 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)] data-[active=true]:border-[var(--color-brand-gold)] data-[active=true]:text-[var(--color-text-gold)]"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="min-w-0">
+    <!-- Our Story -->
+    <section id="story" class="reveal scroll-mt-28 py-16" aria-labelledby="story-heading">
+      <p class="eyebrow">01 / Our story</p>
+      <h2 id="story-heading" class="mt-3 font-display text-3xl font-semibold sm:text-4xl">Our Story</h2>
+      <p class="mt-5 text-lg leading-relaxed text-[var(--color-text-secondary)]">
+        Unity Software Solution was founded in Bengaluru with a simple goal: help businesses build
+        technology that actually works for them, practical, efficient, and built to last. We saw too
+        many companies struggling with software that was either too generic to fit their needs or too
+        complex to maintain. USS exists to bridge that gap.
+      </p>
+      <p class="mt-4 text-sm italic text-[var(--color-text-muted)]">
+        Our full founding story, including when it started, what sparked it, and our early milestones, is on
+        the way.
+      </p>
+    </section>
+
+    <!-- Our Mission -->
+    <section id="mission" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16" aria-labelledby="mission-heading">
+      <p class="eyebrow">02 / Mission</p>
+      <h2 id="mission-heading" class="mt-3 font-display text-3xl font-semibold sm:text-4xl">Our Mission</h2>
+      <p class="mt-5 font-display text-2xl italic leading-relaxed text-[var(--color-text-primary)]">
+        To deliver technology solutions that are <span class="text-gold-gradient">scalable, secure, and tailored</span>
+        to the real challenges businesses face, regardless of their size.
+      </p>
+    </section>
+
+    <!-- Who We Work With -->
+    <section id="segments" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16" aria-labelledby="segments-heading">
+      <p class="eyebrow">03 / Who we work with</p>
+      <h2 id="segments-heading" class="mt-3 font-display text-3xl font-semibold sm:text-4xl">
+        Who We Work With
+      </h2>
+      <p class="mt-5 leading-relaxed text-[var(--color-text-secondary)]">
+        No matter the size, our approach stays the same: understand the problem first, then build the
+        right solution, not just any solution.
+      </p>
+      <div class="mt-8 card-grid card-grid--md3">
+        {segments.map((segment, i) => <PillarCard title={segment.title} body={segment.body} index={i} />)}
+      </div>
+    </section>
+
+    <!-- Our Team -->
+    <section id="team" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16" aria-labelledby="team-heading">
+      <p class="eyebrow">04 / Team</p>
+      <h2 id="team-heading" class="mt-3 font-display text-3xl font-semibold sm:text-4xl">Our Team</h2>
+      <p class="mt-5 leading-relaxed text-[var(--color-text-secondary)]">
+        A small team that stays close to every project we take on.
+      </p>
+      <div class="mt-8 card-grid card-grid--lg3">
+        {
+          team.map((member) => (
+            <TeamMemberCard
+              name={member.name}
+              role={member.role}
+              bio={member.bio}
+              image={member.image}
+              linkedIn={member.linkedIn}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- How We Work - timeline -->
+    <section id="process" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16" aria-labelledby="process-heading">
+      <p class="eyebrow">05 / Process</p>
+      <h2 id="process-heading" class="mt-3 font-display text-3xl font-semibold sm:text-4xl">How We Work</h2>
+      <ol class="mt-8 space-y-0">
+        {
+          processSteps.map((step, index) => (
+            <li class="relative flex gap-6 pb-8 last:pb-0">
+              <div class="flex flex-col items-center">
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--color-brand-gold)]/40 bg-[var(--color-surface-card)] font-mono text-sm font-semibold text-[var(--color-text-gold)]">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                {index < processSteps.length - 1 && (
+                  <span class="mt-2 w-px flex-1 bg-gradient-to-b from-[var(--color-brand-gold)]/40 to-transparent" aria-hidden="true" />
+                )}
+              </div>
+              <div class="pb-2 pt-1.5">
+                <h3 class="font-display text-xl font-semibold text-[var(--color-text-primary)]">{step.title}</h3>
+                <p class="mt-1 text-[var(--color-text-secondary)]">{step.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <!-- Our Values -->
+    <section id="values" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16" aria-labelledby="values-heading">
+      <p class="eyebrow">06 / Values</p>
+      <h2 id="values-heading" class="mt-3 font-display text-3xl font-semibold sm:text-4xl">Our Values</h2>
+      <div class="mt-8 card-grid">
+        {values.map((value, i) => <PillarCard title={value.title} body={value.body} index={i} />)}
+      </div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing CTA -->
+  <ClosingCTA>
+    <h2 class="reveal font-display text-4xl font-semibold sm:text-5xl">
+      Like how we <span class="text-gold-gradient">think?</span>
+    </h2>
+    <p class="reveal mx-auto mt-4 max-w-xl text-[var(--color-text-secondary)]">
+      Tell us about your project and we'll show you how we'd approach it.
+    </p>
+    <div class="reveal mt-8">
+      <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Get in Touch</Button></span>
+    </div>
+  </ClosingCTA>
+</BaseLayout>

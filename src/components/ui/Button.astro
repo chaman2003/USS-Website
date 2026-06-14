@@ -1,0 +1,61 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit' | 'reset';
+  magnetic?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  magnetic = false,
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const base =
+  'group/btn relative inline-flex items-center justify-center gap-2 font-medium rounded-[var(--radius-btn)] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-gold-light)] will-change-transform';
+
+const variants: Record<string, string> = {
+  primary:
+    'bg-[var(--color-brand-gold-light)] text-[var(--color-brand-black)] hover:bg-[var(--color-brand-gold)] shadow-[var(--shadow-glow-sm)] hover:shadow-[var(--shadow-glow-md)]',
+  secondary:
+    'border border-[var(--color-brand-gold)]/50 text-[var(--color-text-gold)] hover:border-[var(--color-brand-gold-light)] hover:bg-[var(--color-brand-gold)]/10 backdrop-blur-sm',
+  ghost:
+    'text-[var(--color-text-gold)] hover:text-[var(--color-brand-gold-bright)]',
+};
+
+const sizes: Record<string, string> = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg',
+};
+
+const classes = [base, variants[variant], sizes[size], className].join(' ');
+const magAttr = magnetic ? { 'data-magnetic': '' } : {};
+---
+
+{
+  href ? (
+    <a href={href} class={classes} {...magAttr} {...rest}>
+      <span class="relative z-10 inline-flex items-center gap-2">
+        <slot />
+      </span>
+      {variant === 'ghost' && (
+        <span class="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-[var(--color-brand-gold-light)] transition-transform duration-300 group-hover/btn:scale-x-100" />
+      )}
+    </a>
+  ) : (
+    <button type={type} class={classes} {...magAttr} {...rest}>
+      <span class="relative z-10 inline-flex items-center gap-2">
+        <slot />
+      </span>
+    </button>
+  )
+}

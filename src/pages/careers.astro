@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+import PillarCard from '../components/ui/PillarCard.astro';
+import Button from '../components/ui/Button.astro';
+import ClosingCTA from '../components/ui/ClosingCTA.astro';
+
+const benefits = [
+  {
+    title: 'Real Ownership',
+    body: 'Your work directly shapes products that clients use every day.',
+  },
+  {
+    title: 'Cross-Stack Exposure',
+    body: 'Work across web, mobile, AI, cloud, and more, not just one narrow slice.',
+  },
+  {
+    title: 'Ideas That Matter',
+    body: "A team that's still small enough for your ideas to genuinely make a difference.",
+  },
+  {
+    title: 'Flexible Growth',
+    body: 'A flexible, growth-focused environment that supports how you work best.',
+  },
+];
+
+// How we work day to day.
+const howWeWork = [
+  {
+    title: 'Small teams, real impact',
+    body: "You won't be a cog in a machine. Everyone here ships work that reaches real users, and you'll see the results of what you build.",
+  },
+  {
+    title: 'Learn by doing',
+    body: 'We pick the right tool for each job, so you get exposure to modern stacks across web, mobile, AI, and cloud, instead of being boxed into one.',
+  },
+  {
+    title: 'Mentorship, not micromanagement',
+    body: 'We give context and trust you to run with it. Senior engineers are around to guide, review, and unblock, not to hover.',
+  },
+];
+
+// What we look for in people.
+const lookingFor = [
+  'You take ownership and follow problems through to a solution.',
+  'You learn fast and stay curious about new tools and approaches.',
+  'You communicate clearly, whether in code, writing, or conversation.',
+  'You care about quality, from the architecture down to the details.',
+];
+
+// Application steps.
+const applicationSteps = [
+  {
+    step: '01',
+    title: 'Reach out',
+    body: 'Send us your resume and a short note about what you enjoy working on.',
+  },
+  {
+    step: '02',
+    title: 'Conversation',
+    body: 'We have a relaxed chat to understand your interests, strengths, and goals.',
+  },
+  {
+    step: '03',
+    title: 'Practical round',
+    body: 'A focused exercise or discussion based on real work, no trick questions.',
+  },
+  {
+    step: '04',
+    title: 'Offer',
+    body: 'If it\'s a fit on both sides, we move quickly and welcome you to the team.',
+  },
+];
+
+// USS contact address for speculative applications. TODO: replace with the real hiring inbox.
+const careersEmail = 'careers@unitysoftwaresolution.com';
+
+// Jump-to rail entries.
+const sections = [
+  { id: 'why-heading', label: 'Why Work With Us' },
+  { id: 'how-heading', label: 'How We Work' },
+  { id: 'look-heading', label: 'What We Look For' },
+  { id: 'roles-heading', label: 'Open Roles' },
+  { id: 'internship-heading', label: 'Internships' },
+  { id: 'apply-heading', label: 'How to Apply' },
+];
+
+const title = 'Join Our Team';
+const description =
+  "Careers at Unity Software Solution. We're a small, growing Bengaluru team building real software across web, mobile, AI, and cloud. See why people work with us.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:py-24">
+      <p class="eyebrow reveal">Careers</p>
+      <h1 class="reveal mt-3 font-display text-4xl font-semibold leading-[1.05] sm:text-5xl md:text-6xl">
+        Build things that <span class="text-gold-gradient">matter</span>
+      </h1>
+      <p class="reveal mx-auto mt-5 max-w-2xl text-lg text-[var(--color-text-secondary)]">
+        We're a small, growing team building real solutions for real businesses. If you like solving
+        problems, learning fast, and taking ownership of your work, we'd love to hear from you.
+      </p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-[1400px] px-5 py-14 sm:px-8">
+    <div class="lg:grid lg:grid-cols-[240px_1fr] lg:gap-16">
+      <!-- Sticky anchor rail -->
+      <aside class="hidden lg:block">
+        <nav aria-label="On this page" class="sticky top-28 pt-16">
+          <p class="eyebrow mb-4">Jump to</p>
+          <ul class="space-y-1">
+            {
+              sections.map((s) => (
+                <li>
+                  <a
+                    href={`#${s.id}`}
+                    data-spy-link
+                    class="block border-l-2 border-[var(--color-surface-line)] py-1.5 pl-4 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)] data-[active=true]:border-[var(--color-brand-gold)] data-[active=true]:text-[var(--color-text-gold)]"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="min-w-0">
+    <!-- Why Work With Us -->
+    <section class="reveal py-16" aria-labelledby="why-heading">
+      <p class="eyebrow">01 / Why work with us</p>
+      <h2 id="why-heading" class="mt-3 scroll-mt-28 font-display text-3xl font-semibold sm:text-4xl">Why Work With Us</h2>
+      <div class="mt-8 card-grid">
+        {benefits.map((benefit, i) => <PillarCard title={benefit.title} body={benefit.body} index={i} />)}
+      </div>
+    </section>
+
+    <!-- How We Work -->
+    <section class="reveal border-t border-[var(--color-surface-line)] py-16" aria-labelledby="how-heading">
+      <p class="eyebrow">02 / How we work</p>
+      <h2 id="how-heading" class="mt-3 scroll-mt-28 font-display text-3xl font-semibold sm:text-4xl">How We Work</h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-3">
+        {
+          howWeWork.map((item) => (
+            <div class="rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-6">
+              <h3 class="font-display text-xl font-semibold">{item.title}</h3>
+              <p class="mt-3 leading-relaxed text-[var(--color-text-secondary)]">{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- What We Look For -->
+    <section class="reveal border-t border-[var(--color-surface-line)] py-16" aria-labelledby="look-heading">
+      <p class="eyebrow">03 / What we look for</p>
+      <h2 id="look-heading" class="mt-3 scroll-mt-28 font-display text-3xl font-semibold sm:text-4xl">What We Look For</h2>
+      <p class="mt-5 leading-relaxed text-[var(--color-text-secondary)]">
+        We care more about how you think and work than about a specific checklist of technologies.
+        The traits that tend to thrive here:
+      </p>
+      <ul class="mt-6 space-y-3">
+        {
+          lookingFor.map((item) => (
+            <li class="flex gap-3 leading-relaxed text-[var(--color-text-secondary)]">
+              <span class="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[var(--color-brand-gold)]" aria-hidden="true" />
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Open Roles -->
+    <section class="reveal border-t border-[var(--color-surface-line)] py-16" aria-labelledby="roles-heading">
+      <p class="eyebrow">04 / Open roles</p>
+      <h2 id="roles-heading" class="mt-3 scroll-mt-28 font-display text-3xl font-semibold sm:text-4xl">Open Roles</h2>
+      <div class="mt-6 rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-8">
+        <p class="leading-relaxed text-[var(--color-text-secondary)]">
+          We don't have open positions right now, but we're always interested in meeting talented
+          people. Send us your resume at
+          <a
+            href={`mailto:${careersEmail}`}
+            class="font-medium text-[var(--color-text-gold)] underline-offset-4 hover:underline"
+            >{careersEmail}</a
+          >
+          and we'll reach out when something fits.
+        </p>
+      </div>
+    </section>
+
+    <!-- Internship Program -->
+    <section class="reveal border-t border-[var(--color-surface-line)] py-16" aria-labelledby="internship-heading">
+      <p class="eyebrow">05 / Internships</p>
+      <h2 id="internship-heading" class="mt-3 scroll-mt-28 font-display text-3xl font-semibold sm:text-4xl">
+        Internship Program
+      </h2>
+      <p class="mt-5 leading-relaxed text-[var(--color-text-secondary)]">
+        We offer internship opportunities for students and early-career professionals interested in
+        software development, AI/ML, and related fields. Interns work on real client projects under
+        guidance from our team, gaining hands-on experience that goes well beyond the classroom.
+      </p>
+    </section>
+
+    <!-- How to Apply -->
+    <section class="reveal border-t border-[var(--color-surface-line)] py-16" aria-labelledby="apply-heading">
+      <p class="eyebrow">06 / How to apply</p>
+      <h2 id="apply-heading" class="mt-3 scroll-mt-28 font-display text-3xl font-semibold sm:text-4xl">How to Apply</h2>
+      <p class="mt-5 leading-relaxed text-[var(--color-text-secondary)]">
+        Our process is short and respectful of your time. Here's what to expect:
+      </p>
+      <ol class="mt-8 grid gap-6 sm:grid-cols-2">
+        {
+          applicationSteps.map((item) => (
+            <li class="rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-6">
+              <span class="font-mono text-sm text-[var(--color-text-gold)]">{item.step}</span>
+              <h3 class="mt-2 font-display text-xl font-semibold">{item.title}</h3>
+              <p class="mt-2 leading-relaxed text-[var(--color-text-secondary)]">{item.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <ClosingCTA>
+    <h2 class="reveal font-display text-4xl font-semibold sm:text-5xl">
+      Interested in <span class="text-gold-gradient">working together?</span>
+    </h2>
+    <p class="reveal mx-auto mt-4 max-w-xl text-[var(--color-text-secondary)]">
+      Reach out and tell us a bit about yourself. We're always happy to connect.
+    </p>
+    <div class="reveal mt-8">
+      <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Get in Touch</Button></span>
+    </div>
+  </ClosingCTA>
+</BaseLayout>

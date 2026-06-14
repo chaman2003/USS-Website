@@ -1,0 +1,399 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+import Marquee from '../components/fx/Marquee.astro';
+import TechMarquee from '../components/fx/TechMarquee.astro';
+import Button from '../components/ui/Button.astro';
+import ServiceCard from '../components/ui/ServiceCard.astro';
+import PillarCard from '../components/ui/PillarCard.astro';
+import CaseStudyCard from '../components/ui/CaseStudyCard.astro';
+import PlaceholderCard from '../components/ui/PlaceholderCard.astro';
+import ClosingCTA from '../components/ui/ClosingCTA.astro';
+import ServiceIcon from '../components/ui/ServiceIcon.astro';
+import { services } from '../data/services';
+import { pillars } from '../data/pillars';
+import { processSteps } from '../data/processSteps';
+import { getCollection } from 'astro:content';
+
+const workEntries = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+
+const title = 'Building Scalable Software for Growing Businesses';
+const description =
+  'Unity Software Solution is a Bengaluru-based software studio building web, mobile, and AI-powered products for startups, SMEs, and enterprises.';
+
+const heroWords = ['Building', 'Scalable,', 'Secure', '&', 'Intelligent', 'Software.'];
+
+const stats = [
+  { count: 9, suffix: '', label: 'Core services' },
+  { count: 24, suffix: 'h', label: 'Response time', prefix: '<' },
+  { count: 100, suffix: '%', label: 'Custom-built' },
+  { count: 2, suffix: '', label: 'Live client platforms' },
+];
+
+const marqueeOne = ['Voice AI Agents', 'RAG Pipelines', 'Web Platforms', 'Mobile Apps', 'ERP Systems', 'WhatsApp Bots', 'Payment Systems', 'Admin Dashboards'];
+const marqueeTwo = ['Cloud & DevOps', 'Cybersecurity', 'E-Commerce', 'API Integration', 'LLM Automation', 'CI/CD Pipelines', 'Data Migration', 'Multilingual AI'];
+
+// Hero orbit: 6 services on the outer ring, 3 on the inner ring.
+const outerServices = services.slice(0, 6);
+const innerServices = services.slice(6, 9);
+// Deterministic galaxy starfield (seeded so every build is identical).
+const seeded = (n: number) => {
+  const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+  return x - Math.floor(x);
+};
+const makeStars = (count: number, seedOffset: number) =>
+  Array.from({ length: count }, (_, i) => {
+    const k = i + seedOffset;
+    return {
+      x: +(seeded(k * 2.1) * 100).toFixed(2),
+      y: +(seeded(k * 3.7 + 1) * 100).toFixed(2),
+      s: +(0.8 + seeded(k * 1.3 + 2) * 2.2).toFixed(2),
+      d: +(seeded(k * 4.9 + 3) * 4).toFixed(2),
+      dur: +(2.4 + seeded(k * 5.5 + 4) * 3.6).toFixed(2),
+      o: +(0.3 + seeded(k * 6.2 + 5) * 0.7).toFixed(2),
+    };
+  });
+const stars = makeStars(56, 10);
+const starsNear = makeStars(22, 200);
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- ════════════════ Hero ════════════════ -->
+  <section class="grain relative flex min-h-[100svh] items-start overflow-hidden bg-gradient-to-b from-[var(--color-hero-from)] via-[var(--color-hero-to)] to-[var(--color-surface-raised)] lg:items-center">
+    <GlowField variant="hero" grid />
+
+    <div class="relative mx-auto grid w-full max-w-[1400px] items-center gap-12 px-5 py-20 sm:px-8 sm:py-24 lg:grid-cols-[1.1fr_0.9fr]">
+      <!-- Left: copy -->
+      <div class="text-center lg:text-left">
+        <p class="eyebrow word-rise mb-5 sm:mb-6" style="--i: 0">
+          <span class="mr-2 inline-block h-1.5 w-1.5 animate-pulse-glow rounded-full bg-[var(--color-brand-gold)] align-middle"></span>
+          <span class="align-middle">Unity Software Solution</span>
+          <br class="sm:hidden" />
+          <span class="mr-2 inline-block h-1 w-1 animate-pulse-glow rounded-full bg-[var(--color-brand-gold)] align-middle sm:ml-2"></span>
+          <span class="align-middle">Bengaluru</span>
+        </p>
+
+        <h1 class="word-rise font-display text-4xl font-semibold leading-[1.06] tracking-tight sm:text-5xl md:text-6xl xl:text-7xl">
+          {
+            heroWords.map((word, i) => (
+              <span style={`--i: ${i + 1}`} class={word === 'Secure' || word === 'Intelligent' ? 'text-shimmer' : ''}>
+                {word}{i < heroWords.length - 1 ? ' ' : ''}
+              </span>
+            ))
+          }
+        </h1>
+
+        <p class="word-rise mx-auto mt-6 max-w-xl text-base text-[var(--color-text-secondary)] sm:mt-7 sm:text-lg lg:mx-0" style={`--i: ${heroWords.length + 1}`}>
+          <span>
+            We help startups, SMEs, and enterprises turn ideas into reliable digital products, from
+            web and mobile apps to AI-powered systems and enterprise platforms.
+          </span>
+        </p>
+
+        <div class="word-rise mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4 lg:justify-start" style={`--i: ${heroWords.length + 2}`}>
+          <span class="inline-block w-full sm:w-auto"><Button href="/contact" variant="primary" size="lg" magnetic class="w-full sm:w-auto">Contact Us</Button></span>
+          <Button href="/services" variant="secondary" size="lg" class="w-full sm:w-auto">Explore Our Services →</Button>
+        </div>
+
+        <!-- mini trust strip (clickable) -->
+        <ul class="word-rise mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 lg:justify-start" style={`--i: ${heroWords.length + 3}`}>
+          <li>
+            <a href="/work" class="group/chip inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]">
+              <span class="font-display text-xl font-semibold text-gold-gradient">2</span>
+              live client platforms
+            </a>
+          </li>
+          <li aria-hidden="true" class="h-4 w-px bg-[var(--color-surface-line)]"></li>
+          <li>
+            <a href="/services" class="group/chip inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]">
+              <span class="font-display text-xl font-semibold text-gold-gradient">9</span>
+              core services
+            </a>
+          </li>
+          <li aria-hidden="true" class="h-4 w-px bg-[var(--color-surface-line)]"></li>
+          <li>
+            <a href="/contact" class="group/chip inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]">
+              <span class="font-display text-xl font-semibold text-gold-gradient">&lt;24h</span>
+              response time
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right: interactive orbital system -->
+      <div class="orbit-stage hero-rise relative mx-auto hidden aspect-square w-full max-w-lg lg:block" style="--rise-delay: 650ms" data-parallax="-0.05">
+        <div class="orbit-tilt group/orbit relative h-full w-full" data-orbit>
+
+          <!-- ambient drifting nebula glow -->
+          <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+            <div class="animate-orb-drift absolute left-[12%] top-[18%] h-32 w-32 rounded-full blur-[55px]" style="background: radial-gradient(circle, var(--glow-2), transparent 70%);"></div>
+            <div class="animate-orb-drift absolute bottom-[12%] right-[14%] h-36 w-36 rounded-full blur-[60px] [animation-delay:-8s]" style="background: radial-gradient(circle, var(--glow-1), transparent 70%);"></div>
+          </div>
+
+          <!-- galaxy starfield: drifts slowly so the field feels alive -->
+          <div class="animate-spin-slow absolute inset-[-10%] [animation-duration:70s]" aria-hidden="true">
+            {
+              stars.map((st) => (
+                <span
+                  class="animate-star-twinkle absolute rounded-full bg-white"
+                  style={`left:${st.x}%; top:${st.y}%; height:${st.s}px; width:${st.s}px; opacity:${st.o}; animation-delay:${st.d}s; animation-duration:${st.dur}s;`}
+                />
+              ))
+            }
+          </div>
+          <div class="animate-spin-slow absolute inset-[-4%] [animation-direction:reverse] [animation-duration:55s]" aria-hidden="true">
+            {
+              starsNear.map((st) => (
+                <span
+                  class="animate-star-twinkle absolute rounded-full bg-[var(--color-brand-gold-bright)]"
+                  style={`left:${st.x}%; top:${st.y}%; height:${st.s + 0.5}px; width:${st.s + 0.5}px; opacity:${st.o}; animation-delay:${st.d}s; animation-duration:${st.dur}s; box-shadow:0 0 ${st.s * 3}px var(--color-brand-gold-bright);`}
+                />
+              ))
+            }
+          </div>
+
+          <!-- concentric guide rings (each icon ring rides one of these) -->
+          <div class="pointer-events-none absolute inset-0 rounded-full border border-[var(--color-surface-line)]" aria-hidden="true"></div>
+          <div class="animate-spin-slow pointer-events-none absolute inset-[11%] rounded-full border border-dashed border-[var(--color-brand-gold)]/35 [animation-duration:46s]" aria-hidden="true"></div>
+          <div class="animate-spin-slow pointer-events-none absolute inset-[19%] rounded-full border border-dashed border-[var(--color-brand-gold)]/25 [animation-direction:reverse] [animation-duration:36s]" aria-hidden="true"></div>
+
+          <!-- outer revolving icon ring: 6 services (pauses on hover) -->
+          <div class="animate-orbit pointer-events-none absolute inset-0 group-hover/orbit:[animation-play-state:paused] [&:has(a:hover)]:z-30">
+            {
+              outerServices.map((s, i) => {
+                const angle = (i / outerServices.length) * Math.PI * 2 - Math.PI / 2;
+                const r = 48;
+                const x = 50 + r * Math.cos(angle);
+                const y = 50 + r * Math.sin(angle);
+                return (
+                  <div class="absolute -translate-x-1/2 -translate-y-1/2 [&:has(a:hover)]:z-30" style={`left:${x}%; top:${y}%`}>
+                    <div class="animate-orbit-counter group-hover/orbit:[animation-play-state:paused]">
+                      <a
+                        href={s.href}
+                        aria-label={s.name}
+                        class="group/icon pointer-events-auto relative flex items-center justify-center p-3"
+                      >
+                        <span class="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] text-[var(--color-text-gold)] shadow-[var(--shadow-card)] transition-all duration-300 will-change-transform group-hover/icon:scale-125 group-hover/icon:border-[var(--color-brand-gold)]/70 group-hover/icon:shadow-[var(--shadow-glow-md)]">
+                          <ServiceIcon id={s.id} class="h-6 w-6 transition-transform duration-300 group-hover/icon:scale-110" />
+                        </span>
+                        <span class="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-brand-gold)]/30 bg-[var(--color-surface-card)] px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-wider text-[var(--color-text-gold)] opacity-0 shadow-[var(--shadow-card)] transition-opacity duration-200 group-hover/icon:opacity-100">{s.name}</span>
+                      </a>
+                    </div>
+                  </div>
+                );
+              })
+            }
+          </div>
+
+          <!-- inner revolving icon ring: remaining 3 services -->
+          <div class="animate-orbit-mid pointer-events-none absolute inset-0 group-hover/orbit:[animation-play-state:paused] [&:has(a:hover)]:z-30">
+            {
+              innerServices.map((s, i) => {
+                const angle = (i / innerServices.length) * Math.PI * 2 - Math.PI / 6;
+                const r = 31;
+                const x = 50 + r * Math.cos(angle);
+                const y = 50 + r * Math.sin(angle);
+                return (
+                  <div class="absolute -translate-x-1/2 -translate-y-1/2 [&:has(a:hover)]:z-30" style={`left:${x}%; top:${y}%`}>
+                    <div class="animate-orbit-mid-counter group-hover/orbit:[animation-play-state:paused]">
+                      <a
+                        href={s.href}
+                        aria-label={s.name}
+                        class="group/icon pointer-events-auto relative flex items-center justify-center p-3"
+                      >
+                        <span class="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] text-[var(--color-text-gold)] shadow-[var(--shadow-card)] transition-all duration-300 will-change-transform group-hover/icon:scale-125 group-hover/icon:border-[var(--color-brand-gold)]/70 group-hover/icon:shadow-[var(--shadow-glow-sm)]">
+                          <ServiceIcon id={s.id} class="h-5 w-5" />
+                        </span>
+                        <span class="pointer-events-none absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-brand-gold)]/30 bg-[var(--color-surface-card)] px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider text-[var(--color-text-gold)] opacity-0 shadow-[var(--shadow-card)] transition-opacity duration-200 group-hover/icon:opacity-100">{s.name}</span>
+                      </a>
+                    </div>
+                  </div>
+                );
+              })
+            }
+          </div>
+
+          <!-- center: soft glow + spinning halo + emblem (flex-centered, no transform collisions) -->
+          <div class="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
+            <div class="absolute h-48 w-48 rounded-full blur-[55px]" style="background: radial-gradient(circle, var(--glow-1), transparent 70%);"></div>
+            <div class="orbit-halo absolute h-44 w-44"></div>
+            <span class="relative flex h-36 w-36 items-center justify-center">
+              <img src="/logo-opt.webp" alt="Unity Software Solution emblem" width="144" height="144" class="h-36 w-36 object-contain drop-shadow-[0_0_42px_rgba(193,147,21,0.72)]" />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- scroll cue -->
+    <div class="absolute bottom-20 left-1/2 -translate-x-1/2 sm:bottom-24" aria-hidden="true">
+      <div class="flex h-10 w-6 items-start justify-center rounded-full border border-[var(--color-text-muted)]/40 p-1.5">
+        <div class="h-2 w-1 animate-bounce rounded-full bg-[var(--color-brand-gold)]"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ Tech marquee ════════════════ -->
+  <section class="border-b border-[var(--color-surface-line)] bg-[var(--color-surface-raised)] py-10" aria-label="Technologies we work with">
+    <p class="eyebrow mb-6 text-center">Our stack</p>
+    <TechMarquee />
+  </section>
+
+  <!-- ════════════════ Trust + stats ════════════════ -->
+  <section class="relative overflow-hidden py-24">
+    <GlowField variant="subtle" grain={false} />
+    <div class="relative mx-auto max-w-4xl px-5 text-center">
+      <p class="reveal font-display text-2xl italic leading-relaxed text-[var(--color-text-primary)] sm:text-3xl">
+        "We work with startups, SMEs, and enterprises, understanding their unique challenges and
+        delivering technology solutions that are <span class="text-gold-gradient">practical, efficient, and built to last</span>."
+      </p>
+    </div>
+    <dl class="reveal mx-auto mt-16 grid max-w-5xl grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-line)] px-0 sm:grid-cols-4">
+      {
+        stats.map((stat) => (
+          <div class="flex flex-col items-center bg-[var(--color-surface-card)] p-8">
+            <dd class="font-display text-4xl font-semibold text-gold-gradient sm:text-5xl" data-count={stat.count} data-prefix={stat.prefix ?? ''} data-suffix={stat.suffix}>
+              {stat.prefix ?? ''}{stat.count}{stat.suffix}
+            </dd>
+            <dt class="mt-2 text-center font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">{stat.label}</dt>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- ════════════════ Services (bento, full-width) ════════════════ -->
+  <section class="relative overflow-hidden bg-[var(--color-surface-raised)]" aria-labelledby="services-heading">
+    <GlowField variant="section" grain={false} />
+    <div class="relative mx-auto max-w-[1400px] px-5 py-24 sm:px-8">
+      <div class="reveal flex flex-col items-end justify-between gap-6 md:flex-row md:items-end">
+        <div class="max-w-2xl">
+          <p class="eyebrow">01 / What we do</p>
+          <h2 id="services-heading" class="mt-3 font-display text-4xl font-semibold sm:text-5xl">
+            Full-lifecycle <span class="text-gold-gradient">software</span>, under one roof
+          </h2>
+        </div>
+        <p class="max-w-sm text-[var(--color-text-secondary)] md:text-right">
+          Nine core services covering everything from a first prototype to long-term support.
+        </p>
+      </div>
+
+      <ul class="reveal card-grid card-grid--lg3 mt-14">
+        {
+          services.map((service, i) => (
+            <li>
+              <ServiceCard
+                id={service.id}
+                name={service.name}
+                description={service.description}
+                href={service.href}
+                index={i}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════ Capability marquee (text) ════════════════ -->
+  <section class="relative overflow-hidden border-y border-[var(--color-surface-line)] bg-[var(--color-surface-sunken)] py-10" aria-label="Capabilities">
+    <div class="bg-dots absolute inset-0 opacity-30" aria-hidden="true"></div>
+    <div class="relative">
+      <Marquee rowOne={marqueeOne} rowTwo={marqueeTwo} />
+    </div>
+  </section>
+
+  <!-- ════════════════ Why Choose USS (split layout) ════════════════ -->
+  <section class="relative overflow-hidden" aria-labelledby="why-heading">
+    <div class="mx-auto grid max-w-[1400px] items-start gap-12 px-5 py-24 sm:px-8 lg:grid-cols-[0.8fr_1.2fr]">
+      <div class="reveal lg:sticky lg:top-28 lg:self-start">
+        <p class="eyebrow">02 / Why USS</p>
+        <h2 id="why-heading" class="mt-3 font-display text-4xl font-semibold sm:text-5xl">
+          Principles that <span class="text-gold-gradient">ship</span>
+        </h2>
+        <p class="mt-5 text-[var(--color-text-secondary)]">
+          We optimise for software that lasts, not demos that impress and break. These four
+          principles shape every decision we make on your project.
+        </p>
+        <div class="mt-8"><Button href="/about" variant="secondary" size="md">More about how we work →</Button></div>
+      </div>
+      <div class="reveal card-grid">
+        {pillars.map((pillar, i) => <PillarCard title={pillar.title} body={pillar.body} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ Process strip ════════════════ -->
+  <section class="relative overflow-hidden bg-[var(--color-surface-raised)]" aria-labelledby="process-heading">
+    <div class="bg-dots absolute inset-0 opacity-40" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-[1400px] px-5 py-24 sm:px-8">
+      <div class="reveal mx-auto max-w-2xl text-center">
+        <p class="eyebrow">03 / How we work</p>
+        <h2 id="process-heading" class="mt-3 font-display text-4xl font-semibold sm:text-5xl">
+          A clear path from <span class="text-gold-gradient">idea to launch</span>
+        </h2>
+      </div>
+      <ol class="reveal card-grid card-grid--md5 mt-14">
+        {
+          processSteps.map((step, i) => (
+            <li class="relative flex flex-col rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5 shadow-[var(--shadow-card)] sm:p-6">
+              <span class="font-mono text-sm text-[var(--color-brand-gold)]">{String(i + 1).padStart(2, '0')}</span>
+              <span class="mt-2 font-display text-lg font-semibold">{step.title}</span>
+              <span class="mt-2 text-sm text-[var(--color-text-secondary)]">{step.body}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ════════════════ Featured work ════════════════ -->
+  <section class="relative overflow-hidden" aria-labelledby="work-heading">
+    <GlowField variant="section" grain={false} />
+    <div class="relative mx-auto max-w-[1400px] px-5 py-24 sm:px-8">
+      <div class="reveal mx-auto max-w-2xl text-center">
+        <p class="eyebrow">04 / Selected work</p>
+        <h2 id="work-heading" class="mt-3 font-display text-4xl font-semibold sm:text-5xl">
+          Real projects, <span class="text-gold-gradient">real outcomes</span>
+        </h2>
+      </div>
+      <div class="reveal mt-14 grid gap-5">
+        {
+          workEntries.map((entry) => (
+            <CaseStudyCard
+              title={entry.data.title}
+              industry={entry.data.industry}
+              challenge={entry.data.challenge}
+              approach={entry.data.approach}
+              outcome={entry.data.outcome}
+              url={entry.data.url}
+              tech={entry.data.tech}
+              slug={entry.id}
+              status={entry.data.status}
+              featured
+            />
+          ))
+        }
+      </div>
+      <div class="reveal mt-8 card-grid">
+        <PlaceholderCard title="AI Voice Agent Demo" description="A multilingual voice assistant handling appointment booking and customer queries via phone, with sub-second response times." />
+        <PlaceholderCard title="RAG-Based Knowledge Assistant" description="A document-aware AI assistant that answers questions from a company's internal documentation." />
+      </div>
+      <div class="reveal mt-12 text-center"><Button href="/work" variant="ghost" size="md">See all our work →</Button></div>
+    </div>
+  </section>
+
+  <!-- ════════════════ Closing CTA ════════════════ -->
+  <ClosingCTA>
+    <h2 class="reveal font-display text-4xl font-semibold sm:text-6xl">
+      Have a project <span class="text-gold-gradient">in mind?</span>
+    </h2>
+    <p class="reveal mx-auto mt-5 max-w-xl text-lg text-[var(--color-text-secondary)]">
+      Let's talk about how we can bring it to life: scalable, secure, and built around your goals.
+    </p>
+    <div class="reveal mt-10">
+      <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Contact Us</Button></span>
+    </div>
+  </ClosingCTA>
+</BaseLayout>

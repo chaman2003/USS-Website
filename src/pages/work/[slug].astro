@@ -1,0 +1,297 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GlowField from '../../components/fx/GlowField.astro';
+import Button from '../../components/ui/Button.astro';
+import ClosingCTA from '../../components/ui/ClosingCTA.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('work');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const d = entry.data;
+
+const statusLabel: Record<string, string> = {
+  live: 'Live',
+  'in-progress': 'In Progress',
+  delivered: 'Delivered',
+};
+
+const title = `${d.title}: Case Study`;
+const rawDesc = d.summary ?? d.challenge;
+// Clamp to <=155 chars on a word boundary so it stays within the SEO range.
+const description =
+  rawDesc.length <= 155 ? rawDesc : rawDesc.slice(0, 152).replace(/\s+\S*$/, '') + '…';
+
+// Jump-to rail entries - only the sections that this case study actually renders.
+const sections = [
+  { id: 'summary', label: 'Summary', show: true },
+  { id: 'overview', label: 'Overview', show: !!d.overview?.length },
+  { id: 'objectives', label: 'Objectives', show: !!d.objectives?.length },
+  { id: 'tech-stack', label: 'Tech stack', show: !!d.techGroups?.length },
+  { id: 'modules', label: 'Modules', show: !!d.modules?.length },
+  { id: 'architecture', label: 'Architecture', show: !!d.systems?.length },
+  { id: 'workflow', label: 'Workflow', show: !!d.workflow?.length },
+].filter((s) => s.show);
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-4xl px-5 py-20 sm:py-24">
+      <a
+        href="/work"
+        class="group inline-flex items-center gap-1.5 font-mono text-sm text-[var(--color-text-gold)] transition-colors hover:text-[var(--color-text-gold-strong)]"
+      >
+        <span class="transition-transform group-hover:-translate-x-1" aria-hidden="true">←</span>
+        Back to Work
+      </a>
+
+      <div class="reveal mt-6 flex flex-wrap items-center gap-3">
+        <span class="rounded-[var(--radius-pill)] border border-[var(--color-brand-gold)]/30 bg-[var(--color-brand-gold)]/10 px-3 py-1 font-mono text-xs uppercase tracking-wider text-[var(--color-text-gold)]">
+          {d.industry}
+        </span>
+        <span
+          class:list={[
+            'inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border px-3 py-1 font-mono text-xs uppercase tracking-wider',
+            d.status === 'live'
+              ? 'border-green-500/40 bg-green-500/10 text-green-400'
+              : 'border-[var(--color-brand-gold)]/30 bg-[var(--color-brand-gold)]/10 text-[var(--color-text-gold)]',
+          ]}
+        >
+          {d.status === 'live' && <span class="h-1.5 w-1.5 animate-pulse-glow rounded-full bg-green-400" />}
+          {statusLabel[d.status]}
+        </span>
+        {d.year && <span class="font-mono text-xs text-[var(--color-text-muted)]">{d.year}</span>}
+      </div>
+
+      <h1 class="reveal mt-5 font-display text-4xl font-semibold leading-[1.05] sm:text-5xl xl:text-6xl">
+        {d.title}
+      </h1>
+      {d.summary && <p class="reveal mt-5 max-w-2xl text-lg text-[var(--color-text-secondary)]">{d.summary}</p>}
+
+      {
+        d.url && (
+          <div class="reveal mt-8">
+            <Button href={d.url} variant="primary" size="md">
+              Visit Live Site
+              <span class="sr-only"> (opens in a new tab)</span>
+            </Button>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-[1400px] px-5 py-4 sm:px-8">
+    <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-16">
+      <!-- Sticky anchor rail -->
+      <aside class="hidden lg:block">
+        <nav aria-label="On this page" class="sticky top-28">
+          <p class="eyebrow mb-4">Jump to</p>
+          <ul class="space-y-1">
+            {
+              sections.map((s) => (
+                <li>
+                  <a
+                    href={`#${s.id}`}
+                    data-spy-link
+                    class="block border-l-2 border-[var(--color-surface-line)] py-1.5 pl-4 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)] data-[active=true]:border-[var(--color-brand-gold)] data-[active=true]:text-[var(--color-text-gold)]"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="min-w-0">
+    <!-- Challenge / Approach / Outcome -->
+    <section id="summary" class="reveal card-grid card-grid--md3 scroll-mt-28 py-16">
+      {
+        [
+          { label: 'Challenge', body: d.challenge },
+          { label: 'Approach', body: d.approach },
+          { label: 'Outcome', body: d.outcome },
+        ].map((b) => (
+          <div class="rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-6">
+            <h2 class="eyebrow">{b.label}</h2>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--color-text-secondary)]">{b.body}</p>
+          </div>
+        ))
+      }
+    </section>
+
+    <!-- Overview -->
+    {
+      d.overview && d.overview.length > 0 && (
+        <section id="overview" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16">
+          <p class="eyebrow">Overview</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold">About the project</h2>
+          <div class="mt-5 space-y-4">
+            {d.overview.map((p) => (
+              <p class="leading-relaxed text-[var(--color-text-secondary)]">{p}</p>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Objectives -->
+    {
+      d.objectives && d.objectives.length > 0 && (
+        <section id="objectives" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16">
+          <p class="eyebrow">Objectives</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold">What it set out to do</h2>
+          <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+            {d.objectives.map((o) => (
+              <li class="flex items-start gap-2.5 text-[var(--color-text-secondary)]">
+                <span class="mt-1 text-[var(--color-text-gold)]" aria-hidden="true">
+                  ✦
+                </span>
+                {o}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- Tech groups -->
+    {
+      d.techGroups && d.techGroups.length > 0 && (
+        <section id="tech-stack" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16">
+          <p class="eyebrow">Tech stack</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold">How it's built</h2>
+          <div class="mt-6 card-grid card-grid--lg4">
+            {d.techGroups.map((g) => (
+              <div class="rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5">
+                <h3 class="font-mono text-xs uppercase tracking-wider text-[var(--color-text-gold)]">{g.label}</h3>
+                <ul class="mt-3 space-y-1.5">
+                  {g.items.map((it) => (
+                    <li class="text-sm text-[var(--color-text-secondary)]">{it}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Modules (simple list) -->
+    {
+      d.modules && d.modules.length > 0 && (
+        <section id="modules" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16">
+          <p class="eyebrow">Modules</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold">What's inside</h2>
+          <div class="mt-6 card-grid card-grid--lg3">
+            {d.modules.map((m, i) => (
+              <div class="rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-6">
+                <span class="font-mono text-sm text-[var(--color-brand-gold)]">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="mt-2 font-display text-lg font-semibold">{m.title}</h3>
+                <ul class="mt-3 space-y-1.5">
+                  {m.features.map((f) => (
+                    <li class="flex items-start gap-2 text-sm text-[var(--color-text-secondary)]">
+                      <span class="mt-0.5 text-[var(--color-text-gold)]" aria-hidden="true">
+                        ·
+                      </span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Systems (multi-system architecture) -->
+    {
+      d.systems && d.systems.length > 0 && (
+        <section id="architecture" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16">
+          <p class="eyebrow">Architecture</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold">Three connected systems</h2>
+          <div class="mt-8 space-y-12">
+            {d.systems.map((sys, si) => (
+              <div>
+                <div class="flex flex-wrap items-baseline gap-3">
+                  <span class="font-mono text-sm text-[var(--color-brand-gold)]">{String(si + 1).padStart(2, '0')}</span>
+                  <h3 class="font-display text-2xl font-semibold text-[var(--color-text-gold)]">{sys.name}</h3>
+                  <span class="text-sm text-[var(--color-text-muted)]">{sys.tagline}</span>
+                </div>
+                <div class="mt-5 card-grid card-grid--lg3">
+                  {sys.modules.map((m) => (
+                    <div class="rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5">
+                      <h4 class="font-display text-base font-semibold">{m.title}</h4>
+                      <ul class="mt-2.5 space-y-1.5">
+                        {m.features.map((f) => (
+                          <li class="flex items-start gap-2 text-sm text-[var(--color-text-secondary)]">
+                            <span class="mt-0.5 text-[var(--color-text-gold)]" aria-hidden="true">
+                              ·
+                            </span>
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Workflow -->
+    {
+      d.workflow && d.workflow.length > 0 && (
+        <section id="workflow" class="reveal scroll-mt-28 border-t border-[var(--color-surface-line)] py-16">
+          <p class="eyebrow">Workflow</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold">How it works</h2>
+          <ol class="mt-8 space-y-0">
+            {d.workflow.map((step, i) => (
+              <li class="relative flex gap-5 pb-8 last:pb-0">
+                <div class="flex flex-col items-center">
+                  <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--color-brand-gold)]/40 bg-[var(--color-surface-card)] font-mono text-xs font-semibold text-[var(--color-text-gold)]">
+                    {i + 1}
+                  </span>
+                  {i < d.workflow!.length - 1 && (
+                    <span class="mt-1 w-px flex-1 bg-gradient-to-b from-[var(--color-brand-gold)]/40 to-transparent" aria-hidden="true" />
+                  )}
+                </div>
+                <p class="pt-1 text-[var(--color-text-secondary)]">{step}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <ClosingCTA>
+    <h2 class="reveal font-display text-3xl font-semibold sm:text-4xl">
+      Want something like <span class="text-gold-gradient">{d.title}?</span>
+    </h2>
+    <p class="reveal mx-auto mt-4 max-w-xl text-[var(--color-text-secondary)]">
+      Tell us about your project and we'll map out the right approach.
+    </p>
+    <div class="reveal mt-8">
+      <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Contact Us</Button></span>
+    </div>
+  </ClosingCTA>
+</BaseLayout>

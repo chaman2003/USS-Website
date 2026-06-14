@@ -1,0 +1,257 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+import Button from '../components/ui/Button.astro';
+import ServiceIcon from '../components/ui/ServiceIcon.astro';
+import ClosingCTA from '../components/ui/ClosingCTA.astro';
+
+interface ServiceDetail {
+  id: string;
+  name: string;
+  body: string;
+  included: string[];
+  differentiator?: boolean;
+  subCapabilities?: string[];
+}
+
+const serviceDetails: ServiceDetail[] = [
+  {
+    id: 'web-development',
+    name: 'Web Development',
+    body: "Custom websites and web applications built with modern frameworks for speed, responsiveness, and reliability. Whether it's a company website, a customer portal, or a complex web platform, we design and build with both user experience and long-term maintainability in mind.",
+    included: [
+      'Responsive design',
+      'SEO-friendly architecture',
+      'CMS integration where needed',
+      'Performance optimization',
+      'Ongoing maintenance',
+    ],
+  },
+  {
+    id: 'mobile-app',
+    name: 'Mobile App Development',
+    body: 'Native (Android/iOS) and cross-platform mobile applications designed to deliver smooth, reliable experiences for your customers. From MVPs to full-featured apps, we handle design, development, testing, and deployment to app stores.',
+    included: [
+      'UI/UX design',
+      'Cross-platform or native development',
+      'Backend integration',
+      'App store deployment',
+      'Post-launch support',
+    ],
+  },
+  {
+    id: 'custom-software',
+    name: 'Custom Software Development',
+    body: "Every business runs differently. Off-the-shelf tools don't always fit. We build custom software designed around your specific processes, whether that's internal tools, automation systems, or industry-specific platforms.",
+    included: [
+      'Requirements analysis',
+      'System architecture design',
+      'Custom development',
+      'Integration with existing tools',
+      'Training & documentation',
+    ],
+  },
+  {
+    id: 'ai-applications',
+    name: 'AI-Enabled Applications',
+    body: 'This is where USS goes beyond typical software development. We build AI-powered features and standalone AI products, including conversational voice agents, RAG-based knowledge assistants, intelligent automation pipelines, and multilingual AI systems tailored for Indian business contexts.',
+    included: [],
+    differentiator: true,
+    subCapabilities: [
+      'Voice AI agents (inbound/outbound calling, appointment booking, customer support)',
+      'RAG (Retrieval-Augmented Generation) pipelines for document-based Q&A',
+      'AI-powered chat and WhatsApp bots, including multilingual support',
+      'Workflow automation using LLMs',
+      'Integration with telephony platforms (Twilio, Plivo) and AI providers',
+    ],
+  },
+  {
+    id: 'erp-systems',
+    name: 'ERP Systems',
+    body: 'Centralized platforms that bring together inventory, finance, HR, sales, and operations into a single, manageable system. We design ERP solutions that fit how your business actually works, not the other way around.',
+    included: [
+      'Custom module development',
+      'Data migration',
+      'Role-based access control',
+      'Reporting dashboards',
+      'Third-party integrations',
+    ],
+  },
+  {
+    id: 'ecommerce',
+    name: 'E-Commerce Platforms',
+    body: 'End-to-end online store development, from product catalogs and secure checkout to inventory management and order tracking. Built to scale as your customer base grows.',
+    included: [
+      'Storefront design',
+      'Payment gateway integration',
+      'Inventory & order management',
+      'Admin dashboards',
+      'Performance optimization',
+    ],
+  },
+  {
+    id: 'api-integration',
+    name: 'API Integration',
+    body: 'We connect your tools, platforms, and systems so data flows seamlessly, reducing manual work and enabling automation across your business.',
+    included: [
+      'Third-party API integration',
+      'Custom API development',
+      'Webhook automation',
+      'System-to-system data sync',
+    ],
+  },
+  {
+    id: 'cloud-devops',
+    name: 'Cloud Infrastructure & DevOps',
+    body: 'Reliable, scalable infrastructure and deployment pipelines so your software runs smoothly, from development to production. We set up cloud environments and CI/CD workflows that reduce downtime and deployment friction.',
+    included: [
+      'Cloud architecture (AWS/GCP)',
+      'CI/CD pipeline setup',
+      'Containerization (Docker)',
+      'Monitoring & logging',
+      'Infrastructure scaling',
+    ],
+  },
+  {
+    id: 'cybersecurity',
+    name: 'Cybersecurity',
+    body: "Security isn't an add-on. It's part of how we build. We help businesses identify vulnerabilities, implement secure practices, and protect their systems and data from emerging threats.",
+    included: [
+      'Security audits',
+      'Secure coding reviews',
+      'Authentication & access control setup',
+      'Data protection practices',
+      'Compliance guidance',
+    ],
+  },
+];
+
+const title = 'Software Development Services: Web, Mobile & AI';
+const description =
+  "Explore Unity Software Solution's nine services: web, mobile, custom software, AI apps, ERP, e-commerce, API integration, cloud & DevOps, and security.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:py-28">
+      <p class="eyebrow reveal">Our Services</p>
+      <h1 class="reveal mt-3 font-display text-4xl font-semibold leading-[1.05] sm:text-5xl md:text-6xl xl:text-7xl">
+        From idea to <span class="text-gold-gradient">deployment</span>
+      </h1>
+      <p class="reveal mx-auto mt-5 max-w-2xl text-lg text-[var(--color-text-secondary)]">
+        We deliver scalable, secure, and user-friendly software tailored to your needs, focused on
+        performance, innovation, and long-term support.
+      </p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-[1400px] px-5 py-20 sm:px-8">
+    <div class="lg:grid lg:grid-cols-[240px_1fr] lg:gap-16">
+      <!-- Sticky anchor rail -->
+      <aside class="hidden lg:block">
+        <nav aria-label="Services" class="sticky top-28">
+          <p class="eyebrow mb-4">Jump to</p>
+          <ul class="space-y-1">
+            {
+              serviceDetails.map((service) => (
+                <li>
+                  <a
+                    href={`#${service.id}`}
+                    data-spy-link
+                    class="block border-l-2 border-[var(--color-surface-line)] py-1.5 pl-4 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)] data-[active=true]:border-[var(--color-brand-gold)] data-[active=true]:text-[var(--color-text-gold)]"
+                  >
+                    {service.name}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Service sections -->
+      <div>
+        {
+          serviceDetails.map((service, index) => (
+            <section
+              id={service.id}
+              class:list={[
+                'reveal scroll-mt-28 py-10',
+                index !== serviceDetails.length - 1 && 'border-b border-[var(--color-surface-line)]',
+              ]}
+            >
+              {service.differentiator ? (
+                <div class="grain relative overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-brand-gold)]/30 bg-[var(--color-surface-card)] p-8">
+                  <div
+                    class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full blur-[80px]"
+                    style="background: radial-gradient(circle, rgba(233,185,53,0.18), transparent 65%);"
+                    aria-hidden="true"
+                  />
+                  <div class="relative">
+                    <span class="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--color-brand-gold)]/40 bg-[var(--color-brand-gold)]/10 px-3 py-1 font-mono text-xs uppercase tracking-wider text-[var(--color-text-gold)]">
+                      ★ USS differentiator
+                    </span>
+                    <div class="mt-5 flex items-center gap-4">
+                      <span class="flex h-12 w-12 items-center justify-center rounded-[var(--radius-btn)] border border-[var(--color-brand-gold)]/40 bg-[var(--color-brand-gold)]/10 text-[var(--color-text-gold)]">
+                        <ServiceIcon id={service.id} />
+                      </span>
+                      <h2 class="font-display text-3xl font-semibold">{service.name}</h2>
+                    </div>
+                    <p class="mt-4 leading-relaxed text-[var(--color-text-secondary)]">{service.body}</p>
+                    <h3 class="eyebrow mt-6">Capabilities</h3>
+                    <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+                      {service.subCapabilities!.map((item) => (
+                        <li class="flex items-start gap-2.5 text-sm text-[var(--color-text-secondary)]">
+                          <span class="mt-0.5 text-[var(--color-text-gold)]" aria-hidden="true">
+                            ✦
+                          </span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div class="flex items-center gap-4">
+                    <span class="flex h-11 w-11 items-center justify-center rounded-[var(--radius-btn)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] text-[var(--color-text-gold)]">
+                      <ServiceIcon id={service.id} />
+                    </span>
+                    <h2 class="font-display text-2xl font-semibold sm:text-3xl">{service.name}</h2>
+                  </div>
+                  <p class="mt-4 leading-relaxed text-[var(--color-text-secondary)]">{service.body}</p>
+                  <h3 class="eyebrow mt-6">What's included</h3>
+                  <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+                    {service.included.map((item) => (
+                      <li class="flex items-start gap-2.5 text-sm text-[var(--color-text-secondary)]">
+                        <span class="mt-0.5 text-[var(--color-text-gold)]" aria-hidden="true">
+                          ✦
+                        </span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing CTA -->
+  <ClosingCTA>
+    <h2 class="reveal font-display text-4xl font-semibold sm:text-5xl">
+      Not sure which service <span class="text-gold-gradient">you need?</span>
+    </h2>
+    <p class="reveal mx-auto mt-4 max-w-xl text-[var(--color-text-secondary)]">
+      Tell us about your project and we'll help you figure out the right approach.
+    </p>
+    <div class="reveal mt-8">
+      <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Get in Touch</Button></span>
+    </div>
+  </ClosingCTA>
+</BaseLayout>

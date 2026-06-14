@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowField from '../components/fx/GlowField.astro';
+
+const title = 'Terms & Conditions';
+const description =
+  'The terms governing your use of the Unity Software Solution website, including intellectual property, acceptable use, disclaimers, and limitation of liability.';
+
+// Jump-to rail entries.
+const sections = [
+  { id: 'acceptance', label: 'Acceptance of Terms' },
+  { id: 'use-of-site', label: 'Use of the Site' },
+  { id: 'intellectual-property', label: 'Intellectual Property' },
+  { id: 'enquiries', label: 'Enquiries & Submissions' },
+  { id: 'third-party', label: 'Third-Party Links' },
+  { id: 'disclaimer', label: 'Disclaimer' },
+  { id: 'liability', label: 'Limitation of Liability' },
+  { id: 'changes', label: 'Changes to These Terms' },
+  { id: 'governing-law', label: 'Governing Law' },
+  { id: 'contact', label: 'Contact' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
+    <GlowField variant="section" grid />
+    <div class="relative mx-auto max-w-3xl px-5 py-20 text-center">
+      <p class="eyebrow reveal">Legal</p>
+      <h1 class="reveal mt-3 font-display text-4xl font-semibold leading-[1.1] sm:text-5xl">
+        Terms &amp; Conditions
+      </h1>
+      <p class="reveal mt-3 font-mono text-sm text-[var(--color-text-muted)]">
+        Last updated: June 2026
+      </p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-[1400px] px-5 py-14 sm:px-8">
+    <div class="lg:grid lg:grid-cols-[240px_1fr] lg:gap-16">
+      <!-- Sticky anchor rail -->
+      <aside class="hidden lg:block">
+        <nav aria-label="On this page" class="sticky top-28">
+          <p class="eyebrow mb-4">Jump to</p>
+          <ul class="space-y-1">
+            {
+              sections.map((s) => (
+                <li>
+                  <a
+                    href={`#${s.id}`}
+                    data-spy-link
+                    class="block border-l-2 border-[var(--color-surface-line)] py-1.5 pl-4 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-primary)] data-[active=true]:border-[var(--color-brand-gold)] data-[active=true]:text-[var(--color-text-gold)]"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="min-w-0">
+        <article class="rich-text reveal">
+        <p>
+          These Terms &amp; Conditions ("Terms") govern your access to and use of the Unity Software
+          Solution ("USS", "we", "us", "our") website. By accessing or using this site, you agree to
+          these Terms. If you do not agree, please do not use the site.
+        </p>
+
+        <h2 id="acceptance" class="scroll-mt-28">1. Acceptance of Terms</h2>
+        <p>
+          By browsing this website, submitting an enquiry, or otherwise interacting with our content,
+          you confirm that you have read, understood, and agree to be bound by these Terms and by our
+          <a href="/privacy-policy">Privacy Policy</a>. These Terms apply to all visitors and users of
+          the site.
+        </p>
+
+        <h2 id="use-of-site" class="scroll-mt-28">2. Use of the Site</h2>
+        <p>
+          You agree to use this website only for lawful purposes. You must not use the site in any way
+          that could damage, disable, or impair it, interfere with another party's use of it, or attempt
+          to gain unauthorised access to any systems or networks connected to it. You agree not to
+          submit false, misleading, or unlawful information through any form on the site.
+        </p>
+
+        <h2 id="intellectual-property" class="scroll-mt-28">3. Intellectual Property</h2>
+        <p>
+          All content on this site, including text, graphics, logos, the Unity Software Solution name,
+          design, and code, is the property of Unity Software Solution or its licensors and is protected
+          by applicable intellectual property laws. You may view and reference this content for personal,
+          non-commercial purposes. You may not copy, reproduce, republish, or distribute any part of it
+          without our prior written consent.
+        </p>
+
+        <h2 id="enquiries" class="scroll-mt-28">4. Enquiries &amp; Submissions</h2>
+        <p>
+          When you contact us through the site, you are responsible for the accuracy of the information
+          you provide. Submitting an enquiry does not create a contract or binding engagement between us.
+          Any project work is governed by a separate written agreement entered into after discussion of
+          your requirements.
+        </p>
+
+        <h2 id="third-party" class="scroll-mt-28">5. Third-Party Links &amp; Services</h2>
+        <p>
+          This site may contain links to third-party websites and may rely on third-party services to
+          operate (for example, our contact form is processed by Formspree). We do not control these
+          third parties and are not responsible for their content, practices, or availability. Your use
+          of any third-party site or service is at your own risk and subject to their terms.
+        </p>
+
+        <h2 id="disclaimer" class="scroll-mt-28">6. Disclaimer</h2>
+        <p>
+          This website and its content are provided on an "as is" and "as available" basis without
+          warranties of any kind, whether express or implied. While we aim to keep information accurate
+          and current, we make no guarantee that the site will be error-free, uninterrupted, or that the
+          content is complete or up to date.
+        </p>
+
+        <h2 id="liability" class="scroll-mt-28">7. Limitation of Liability</h2>
+        <p>
+          To the fullest extent permitted by law, Unity Software Solution shall not be liable for any
+          indirect, incidental, or consequential loss or damage arising from your use of, or inability to
+          use, this website. Nothing in these Terms excludes liability that cannot be excluded under
+          applicable law.
+        </p>
+
+        <h2 id="changes" class="scroll-mt-28">8. Changes to These Terms</h2>
+        <p>
+          We may update these Terms from time to time to reflect changes in our practices or legal
+          requirements. Any updates take effect once published on this page, and the "Last updated" date
+          above will be revised. Your continued use of the site after changes are posted constitutes
+          acceptance of the revised Terms.
+        </p>
+
+        <h2 id="governing-law" class="scroll-mt-28">9. Governing Law</h2>
+        <p>
+          These Terms are governed by and construed in accordance with the laws of India, and any
+          disputes arising from them are subject to the exclusive jurisdiction of the courts of
+          Bengaluru, Karnataka.
+        </p>
+
+        <h2 id="contact" class="scroll-mt-28">10. Contact</h2>
+        <p>
+          If you have any questions about these Terms, reach out through our
+          <a href="/contact">contact page</a> and we'll be happy to help.
+        </p>
+        </article>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

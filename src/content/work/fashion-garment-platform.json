@@ -1,0 +1,74 @@
+{
+  "title": "Fashion & Garment E-Commerce Platform",
+  "industry": "Fashion & Retail",
+  "status": "in-progress",
+  "year": "2026",
+  "order": 2,
+  "featured": true,
+  "summary": "An all-in-one fashion commerce ecosystem split across three connected systems: a customer storefront, a reseller/agent portal, and an ERP back-office, with referral-driven sales and automated commission payouts.",
+  "challenge": "A growing garment business needed more than a store: it needed a customer-facing storefront, a self-service portal for resellers and distributors, and a back-office to run operations, all working together so an agent's referral on the shopfront flows straight into fulfilment and commission payout.",
+  "approach": "Unity Software Solution is building a three-system platform: E-Commerce Website, Agent Portal, and ERP/Admin, connected in real time. A customer orders on the storefront using an agent's referral link, the order lands in the ERP for fulfilment, and commission is auto-calculated and posted to the agent's wallet.",
+  "outcome": "A scalable, growth-ready platform that unifies storefront sales, a multi-level reseller network, and back-office operations under one connected system. Currently in active development.",
+  "tech": ["Next.js", "Node.js", "MongoDB", "Razorpay", "WhatsApp Business API", "Docker"],
+  "overview": [
+    "The Fashion & Garment platform splits every feature across three core systems that work together in real time: a customer-facing E-Commerce Website, a reseller/distributor Agent Portal, and an ERP/Admin back-office.",
+    "It is designed to be all-in-one, scalable, and growth-ready, supporting referral-driven selling, multi-level agent networks, custom-tailoring measurements, and automated commission payouts.",
+    "How the three systems connect: a customer places an order on the E-Commerce site using an agent's referral link → the order appears in the ERP for fulfilment → commission is auto-calculated and posted to the Agent Portal wallet."
+  ],
+  "objectives": [
+    "Give customers a rich storefront with browsing, custom measurements, and secure checkout",
+    "Let resellers self-serve through onboarding, dashboards, sharing tools, and payouts",
+    "Run back-office operations, including catalogue, orders, CRM, agents, and reporting, from one ERP",
+    "Tie storefront, agents, and operations together with referral-driven commission automation",
+    "Support multi-level (MLM) agent networks with per-tier commission models"
+  ],
+  "systems": [
+    {
+      "name": "E-Commerce Website",
+      "tagline": "Customer-facing storefront",
+      "modules": [
+        { "title": "Landing pages, profiles & SEO", "features": ["Custom landing pages & collections", "Customer profiles & preferences", "SEO management"] },
+        { "title": "Product browsing", "features": ["Browse by category (sarees, kurtis, kids wear…)", "Photo & video gallery per product", "Size & colour selector", "Size chart display", "Designer collection pages"] },
+        { "title": "Cart & checkout", "features": ["Add to cart, wishlist", "Referral code / agent link applied at checkout", "Guest & registered checkout"] },
+        { "title": "Payment gateway", "features": ["Razorpay / UPI", "Stripe & PayPal", "Credit / Debit cards", "BNPL / EMI (optional)", "Saved cards & wallets"] },
+        { "title": "Order tracking", "features": ["Order status page (packed → shipped → delivered)", "Return / refund initiation", "WhatsApp order update notifications"] },
+        { "title": "Custom measurement", "features": ["Chest, waist, shoulder, height fields", "Special tailoring notes", "Saved measurement profiles"] },
+        { "title": "AI features (optional)", "features": ["AI product recommendations", "AI chatbot support", "Virtual try-on", "Style / size recommendation"] }
+      ]
+    },
+    {
+      "name": "Agent Portal",
+      "tagline": "Reseller & distributor self-service",
+      "modules": [
+        { "title": "Landing / dashboard home", "features": ["Personalized dashboard overview", "Announcements & banners", "Quick links to key actions", "Recent activity summary"] },
+        { "title": "Registration & onboarding", "features": ["Online registration form", "Document upload & KYC", "Admin approval workflow", "Unique code issued (e.g. AGT1025)", "Referral link generated"] },
+        { "title": "Agent dashboard", "features": ["Total earnings & wallet balance", "Monthly sales summary", "Order status (by agent)", "Commission history", "Payout request submission"] },
+        { "title": "Sharing & promotion", "features": ["Share product links with ref code", "Marketing banners & creatives", "Product catalog access", "WhatsApp marketing messages", "Custom landing page link (optional)"] },
+        { "title": "Commission tracking", "features": ["Per-order commission display", "% and fixed commission models", "Pending vs confirmed earnings", "Payout reports"] },
+        { "title": "MLM / downline (optional)", "features": ["Sub-agent registration under parent", "Downline sales visibility", "Team / network earnings", "Multi-level commission tiers"] },
+        { "title": "Mobile app (optional)", "features": ["Dedicated Android & iOS agent app", "Push notifications for sales & commissions", "Quick actions & dashboard view"] }
+      ]
+    },
+    {
+      "name": "ERP / Admin",
+      "tagline": "Back-office & operations",
+      "modules": [
+        { "title": "Landing pages & campaigns", "features": ["Create & manage website banners", "Seasonal / sale landing pages", "A/B testing & campaign tracking", "Pop-ups & announcement bars", "Redirects & 404 management"] },
+        { "title": "Product management", "features": ["Add / edit garments with photos & videos", "Category & collection management", "Stock / inventory control", "Size chart configuration", "Pricing & discount rules"] },
+        { "title": "Order management", "features": ["Full order lifecycle (new → packed → shipped → delivered → returned)", "Assign fulfilment staff", "Bulk order actions", "Return & refund processing"] },
+        { "title": "CRM", "features": ["Customer profiles & purchase history", "Measurement records per customer", "WhatsApp / email communication log", "Segmentation & marketing lists"] },
+        { "title": "Agent management", "features": ["Approve / reject registrations", "View all agents & their sales", "Set commission rates per agent / tier", "Manage MLM hierarchy", "Issue / revoke referral codes"] },
+        { "title": "Commission & payouts", "features": ["Auto commission calculation on each order", "Wallet ledger per agent", "Payout approval & disbursement", "Payout reports & tax statements"] },
+        { "title": "Reports & analytics", "features": ["Sales by product / agent / region", "Inventory & restock alerts", "Commission liability reports", "Revenue & payment reconciliation"] }
+      ]
+    }
+  ],
+  "workflow": [
+    "Customer places an order on the E-Commerce site using an agent's referral link",
+    "The order appears in the ERP for fulfilment and is assigned to staff",
+    "Order moves through its lifecycle: packed → shipped → delivered",
+    "Commission is auto-calculated and posted to the Agent Portal wallet",
+    "Agent requests a payout; admin approves and disburses from the ERP",
+    "All three systems stay in sync to deliver a seamless experience"
+  ]
+}

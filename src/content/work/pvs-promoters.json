@@ -1,0 +1,82 @@
+{
+  "title": "PVS Promoters",
+  "industry": "Real Estate",
+  "status": "live",
+  "year": "2025",
+  "order": 1,
+  "featured": true,
+  "url": "https://pvs-promoters.com/",
+  "summary": "A modern, responsive, SEO-optimised business website giving PVS Promoters a professional online presence, showcasing services and projects, and handling customer inquiries end to end.",
+  "challenge": "PVS Promoters needed a credible digital presence to present their services and completed projects, improve visibility on search engines, and let customers reach them easily from any device.",
+  "approach": "Unity Software Solution delivered a full-stack Next.js website with server-side rendering for SEO, a MongoDB Atlas backend for inquiries and content, JWT-secured admin access, and Docker-based deployment, covering planning, UI/UX, development, testing and maintenance.",
+  "outcome": "A live, responsive platform at pvs-promoters.com with Home, About, Services, Projects/Gallery and Contact sections, secure inquiry handling, and SEO optimisation that improved the company's online visibility.",
+  "tech": ["Next.js", "React", "MongoDB Atlas", "JWT", "Docker"],
+  "overview": [
+    "PVS Promoters is a professional business website developed by Unity Software Solution to provide digital access to company services, project information, and customer communication facilities.",
+    "The primary objective was to build a professional, user-friendly platform supporting end-to-end digital operations, from development to deployment, with optimised SEO that improves the company's online visibility and helps customers understand its services clearly.",
+    "The site is fully responsive across desktops, laptops, tablets, and mobile devices, with careful navigation, accessibility, and smooth interaction across every page."
+  ],
+  "objectives": [
+    "Create a professional online presence for the company",
+    "Provide complete information about services and projects through the website",
+    "Deliver a user-friendly, responsive interface that works on all devices",
+    "Improve customer communication using contact forms and inquiry features",
+    "Display business services in an organised and attractive manner",
+    "Increase business visibility and digital marketing opportunities",
+    "Implement modern web technologies for better performance and design"
+  ],
+  "techGroups": [
+    {
+      "label": "Frontend",
+      "items": ["Next.js (SSR & routing)", "React.js components", "HTML5", "CSS3", "JavaScript"]
+    },
+    {
+      "label": "Backend",
+      "items": ["Next.js API Routes", "JWT authentication"]
+    },
+    {
+      "label": "Database",
+      "items": ["MongoDB Atlas (cloud)"]
+    },
+    {
+      "label": "Deployment",
+      "items": ["Docker", "Docker Compose"]
+    }
+  ],
+  "modules": [
+    {
+      "title": "Home Page",
+      "features": ["Company introduction", "Navigation menu", "Service highlights", "Banner images", "Quick access to key pages"]
+    },
+    {
+      "title": "About Us",
+      "features": ["Company information", "Mission and vision", "Business overview", "Professional presentation"]
+    },
+    {
+      "title": "Services",
+      "features": ["Service descriptions", "Business solutions", "Organised layout", "User-friendly presentation"]
+    },
+    {
+      "title": "Projects / Gallery",
+      "features": ["Project images", "Gallery display", "Project highlights", "Attractive layouts"]
+    },
+    {
+      "title": "Contact",
+      "features": ["Contact form", "Phone number", "Email details", "Address information"]
+    },
+    {
+      "title": "Responsive & Navigation",
+      "features": ["Responsive navigation bar", "Mobile-friendly menu", "Automatic screen adjustment", "Improved usability"]
+    }
+  ],
+  "workflow": [
+    "User opens the website through a browser",
+    "Homepage is displayed with navigation options",
+    "User visits different webpages for information",
+    "Services and projects are viewed by users",
+    "Customer submits an inquiry through the contact form",
+    "Backend processes the form data",
+    "Data is stored or forwarded securely",
+    "Company communicates with customers based on inquiries"
+  ]
+}

@@ -1,0 +1,73 @@
+---
+interface Props {
+  name: string;
+  role: string;
+  bio: string;
+  image?: string;
+  linkedIn?: string;
+}
+
+const { name, role, bio, image, linkedIn } = Astro.props;
+
+const initials = name
+  .split(/\s+/)
+  .map((part) => part[0])
+  .filter(Boolean)
+  .slice(0, 2)
+  .join('')
+  .toUpperCase();
+---
+
+<article
+  data-spotlight
+  data-tilt
+  class="tilt spotlight group relative flex h-full flex-col items-center overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5 text-center shadow-[var(--shadow-card)] transition-colors duration-300 hover:border-[var(--color-brand-gold)]/40 sm:p-7"
+>
+  <span class="spotlight-glow rounded-[var(--radius-card)]"></span>
+
+  <div class="relative">
+    {
+      image ? (
+        <img
+          src={image}
+          alt={name}
+          width="80"
+          height="80"
+          loading="lazy"
+          class="h-20 w-20 rounded-full object-cover shadow-[var(--shadow-glow-sm)] ring-2 ring-[var(--color-brand-gold)]/40 transition-shadow duration-300 group-hover:shadow-[var(--shadow-glow-md)]"
+        />
+      ) : (
+        <div
+          class="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-brand-gold-light)] to-[var(--color-brand-gold-dark)] font-display text-2xl font-bold text-[var(--color-brand-black)] shadow-[var(--shadow-glow-sm)] transition-shadow duration-300 group-hover:shadow-[var(--shadow-glow-md)]"
+          aria-hidden="true"
+        >
+          {initials}
+        </div>
+      )
+    }
+  </div>
+
+  <h3 class="relative mt-5 font-display text-lg font-semibold text-[var(--color-text-primary)]">
+    {name}
+  </h3>
+  <p class="relative whitespace-pre-line font-mono text-xs uppercase tracking-wider text-[var(--color-text-gold)]">
+    {role}
+  </p>
+  <p class="relative mt-3 flex-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">{bio}</p>
+
+  {
+    linkedIn && (
+      <a
+        href={linkedIn}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${name} on LinkedIn`}
+        class="relative mt-4 inline-flex text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text-gold)]"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.8 0 0 .78 0 1.74v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.76V1.74C24 .78 23.2 0 22.22 0Z" />
+        </svg>
+      </a>
+    )
+  }
+</article>
