@@ -303,6 +303,26 @@ html.dark {
   will-change: transform;
 }
 
+/* ── Orbit icon hover — JS toggles .is-hovered via pointerenter/leave.
+   CSS :hover is unreliable inside preserve-3d + CSS animation transforms. */
+.orbit-icon-wrapper {
+  z-index: 10;
+}
+.orbit-icon-wrapper.is-hovered {
+  z-index: 30;
+}
+.orbit-icon-wrapper.is-hovered .orbit-icon-card {
+  transform: scale(1.25);
+  border-color: color-mix(in srgb, var(--color-brand-gold) 70%, transparent);
+  box-shadow: var(--shadow-glow-md);
+}
+.orbit-icon-wrapper.is-hovered .orbit-icon-card--sm {
+  box-shadow: var(--shadow-glow-sm);
+}
+.orbit-icon-wrapper.is-hovered .orbit-icon-label {
+  opacity: 1;
+}
+
 /* Counter-rotating gradient halo behind the emblem (centered by a flex wrapper,
    so this element only ever uses transform for its own spin, no collision). */
 .orbit-halo {
@@ -505,11 +525,10 @@ html.dark {
    height without measuring it) plus a fade. The inner wrapper clips overflow so
    the rows collapse fully. */
 .mobile-menu {
-  /* Float over the page so opening never pushes the hero/content down. The
-     sticky, transform'd .site-header is the containing block, so top:100%
-     anchors the sheet just below the bar. */
-  position: absolute;
-  top: 100%;
+  /* position:fixed anchors to the viewport, not the transform'd .site-header
+     containing block — ensures full-width coverage on all mobile devices. */
+  position: fixed;
+  top: 4.5rem;
   left: 0;
   right: 0;
   z-index: 40;
@@ -520,7 +539,13 @@ html.dark {
   pointer-events: none;
   transition:
     grid-template-rows 0.38s var(--ease-out-expo),
-    opacity 0.3s ease;
+    opacity 0.3s ease,
+    top 0.35s var(--ease-out-expo);
+}
+/* When the header floats as a scrolled pill (translateY 0.55rem), push the
+   menu down so it clears the pill's visual bottom edge. */
+.site-header.is-scrolled + .mobile-menu {
+  top: 5.2rem;
 }
 .mobile-menu.is-open {
   grid-template-rows: 1fr;

@@ -11,6 +11,14 @@ interface Props {
 const { id, class: className = 'h-6 w-6' } = Astro.props;
 
 const paths: Record<string, string> = {
+  discovery:
+    'M15.5 15.5 21 21M10.5 3a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15ZM8 10.5h5M10.5 8v5',
+  planning:
+    'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9 2 2 4-4',
+  deployment:
+    'M12 19V5m0 0-4 4m4-4 4 4M5 21h14',
+  support:
+    'M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10ZM12 8v4l3 3',
   'web-development':
     'M3 5.5h18M3 5.5v13h18v-13M7.5 12l2.5 2.5L7.5 17M13 17h3.5',
   'mobile-app':

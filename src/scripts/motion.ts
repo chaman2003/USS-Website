@@ -260,6 +260,16 @@ function initOrbitTilt() {
   });
 }
 
+/* ── Orbit icon hover — pointerenter/leave instead of CSS :hover because
+   preserve-3d + CSS animation transforms make :hover unreliable. ── */
+function initOrbitHover() {
+  const wrappers = document.querySelectorAll<HTMLElement>('.orbit-icon-wrapper');
+  wrappers.forEach((wrapper) => {
+    wrapper.addEventListener('pointerenter', () => wrapper.classList.add('is-hovered'));
+    wrapper.addEventListener('pointerleave', () => wrapper.classList.remove('is-hovered'));
+  });
+}
+
 /* ── Pause the hero orbit when off-screen ──
    The orbit has ~80 continuously-animating elements (rotating rings, twinkling
    stars, blurred glows). Leaving them running while the rest of the page scrolls
@@ -269,21 +279,34 @@ function initOrbitTilt() {
 function initOrbitVisibility() {
   const stages = document.querySelectorAll<HTMLElement>('.orbit-stage');
   if (!stages.length) return;
-  if (!('IntersectionObserver' in window)) return;
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        const stage = entry.target as HTMLElement;
-        if (entry.isIntersecting) {
-          stage.removeAttribute('data-paused');
-        } else {
-          stage.setAttribute('data-paused', '');
+
+  // Pause all orbits immediately so the first paint isn't competing with
+  // 60+ simultaneous animation starts. Unpause after the first frame.
+  stages.forEach((s) => s.setAttribute('data-paused', ''));
+
+  const start = () => {
+    if (!('IntersectionObserver' in window)) {
+      stages.forEach((s) => s.removeAttribute('data-paused'));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const stage = entry.target as HTMLElement;
+          if (entry.isIntersecting) {
+            stage.removeAttribute('data-paused');
+          } else {
+            stage.setAttribute('data-paused', '');
+          }
         }
-      }
-    },
-    { rootMargin: '100px' },
-  );
-  stages.forEach((s) => io.observe(s));
+      },
+      { rootMargin: '100px' },
+    );
+    stages.forEach((s) => io.observe(s));
+  };
+
+  // One rAF lets the browser complete the first paint before kicking off animations.
+  requestAnimationFrame(() => requestAnimationFrame(start));
 }
 
 function init() {
@@ -296,6 +319,7 @@ function init() {
   initScrollSpy();
   initOrbitTilt();
   initOrbitVisibility();
+  initOrbitHover();
 }
 
 if (document.readyState !== 'loading') {

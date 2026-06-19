@@ -81,44 +81,45 @@ const isActive = (href: string) =>
     </div>
   </div>
 
-  <!-- Mobile overlay menu -->
-  <nav
-    id="mobile-menu"
-    aria-label="Mobile navigation"
-    class="mobile-menu border-t border-[var(--color-surface-line)] bg-[var(--color-surface-base)]/95 backdrop-blur-xl lg:hidden"
-  >
-    <div>
-      <ul class="space-y-1 px-5 py-4">
-        {
-          navLinks.map((link, i) => (
-            <li style={`--i: ${i}`}>
-              <a
-                href={link.href}
-                aria-current={isActive(link.href) ? 'page' : undefined}
-                class:list={[
-                  'block rounded-[var(--radius-btn)] px-3 py-3 text-base font-medium transition-colors',
-                  isActive(link.href)
-                    ? 'bg-[var(--color-brand-gold)]/10 text-[var(--color-text-gold)]'
-                    : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)]',
-                ]}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))
-        }
-        <li class="pt-2" style={`--i: ${navLinks.length}`}>
-          <a
-            href="/contact"
-            class="block rounded-[var(--radius-btn)] bg-[var(--color-brand-gold-light)] px-3 py-3 text-center text-base font-semibold text-[var(--color-brand-black)]"
-          >
-            Contact Us
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
 </header>
+
+<!-- Mobile overlay menu — outside <header> so position:fixed anchors to viewport, not the transform'd header -->
+<nav
+  id="mobile-menu"
+  aria-label="Mobile navigation"
+  class="mobile-menu border-t border-[var(--color-surface-line)] bg-[var(--color-surface-base)]/95 backdrop-blur-xl lg:hidden"
+>
+  <div>
+    <ul class="space-y-1 px-5 py-4">
+      {
+        navLinks.map((link, i) => (
+          <li style={`--i: ${i}`}>
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              class:list={[
+                'block rounded-[var(--radius-btn)] px-3 py-3 text-base font-medium transition-colors',
+                isActive(link.href)
+                  ? 'bg-[var(--color-brand-gold)]/10 text-[var(--color-text-gold)]'
+                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-raised)] hover:text-[var(--color-text-primary)]',
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="pt-2" style={`--i: ${navLinks.length}`}>
+        <a
+          href="/contact"
+          class="block rounded-[var(--radius-btn)] bg-[var(--color-brand-gold-light)] px-3 py-3 text-center text-base font-semibold text-[var(--color-brand-black)]"
+        >
+          Contact Us
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
 <script>
   const toggle = document.getElementById('menu-toggle');

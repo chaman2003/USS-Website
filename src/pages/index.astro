@@ -166,17 +166,17 @@ const starsNear = makeStars(22, 200);
                 const x = 50 + r * Math.cos(angle);
                 const y = 50 + r * Math.sin(angle);
                 return (
-                  <div class="absolute -translate-x-1/2 -translate-y-1/2 [&:has(a:hover)]:z-30" style={`left:${x}%; top:${y}%`}>
+                  <div class="orbit-icon-wrapper pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2" style={`left:${x}%; top:${y}%`}>
                     <div class="animate-orbit-counter group-hover/orbit:[animation-play-state:paused]">
                       <a
                         href={s.href}
                         aria-label={s.name}
-                        class="group/icon pointer-events-auto relative flex items-center justify-center p-3"
+                        class="relative flex items-center justify-center p-3"
                       >
-                        <span class="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] text-[var(--color-text-gold)] shadow-[var(--shadow-card)] transition-all duration-300 will-change-transform group-hover/icon:scale-125 group-hover/icon:border-[var(--color-brand-gold)]/70 group-hover/icon:shadow-[var(--shadow-glow-md)]">
-                          <ServiceIcon id={s.id} class="h-6 w-6 transition-transform duration-300 group-hover/icon:scale-110" />
+                        <span class="orbit-icon-card flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] text-[var(--color-text-gold)] shadow-[var(--shadow-card)] transition-all duration-300">
+                          <ServiceIcon id={s.id} class="h-6 w-6" />
                         </span>
-                        <span class="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-brand-gold)]/30 bg-[var(--color-surface-card)] px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-wider text-[var(--color-text-gold)] opacity-0 shadow-[var(--shadow-card)] transition-opacity duration-200 group-hover/icon:opacity-100">{s.name}</span>
+                        <span class="orbit-icon-label pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-brand-gold)]/30 bg-[var(--color-surface-card)] px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-wider text-[var(--color-text-gold)] opacity-0 shadow-[var(--shadow-card)] transition-opacity duration-200">{s.name}</span>
                       </a>
                     </div>
                   </div>
@@ -194,17 +194,17 @@ const starsNear = makeStars(22, 200);
                 const x = 50 + r * Math.cos(angle);
                 const y = 50 + r * Math.sin(angle);
                 return (
-                  <div class="absolute -translate-x-1/2 -translate-y-1/2 [&:has(a:hover)]:z-30" style={`left:${x}%; top:${y}%`}>
+                  <div class="orbit-icon-wrapper pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2" style={`left:${x}%; top:${y}%`}>
                     <div class="animate-orbit-mid-counter group-hover/orbit:[animation-play-state:paused]">
                       <a
                         href={s.href}
                         aria-label={s.name}
-                        class="group/icon pointer-events-auto relative flex items-center justify-center p-3"
+                        class="relative flex items-center justify-center p-3"
                       >
-                        <span class="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] text-[var(--color-text-gold)] shadow-[var(--shadow-card)] transition-all duration-300 will-change-transform group-hover/icon:scale-125 group-hover/icon:border-[var(--color-brand-gold)]/70 group-hover/icon:shadow-[var(--shadow-glow-sm)]">
+                        <span class="orbit-icon-card orbit-icon-card--sm flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] text-[var(--color-text-gold)] shadow-[var(--shadow-card)] transition-all duration-300">
                           <ServiceIcon id={s.id} class="h-5 w-5" />
                         </span>
-                        <span class="pointer-events-none absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-brand-gold)]/30 bg-[var(--color-surface-card)] px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider text-[var(--color-text-gold)] opacity-0 shadow-[var(--shadow-card)] transition-opacity duration-200 group-hover/icon:opacity-100">{s.name}</span>
+                        <span class="orbit-icon-label pointer-events-none absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-brand-gold)]/30 bg-[var(--color-surface-card)] px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider text-[var(--color-text-gold)] opacity-0 shadow-[var(--shadow-card)] transition-opacity duration-200">{s.name}</span>
                       </a>
                     </div>
                   </div>
@@ -337,10 +337,42 @@ const starsNear = makeStars(22, 200);
       <ol class="reveal card-grid card-grid--md5 mt-14">
         {
           processSteps.map((step, i) => (
-            <li class="relative flex flex-col rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5 shadow-[var(--shadow-card)] sm:p-6">
-              <span class="font-mono text-sm text-[var(--color-brand-gold)]">{String(i + 1).padStart(2, '0')}</span>
-              <span class="mt-2 font-display text-lg font-semibold">{step.title}</span>
-              <span class="mt-2 text-sm text-[var(--color-text-secondary)]">{step.body}</span>
+            <li
+              data-spotlight
+              data-tilt
+              class="tilt spotlight group relative flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5 shadow-[var(--shadow-card)] transition-colors duration-300 hover:border-[var(--color-brand-gold)]/50 sm:p-6"
+            >
+              <span class="spotlight-glow rounded-[var(--radius-card)]" />
+
+              {/* gold sweep line along top edge */}
+              <span
+                class="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-[var(--color-brand-gold)] via-[var(--color-brand-gold-bright)] to-transparent transition-transform duration-500 group-hover:scale-x-100"
+                aria-hidden="true"
+              />
+
+              {/* ghosted large step number */}
+              <span
+                class="pointer-events-none absolute right-3 top-2 font-display text-5xl font-semibold text-[var(--color-text-gold)] opacity-[0.07] transition-opacity duration-300 group-hover:opacity-[0.15]"
+                aria-hidden="true"
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+
+              {/* icon badge */}
+              <span class="relative flex h-10 w-10 items-center justify-center rounded-[var(--radius-btn)] border border-[var(--color-brand-gold)]/25 bg-gradient-to-br from-[var(--color-brand-gold)]/15 to-transparent text-[var(--color-text-gold)] transition-all duration-300 group-hover:scale-110 group-hover:border-[var(--color-brand-gold)]/60 group-hover:shadow-[var(--shadow-glow-sm)]">
+                <ServiceIcon id={step.icon} class="h-5 w-5" />
+              </span>
+
+              <span class="relative mt-3 font-display text-lg font-semibold">{step.title}</span>
+              <span class="relative mt-2 flex-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                {step.body}
+              </span>
+
+              {/* bottom sweep line */}
+              <span
+                class="relative mt-4 h-px w-full origin-left scale-x-0 bg-gradient-to-r from-[var(--color-brand-gold)] to-transparent transition-transform duration-500 group-hover:scale-x-100"
+                aria-hidden="true"
+              />
             </li>
           ))
         }
