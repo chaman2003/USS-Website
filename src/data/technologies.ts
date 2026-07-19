@@ -13,7 +13,7 @@ export const technologies: Technology[] = [
     name: 'Astro',
     description: 'Static-first framework with islands architecture—ideal for fast marketing sites and content hubs.',
     useCases: ['Marketing websites', 'Blogs and docs', 'SEO-critical landing pages'],
-    relatedPosts: ['web-astro-islands-architecture', 'web-development-best-practices-2025'],
+    relatedPosts: ['web-astro-islands-architecture', 'web-core-web-vitals-inp'],
     relatedServices: ['web-development'],
   },
   {
@@ -21,7 +21,7 @@ export const technologies: Technology[] = [
     name: 'Next.js',
     description: 'React framework for SSR, SSG, and full-stack apps with rich client interactivity.',
     useCases: ['SaaS dashboards', 'Authenticated portals', 'E-commerce storefronts'],
-    relatedPosts: ['web-react-server-components-2026', 'web-development-best-practices-2025'],
+    relatedPosts: ['web-react-server-components-2026', 'web-core-web-vitals-inp'],
     relatedServices: ['web-development'],
   },
   {

@@ -4,7 +4,6 @@ import GlowField from '../../components/fx/GlowField.astro';
 import BlogPostCard from '../../components/ui/BlogPostCard.astro';
 import Button from '../../components/ui/Button.astro';
 import ClosingCTA from '../../components/ui/ClosingCTA.astro';
-import PopularPosts from '../../components/ui/PopularPosts.astro';
 import { getCollection } from 'astro:content';
 import { BLOG_CATEGORY_ORDER, categorySlug } from '../../lib/seo/blog-utils';
 
@@ -75,9 +74,9 @@ const description =
                       {g.posts.length} {g.posts.length === 1 ? 'article' : 'articles'}
                     </span>
                   </div>
-                  <ul class="flex flex-wrap gap-5">
+                  <ul class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
                     {g.posts.map((post) => (
-                      <li class="flex grow basis-[300px]">
+                      <li class="flex h-full min-h-0">
                         <BlogPostCard
                           title={post.data.title}
                           description={post.data.description}
@@ -102,7 +101,6 @@ const description =
   </section>
 
   <!-- Closing CTA -->
-  <PopularPosts />
   <ClosingCTA>
     <h2 class="reveal font-display text-4xl font-semibold sm:text-5xl">
       Have a project <span class="text-gold-gradient">in mind?</span>

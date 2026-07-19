@@ -38,7 +38,7 @@ const href = `/blog/${slug}`;
     <time datetime={isoDate}>{formattedDate}</time>
   </div>
 
-  <h3 class="relative mt-3 font-display text-xl font-semibold leading-snug">
+  <h3 class="relative mt-3 line-clamp-3 font-display text-xl font-semibold leading-snug">
     <a
       href={href}
       data-astro-prefetch
@@ -48,30 +48,32 @@ const href = `/blog/${slug}`;
     </a>
   </h3>
 
-  <p class="relative mt-2 flex-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">
+  <p class="relative mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-[var(--color-text-secondary)]">
     {description}
   </p>
 
-  {
-    tags.length > 0 && (
-      <ul class="relative mt-4 flex flex-wrap gap-2">
-        {tags.map((tag) => (
-          <li class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-2.5 py-1 font-mono text-[0.7rem] text-[var(--color-text-muted)]">
-            {tag}
-          </li>
-        ))}
-      </ul>
-    )
-  }
+  <div class="relative mt-auto pt-5">
+    {
+      tags.length > 0 && (
+        <ul class="mb-4 flex flex-wrap gap-2">
+          {tags.slice(0, 3).map((tag) => (
+            <li class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-2.5 py-1 font-mono text-[0.7rem] text-[var(--color-text-muted)]">
+              {tag}
+            </li>
+          ))}
+        </ul>
+      )
+    }
 
-  <!-- Read More is a real link, raised above the card overlay so it always works -->
-  <a
-    href={href}
-    data-astro-prefetch
-    class="relative z-20 mt-5 inline-flex w-fit items-center text-sm font-medium text-[var(--color-text-gold)] transition-colors hover:text-[var(--color-text-gold-strong)]"
-  >
-    Continue reading
-    <span class="ml-1 transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true">→</span>
-    <span class="sr-only">: {title}</span>
-  </a>
+    <!-- Read More is a real link, raised above the card overlay so it always works -->
+    <a
+      href={href}
+      data-astro-prefetch
+      class="relative z-20 inline-flex w-fit items-center text-sm font-medium text-[var(--color-text-gold)] transition-colors hover:text-[var(--color-text-gold-strong)]"
+    >
+      Continue reading
+      <span class="ml-1 transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true">→</span>
+      <span class="sr-only">: {title}</span>
+    </a>
+  </div>
 </article>

@@ -17,7 +17,7 @@ const GLOSSARY_BLOG_SLUG: Record<string, string> = {
   'headless-commerce': 'ecommerce-headless-commerce',
   dpdp: 'security-data-privacy-dpdp-india',
   mvp: 'startups-mvp-to-scale',
-  seo: 'web-development-best-practices-2025',
+  seo: 'web-core-web-vitals-inp',
 };
 
 export interface InternalLinkTerm {

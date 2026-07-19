@@ -13,11 +13,10 @@ export const pillarGuides: PillarGuide[] = [
     description:
       'A definitive hub on voice AI, RAG, agents, regulation, and deployment patterns for Indian startups and enterprises.',
     spokes: [
-      'ai-voice-agents-india',
       'ai-rag-enterprise-knowledge-2026',
       'ai-agents-workflow-automation',
       'ai-multimodal-models-business',
-      'ai-small-language-models-edge',
+      'ai-voice-agents-india',
       'ai-regulation-india-compliance',
       'ai-coding-assistants-development',
     ],
@@ -46,7 +45,6 @@ export const pillarGuides: PillarGuide[] = [
       'web-astro-islands-architecture',
       'web-edge-rendering-performance',
       'web-react-server-components-2026',
-      'web-development-best-practices-2025',
       'web-accessibility-eaa-2025',
       'web-ai-assisted-development',
     ],

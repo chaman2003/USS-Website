@@ -45,9 +45,9 @@ describe('keywords', () => {
   });
 
   it('builds blog search phrases from tags and category', () => {
-    const phrases = blogSearchPhrases('ai-voice-agents-india', ['voice-agents', 'india'], 'AI');
+    const phrases = blogSearchPhrases('ai-agents-workflow-automation', ['ai-agents', 'automation'], 'AI');
     expect(phrases.length).toBeGreaterThan(5);
-    expect(phrases.some((p) => p.toLowerCase().includes('voice'))).toBe(true);
+    expect(phrases.some((p) => p.toLowerCase().includes('automation'))).toBe(true);
   });
 
   it('builds solution and guide phrase lists', () => {
