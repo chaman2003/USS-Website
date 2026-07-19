@@ -1,10 +1,11 @@
 import {
-  ALTERNATE_NAMES,
   KNOWS_ABOUT,
   SAME_AS,
+  SITE_ALTERNATE_NAMES,
   SITE_EMAIL,
   SITE_LOCATION,
   SITE_NAME,
+  SITE_SHORT,
   absoluteUrl,
 } from './site';
 
@@ -30,9 +31,14 @@ export function buildOrganization() {
     '@type': ['Organization', 'ProfessionalService'],
     '@id': absoluteUrl('/#organization'),
     name: SITE_NAME,
-    alternateName: [...ALTERNATE_NAMES],
+    alternateName: [...SITE_ALTERNATE_NAMES],
     url: absoluteUrl('/'),
-    logo: absoluteUrl('/logo-opt.svg'),
+    logo: {
+      '@type': 'ImageObject',
+      url: absoluteUrl('/logo-opt.webp'),
+      width: 512,
+      height: 512,
+    },
     image: absoluteUrl('/og-default.jpg'),
     description:
       'Unity Software Solution (USS) is a Bengaluru and Bangalore software studio—a software development company building web, mobile, AI, and custom software for India.',
@@ -63,6 +69,7 @@ export function buildWebSite() {
     '@type': 'WebSite',
     '@id': absoluteUrl('/#website'),
     name: SITE_NAME,
+    alternateName: [SITE_SHORT, ...SITE_ALTERNATE_NAMES],
     url: absoluteUrl('/'),
     publisher: { '@id': absoluteUrl('/#organization') },
     inLanguage: 'en-IN',
@@ -167,7 +174,9 @@ export function buildBlogPosting({
       name: SITE_NAME,
       logo: {
         '@type': 'ImageObject',
-        url: absoluteUrl('/logo-opt.svg'),
+        url: absoluteUrl('/logo-opt.webp'),
+        width: 512,
+        height: 512,
       },
     },
     articleSection: category,

@@ -28,7 +28,7 @@ const homePhrases = [
   `software development ${LOCATION.cityAlt}`,
 ];
 
-const title = 'Unity Software Solution (USS) | Software Studio, Bengaluru';
+const title = 'Unity Software Solution | Software Studio, Bengaluru';
 const description = metaWithVariants(
   'Unity Software Solution (USS) is a Bengaluru (Bangalore) software studio building web, mobile, and AI-powered products for startups, SMEs, and enterprises across India.',
   'home',
@@ -72,7 +72,7 @@ const stars = makeStars(56, 10);
 const starsNear = makeStars(22, 200);
 ---
 
-<BaseLayout title={title} description={description} keywords={keywords} ogImage="/og/home.png" maxImagePreview>
+<BaseLayout title={title} description={description} keywords={keywords} ogImage="/og/home.png" maxImagePreview titleTemplate={false}>
   <!-- ════════════════ Hero ════════════════ -->
   <section class="grain relative flex lg:min-h-[100svh] items-start overflow-hidden bg-gradient-to-b from-[var(--color-hero-from)] via-[var(--color-hero-to)] to-[var(--color-surface-raised)] lg:items-center">
     <GlowField variant="hero" grid />

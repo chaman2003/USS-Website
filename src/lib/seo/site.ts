@@ -9,7 +9,7 @@ export const SAME_AS = [
   'https://www.instagram.com/unitysoftwaresolutionuss_25/',
 ] as const;
 
-export const ALTERNATE_NAMES = [
+export const SITE_ALTERNATE_NAMES = [
   'USS',
   'Unity Software Solution USS',
   'Unity Software Solution Bengaluru',
@@ -17,6 +17,11 @@ export const ALTERNATE_NAMES = [
   'USS Software',
   'USS Bengaluru',
   'USS Bangalore',
+] as const;
+
+/** @deprecated Use SITE_ALTERNATE_NAMES in schema; keyword-style names confuse Google site-name selection. */
+export const ALTERNATE_NAMES = [
+  ...SITE_ALTERNATE_NAMES,
   'software company Bengaluru',
   'software development company India',
   'IT company Bangalore',
