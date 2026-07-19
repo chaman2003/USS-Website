@@ -1,0 +1,17 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = 'Quick answer' } = Astro.props;
+---
+
+<aside
+  class="not-prose my-8 rounded-[var(--radius-card)] border border-[var(--color-brand-gold)]/30 bg-[var(--color-surface-card)] p-6"
+  data-pagefind-ignore
+>
+  <p class="eyebrow mb-3">{title}</p>
+  <div class="text-[var(--color-text-secondary)]">
+    <slot />
+  </div>
+</aside>

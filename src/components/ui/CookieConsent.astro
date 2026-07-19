@@ -1,0 +1,82 @@
+---
+interface Props {
+  gaId?: string;
+}
+
+const { gaId } = Astro.props;
+---
+
+<div
+  id="cookie-consent"
+  class="fixed inset-x-4 bottom-4 z-[100] hidden max-w-lg rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-5 shadow-[var(--shadow-elevated)] sm:inset-x-auto sm:right-6"
+  role="dialog"
+  aria-label="Cookie consent"
+  aria-live="polite"
+>
+  <p class="text-sm text-[var(--color-text-secondary)]">
+    We use cookies for analytics to improve our site. You can accept or decline optional analytics
+    cookies.
+  </p>
+  <div class="mt-4 flex flex-wrap gap-3">
+    <button
+      type="button"
+      id="cookie-accept"
+      class="rounded-[var(--radius-pill)] bg-[var(--color-brand-gold)] px-4 py-2 text-sm font-medium text-[var(--color-surface-base)] transition-opacity hover:opacity-90"
+    >
+      Accept
+    </button>
+    <button
+      type="button"
+      id="cookie-decline"
+      class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-4 py-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
+    >
+      Decline
+    </button>
+  </div>
+</div>
+
+<script define:vars={{ gaId }}>
+  const STORAGE_KEY = 'uss-cookie-consent';
+  const banner = document.getElementById('cookie-consent');
+  const acceptBtn = document.getElementById('cookie-accept');
+  const declineBtn = document.getElementById('cookie-decline');
+
+  function loadGa() {
+    if (!gaId) return;
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', gaId, { anonymize_ip: true });
+    const script = document.createElement('script');
+    script.type = 'text/partytown';
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    document.head.appendChild(script);
+  }
+
+  function setConsent(value) {
+    try {
+      localStorage.setItem(STORAGE_KEY, value);
+    } catch (_) {}
+    banner?.classList.add('hidden');
+    if (value === 'accepted') loadGa();
+  }
+
+  const saved = (() => {
+    try {
+      return localStorage.getItem(STORAGE_KEY);
+    } catch (_) {
+      return null;
+    }
+  })();
+
+  if (saved === 'accepted') {
+    loadGa();
+  } else if (saved !== 'declined') {
+    banner?.classList.remove('hidden');
+  }
+
+  acceptBtn?.addEventListener('click', () => setConsent('accepted'));
+  declineBtn?.addEventListener('click', () => setConsent('declined'));
+</script>

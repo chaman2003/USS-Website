@@ -1,4 +1,5 @@
 export interface TeamMember {
+  slug: string;
   name: string;
   role: string;
   bio: string;
@@ -8,6 +9,7 @@ export interface TeamMember {
 
 export const team: TeamMember[] = [
   {
+    slug: 'sunil-b',
     name: 'Sunil B',
     role: 'Founder &\nChief Executive Officer (CEO)',
     bio: 'Drives product direction and client delivery, with a focus on building software that holds up in the real world.',
@@ -15,6 +17,7 @@ export const team: TeamMember[] = [
     linkedIn: 'https://www.linkedin.com/in/sunil-b-2004s/',
   },
   {
+    slug: 'chaman-s',
     name: 'Chaman S',
     role: 'Chief Technology Officer (CTO)',
     bio: 'Leads engineering and architecture, turning business requirements into scalable, maintainable systems.',
@@ -22,10 +25,22 @@ export const team: TeamMember[] = [
     linkedIn: 'https://www.linkedin.com/in/chaman2003/',
   },
   {
-    name: 'M D Abhinav Karthik',
-    role: 'Software Developer',
-    bio: 'Builds mobile applications end to end, crafting fast, reliable experiences across Android and iOS.',
-    image: '/people/abhinav-karthik.jpg',
-    linkedIn: 'https://www.linkedin.com/in/mdabhinav4002/',
+    slug: 'uday-kiran',
+    name: 'Uday Kiran',
+    role: 'Co-Founder',
+    bio: 'Shapes company strategy and partnerships, bridging business goals with technical execution.',
+    image: '/people/uday-kiran.png',
+  },
+  {
+    slug: 'gowtham-s',
+    name: 'Gowtham S',
+    role: 'AI Engineer',
+    bio: 'Designs and implements intelligent systems, bringing machine learning capabilities to client products.',
+    image: '/people/gowtham-s.png',
+    linkedIn: 'https://www.linkedin.com/in/gowtham-s-vk013/',
   },
 ];
+
+export function getTeamMember(slug: string): TeamMember | undefined {
+  return team.find((m) => m.slug === slug);
+}

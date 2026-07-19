@@ -1,0 +1,67 @@
+---
+interface Props {
+  url: string;
+  title: string;
+}
+
+const { url, title } = Astro.props;
+const encoded = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+---
+
+<nav aria-label="Share this article" class="mt-8 flex flex-wrap items-center gap-3 border-t border-[var(--color-surface-line)] pt-6">
+  <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">Share</span>
+  <a
+    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-gold)]"
+  >
+    LinkedIn
+  </a>
+  <a
+    href={`https://twitter.com/intent/tweet?url=${encoded}&text=${encodedTitle}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-gold)]"
+  >
+    X
+  </a>
+  <button
+    type="button"
+    id="copy-link-btn"
+    data-url={url}
+    class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-gold)]"
+  >
+    Copy link
+  </button>
+</nav>
+
+<script>
+  document.getElementById('copy-link-btn')?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget as HTMLButtonElement;
+    const url = btn.dataset.url;
+    if (!url) return;
+    try {
+      await navigator.clipboard.writeText(url);
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy link'; }, 2000);
+    } catch {
+      btn.textContent = 'Copy failed';
+    }
+  });
+  document.addEventListener('astro:page-load', () => {
+    document.getElementById('copy-link-btn')?.addEventListener('click', async (e) => {
+      const btn = e.currentTarget as HTMLButtonElement;
+      const url = btn.dataset.url;
+      if (!url) return;
+      try {
+        await navigator.clipboard.writeText(url);
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy link'; }, 2000);
+      } catch {
+        btn.textContent = 'Copy failed';
+      }
+    });
+  });
+</script>

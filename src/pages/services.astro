@@ -4,134 +4,30 @@ import GlowField from '../components/fx/GlowField.astro';
 import Button from '../components/ui/Button.astro';
 import ServiceIcon from '../components/ui/ServiceIcon.astro';
 import ClosingCTA from '../components/ui/ClosingCTA.astro';
+import { serviceDetails } from '../data/serviceDetails';
+import { buildFAQPage } from '../lib/seo/schema';
+import { BRAND_PHRASES, metaKeywords, metaWithVariants, SERVICE_SYNONYMS } from '../lib/seo/keywords';
 
-interface ServiceDetail {
-  id: string;
-  name: string;
-  body: string;
-  included: string[];
-  differentiator?: boolean;
-  subCapabilities?: string[];
-}
+const allFaqs = serviceDetails.flatMap((s) => s.faqs ?? []);
+const schemaExtra = allFaqs.length ? [buildFAQPage(allFaqs)] : [];
 
-const serviceDetails: ServiceDetail[] = [
-  {
-    id: 'web-development',
-    name: 'Web Development',
-    body: "Custom websites and web applications built with modern frameworks for speed, responsiveness, and reliability. Whether it's a company website, a customer portal, or a complex web platform, we design and build with both user experience and long-term maintainability in mind.",
-    included: [
-      'Responsive design',
-      'SEO-friendly architecture',
-      'CMS integration where needed',
-      'Performance optimization',
-      'Ongoing maintenance',
-    ],
-  },
-  {
-    id: 'mobile-app',
-    name: 'Mobile App Development',
-    body: 'Native (Android/iOS) and cross-platform mobile applications designed to deliver smooth, reliable experiences for your customers. From MVPs to full-featured apps, we handle design, development, testing, and deployment to app stores.',
-    included: [
-      'UI/UX design',
-      'Cross-platform or native development',
-      'Backend integration',
-      'App store deployment',
-      'Post-launch support',
-    ],
-  },
-  {
-    id: 'custom-software',
-    name: 'Custom Software Development',
-    body: "Every business runs differently. Off-the-shelf tools don't always fit. We build custom software designed around your specific processes, whether that's internal tools, automation systems, or industry-specific platforms.",
-    included: [
-      'Requirements analysis',
-      'System architecture design',
-      'Custom development',
-      'Integration with existing tools',
-      'Training & documentation',
-    ],
-  },
-  {
-    id: 'ai-applications',
-    name: 'AI-Enabled Applications',
-    body: 'This is where USS goes beyond typical software development. We build AI-powered features and standalone AI products, including conversational voice agents, RAG-based knowledge assistants, intelligent automation pipelines, and multilingual AI systems tailored for Indian business contexts.',
-    included: [],
-    differentiator: true,
-    subCapabilities: [
-      'Voice AI agents (inbound/outbound calling, appointment booking, customer support)',
-      'RAG (Retrieval-Augmented Generation) pipelines for document-based Q&A',
-      'AI-powered chat and WhatsApp bots, including multilingual support',
-      'Workflow automation using LLMs',
-      'Integration with telephony platforms (Twilio, Plivo) and AI providers',
-    ],
-  },
-  {
-    id: 'erp-systems',
-    name: 'ERP Systems',
-    body: 'Centralized platforms that bring together inventory, finance, HR, sales, and operations into a single, manageable system. We design ERP solutions that fit how your business actually works, not the other way around.',
-    included: [
-      'Custom module development',
-      'Data migration',
-      'Role-based access control',
-      'Reporting dashboards',
-      'Third-party integrations',
-    ],
-  },
-  {
-    id: 'ecommerce',
-    name: 'E-Commerce Platforms',
-    body: 'End-to-end online store development, from product catalogs and secure checkout to inventory management and order tracking. Built to scale as your customer base grows.',
-    included: [
-      'Storefront design',
-      'Payment gateway integration',
-      'Inventory & order management',
-      'Admin dashboards',
-      'Performance optimization',
-    ],
-  },
-  {
-    id: 'api-integration',
-    name: 'API Integration',
-    body: 'We connect your tools, platforms, and systems so data flows seamlessly, reducing manual work and enabling automation across your business.',
-    included: [
-      'Third-party API integration',
-      'Custom API development',
-      'Webhook automation',
-      'System-to-system data sync',
-    ],
-  },
-  {
-    id: 'cloud-devops',
-    name: 'Cloud Infrastructure & DevOps',
-    body: 'Reliable, scalable infrastructure and deployment pipelines so your software runs smoothly, from development to production. We set up cloud environments and CI/CD workflows that reduce downtime and deployment friction.',
-    included: [
-      'Cloud architecture (AWS/GCP)',
-      'CI/CD pipeline setup',
-      'Containerization (Docker)',
-      'Monitoring & logging',
-      'Infrastructure scaling',
-    ],
-  },
-  {
-    id: 'cybersecurity',
-    name: 'Cybersecurity',
-    body: "Security isn't an add-on. It's part of how we build. We help businesses identify vulnerabilities, implement secure practices, and protect their systems and data from emerging threats.",
-    included: [
-      'Security audits',
-      'Secure coding reviews',
-      'Authentication & access control setup',
-      'Data protection practices',
-      'Compliance guidance',
-    ],
-  },
-];
+const servicePhrases = Object.values(SERVICE_SYNONYMS).flat();
+const hubPhrases = [...BRAND_PHRASES, ...servicePhrases, 'software services India', 'development agency Bengaluru'];
 
 const title = 'Software Development Services: Web, Mobile & AI';
-const description =
-  "Explore Unity Software Solution's nine services: web, mobile, custom software, AI apps, ERP, e-commerce, API integration, cloud & DevOps, and security.";
+const description = metaWithVariants(
+  "Explore Unity Software Solution's nine services: web, mobile, custom software, AI apps, ERP, e-commerce, API integration, cloud & DevOps, and security.",
+  'services-hub',
+  hubPhrases,
+);
+const keywords = metaKeywords(hubPhrases, 'services-hub', 15);
+const breadcrumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services' },
+];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} keywords={keywords} breadcrumbs={breadcrumbs} schemaExtra={schemaExtra} maxImagePreview>
   <!-- Hero -->
   <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
     <GlowField variant="section" grid />
@@ -197,7 +93,9 @@ const description =
                       <span class="flex h-12 w-12 items-center justify-center rounded-[var(--radius-btn)] border border-[var(--color-brand-gold)]/40 bg-[var(--color-brand-gold)]/10 text-[var(--color-text-gold)]">
                         <ServiceIcon id={service.id} />
                       </span>
-                      <h2 class="font-display text-3xl font-semibold">{service.name}</h2>
+                      <h2 class="font-display text-3xl font-semibold">
+                        {service.name}
+                      </h2>
                     </div>
                     <p class="mt-4 leading-relaxed text-[var(--color-text-secondary)]">{service.body}</p>
                     <h3 class="eyebrow mt-6">Capabilities</h3>
@@ -219,7 +117,9 @@ const description =
                     <span class="flex h-11 w-11 items-center justify-center rounded-[var(--radius-btn)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] text-[var(--color-text-gold)]">
                       <ServiceIcon id={service.id} />
                     </span>
-                    <h2 class="font-display text-2xl font-semibold sm:text-3xl">{service.name}</h2>
+                    <h2 class="font-display text-2xl font-semibold sm:text-3xl">
+                      {service.name}
+                    </h2>
                   </div>
                   <p class="mt-4 leading-relaxed text-[var(--color-text-secondary)]">{service.body}</p>
                   <h3 class="eyebrow mt-6">What's included</h3>

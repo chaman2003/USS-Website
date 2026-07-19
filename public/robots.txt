@@ -1,3 +1,8 @@
 User-agent: *
 Allow: /
+
+# Feeds & AI discovery
 Sitemap: https://unitysoftwaresolution.com/sitemap-index.xml
+
+# LLMs.txt for AI crawlers
+# https://unitysoftwaresolution.com/llms.txt

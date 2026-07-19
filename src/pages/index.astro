@@ -9,17 +9,32 @@ import PillarCard from '../components/ui/PillarCard.astro';
 import CaseStudyCard from '../components/ui/CaseStudyCard.astro';
 import PlaceholderCard from '../components/ui/PlaceholderCard.astro';
 import ClosingCTA from '../components/ui/ClosingCTA.astro';
+import ClientLogos from '../components/ui/ClientLogos.astro';
 import ServiceIcon from '../components/ui/ServiceIcon.astro';
 import { services } from '../data/services';
 import { pillars } from '../data/pillars';
 import { processSteps } from '../data/processSteps';
 import { getCollection } from 'astro:content';
+import { BRAND_PHRASES, LOCATION, metaKeywords, metaWithVariants } from '../lib/seo/keywords';
 
 const workEntries = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
 
-const title = 'Building Scalable Software for Growing Businesses';
-const description =
-  'Unity Software Solution is a Bengaluru-based software studio building web, mobile, and AI-powered products for startups, SMEs, and enterprises.';
+const homePhrases = [
+  ...BRAND_PHRASES,
+  'software studio India',
+  'web and mobile development',
+  'AI software company',
+  `software development ${LOCATION.city}`,
+  `software development ${LOCATION.cityAlt}`,
+];
+
+const title = 'Unity Software Solution (USS) | Software Studio, Bengaluru';
+const description = metaWithVariants(
+  'Unity Software Solution (USS) is a Bengaluru (Bangalore) software studio building web, mobile, and AI-powered products for startups, SMEs, and enterprises across India.',
+  'home',
+  homePhrases,
+);
+const keywords = metaKeywords(homePhrases, 'home', 15);
 
 const heroWords = ['Building', 'Scalable,', 'Secure', '&', 'Intelligent', 'Software.'];
 
@@ -57,7 +72,7 @@ const stars = makeStars(56, 10);
 const starsNear = makeStars(22, 200);
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} keywords={keywords} ogImage="/og/home.png" maxImagePreview>
   <!-- ════════════════ Hero ════════════════ -->
   <section class="grain relative flex lg:min-h-[100svh] items-start overflow-hidden bg-gradient-to-b from-[var(--color-hero-from)] via-[var(--color-hero-to)] to-[var(--color-surface-raised)] lg:items-center">
     <GlowField variant="hero" grid />
@@ -417,6 +432,8 @@ const starsNear = makeStars(22, 200);
   </section>
 
   <!-- ════════════════ Closing CTA ════════════════ -->
+  <ClientLogos />
+
   <ClosingCTA>
     <h2 class="reveal font-display text-4xl font-semibold sm:text-6xl">
       Have a project <span class="text-gold-gradient">in mind?</span>

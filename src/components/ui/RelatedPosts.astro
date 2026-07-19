@@ -1,0 +1,45 @@
+---
+import BlogPostCard from './BlogPostCard.astro';
+
+interface Post {
+  id: string;
+  data: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    author: string;
+    tags: string[];
+    category?: string;
+  };
+}
+
+interface Props {
+  posts: Post[];
+  heading?: string;
+}
+
+const { posts, heading = 'Related articles' } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class="mt-16 border-t border-[var(--color-surface-line)] pt-12">
+      <h2 class="font-display text-2xl font-semibold">{heading}</h2>
+      <ul class="mt-6 flex flex-wrap gap-5">
+        {posts.map((post) => (
+          <li class="flex grow basis-[280px]">
+            <BlogPostCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              author={post.data.author}
+              slug={post.id}
+              tags={post.data.tags}
+              category={post.data.category}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

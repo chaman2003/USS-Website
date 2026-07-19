@@ -1,0 +1,51 @@
+---
+const pagePath = Astro.url.pathname;
+---
+
+<div class="mt-10 rounded-[var(--radius-card)] border border-[var(--color-surface-line)] bg-[var(--color-surface-card)] p-6" data-pagefind-ignore>
+  <p class="font-display text-lg font-semibold">Was this helpful?</p>
+  <div class="mt-4 flex gap-3">
+    <button
+      type="button"
+      class="helpful-btn rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-4 py-2 text-sm hover:border-[var(--color-brand-gold)]/50"
+      data-vote="yes"
+      data-path={pagePath}
+    >
+      Yes
+    </button>
+    <button
+      type="button"
+      class="helpful-btn rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-4 py-2 text-sm hover:border-[var(--color-brand-gold)]/50"
+      data-vote="no"
+      data-path={pagePath}
+    >
+      Not really
+    </button>
+  </div>
+  <p class="helpful-thanks mt-3 hidden text-sm text-[var(--color-text-gold)]">Thanks for your feedback!</p>
+</div>
+
+<script is:inline>
+  function bindHelpful() {
+    document.querySelectorAll('.helpful-btn').forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', () => {
+        const path = btn.dataset.path;
+        const vote = btn.dataset.vote;
+        try {
+          const key = 'uss-helpful-' + path;
+          localStorage.setItem(key, vote);
+        } catch (_) {}
+        const parent = btn.closest('[data-pagefind-ignore]');
+        parent?.querySelector('.helpful-thanks')?.classList.remove('hidden');
+        parent?.querySelectorAll('.helpful-btn').forEach((b) => b.setAttribute('disabled', 'true'));
+        if (window.dataLayer) {
+          window.dataLayer.push({ event: 'content_feedback', vote: vote, page: path });
+        }
+      });
+    });
+  }
+  bindHelpful();
+  document.addEventListener('astro:page-load', bindHelpful);
+</script>

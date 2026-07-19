@@ -1,0 +1,21 @@
+---
+const clients = [
+  'PVS Promoters',
+  'Fashion Retail',
+  'Healthcare',
+  'D2C Brands',
+  'SaaS Startups',
+  'Manufacturing',
+];
+---
+
+<section class="py-12" aria-label="Clients and industries we serve">
+  <p class="eyebrow text-center">Trusted by teams across India</p>
+  <ul class="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+    {
+      clients.map((name) => (
+        <li class="font-mono text-sm uppercase tracking-wider text-[var(--color-text-muted)]">{name}</li>
+      ))
+    }
+  </ul>
+</section>

@@ -1,0 +1,23 @@
+---
+import FaqItem from '../ui/FaqItem.astro';
+
+interface Props {
+  faqs: { question: string; answer: string }[];
+  heading?: string;
+}
+
+const { faqs, heading = 'Frequently asked questions' } = Astro.props;
+---
+
+{
+  faqs.length > 0 && (
+    <section class="mt-16 border-t border-[var(--color-surface-line)] pt-12">
+      <h2 class="font-display text-2xl font-semibold">{heading}</h2>
+      <div class="mt-6 space-y-3">
+        {faqs.map((faq) => (
+          <FaqItem question={faq.question} answer={faq.answer} />
+        ))}
+      </div>
+    </section>
+  )
+}

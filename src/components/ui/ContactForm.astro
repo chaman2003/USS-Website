@@ -150,6 +150,9 @@ const labelClass = 'mb-1.5 block text-sm font-medium text-[var(--color-text-prim
           form.reset();
           successEl.classList.remove('hidden');
           errorEl.classList.add('hidden');
+          if (window.dataLayer) {
+            window.dataLayer.push({ event: 'generate_lead', form: 'contact' });
+          }
         } else {
           throw new Error('Server error');
         }

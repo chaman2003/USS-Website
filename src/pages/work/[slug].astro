@@ -5,6 +5,8 @@ import Button from '../../components/ui/Button.astro';
 import ClosingCTA from '../../components/ui/ClosingCTA.astro';
 import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
+import { buildCreativeWork, buildSoftwareApplication } from '../../lib/seo/schema';
+import { cleanCanonicalUrl } from '../../lib/seo/canonical';
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection('work');
@@ -39,9 +41,31 @@ const sections = [
   { id: 'architecture', label: 'Architecture', show: !!d.systems?.length },
   { id: 'workflow', label: 'Workflow', show: !!d.workflow?.length },
 ].filter((s) => s.show);
+
+const pageUrl = cleanCanonicalUrl(Astro.url);
+const ogImage = `/og/work-${entry.id}.png`;
+const breadcrumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Work', path: '/work' },
+  { name: d.title, path: `/work/${entry.id}` },
+];
+const schemaExtra = [
+  buildCreativeWork({
+    title: d.title,
+    description,
+    url: pageUrl,
+    year: d.year,
+    liveUrl: d.url,
+  }),
+  buildSoftwareApplication({
+    name: d.title,
+    description,
+    url: pageUrl,
+  }),
+];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} ogImage={ogImage} breadcrumbs={breadcrumbs} schemaExtra={schemaExtra} maxImagePreview>
   <!-- Hero -->
   <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
     <GlowField variant="section" grid />

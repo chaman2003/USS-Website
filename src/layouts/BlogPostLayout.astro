@@ -1,8 +1,19 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import GlowField from '../components/fx/GlowField.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import ClosingCTA from '../components/ui/ClosingCTA.astro';
 import Button from '../components/ui/Button.astro';
+import RelatedPosts from '../components/ui/RelatedPosts.astro';
+import QuickAnswer from '../components/mdx/QuickAnswer.astro';
+import PostFaq from '../components/seo/PostFaq.astro';
+import ShareButtons from '../components/ui/ShareButtons.astro';
+import WasThisHelpful from '../components/ui/WasThisHelpful.astro';
+import SearchPhrases from '../components/seo/SearchPhrases.astro';
+import { buildBlogPosting, buildFAQPage } from '../lib/seo/schema';
+import { cleanCanonicalUrl } from '../lib/seo/canonical';
+import { categorySlug, tagSlug } from '../lib/seo/blog-utils';
+import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   title: string;
@@ -10,50 +21,91 @@ interface Props {
   pubDate: Date;
   author: string;
   tags: string[];
+  category?: string;
+  slug: string;
   ogImage?: string;
   headings?: { depth: number; slug: string; text: string }[];
+  relatedPosts?: CollectionEntry<'blog'>[];
+  quickAnswer?: string;
+  faqs?: { question: string; answer: string }[];
+  keywords?: string;
+  searchPhrases?: string[];
 }
 
-const { title, description, pubDate, author, tags, ogImage, headings = [] } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  author,
+  tags,
+  category,
+  slug,
+  ogImage,
+  headings = [],
+  relatedPosts = [],
+  quickAnswer,
+  faqs = [],
+  keywords,
+  searchPhrases = [],
+} = Astro.props;
+
+const resolvedOgImage = ogImage ?? `/og/blog-${slug}.png`;
 
 const toc = headings.filter((h) => h.depth === 2);
+const pageUrl = cleanCanonicalUrl(Astro.url);
+const isoDate = pubDate.toISOString();
 
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
+const dateFormatter = new Intl.DateTimeFormat('en-IN', {
   year: 'numeric',
   month: 'short',
   day: '2-digit',
 });
 const formattedDate = dateFormatter.format(pubDate);
-const isoDate = pubDate.toISOString();
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: title,
-  description,
-  author: { '@type': 'Organization', name: author },
-  datePublished: isoDate,
-  url: Astro.url.href,
-  publisher: {
-    '@type': 'Organization',
-    name: 'Unity Software Solution',
-  },
-};
+const breadcrumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Blog', path: '/blog' },
+  ...(category
+    ? [{ name: category, path: `/blog/category/${categorySlug(category)}` }]
+    : []),
+  { name: title, path: `/blog/${slug}` },
+];
+
+const schemaExtra = [
+  buildBlogPosting({
+    title,
+    description,
+    url: pageUrl,
+    pubDate,
+    authorName: author,
+    image: resolvedOgImage,
+    category,
+    tags,
+  }),
+  ...(faqs.length ? [buildFAQPage(faqs)] : []),
+];
 ---
 
-<BaseLayout title={title} description={description} ogType="article" ogImage={ogImage}>
+<BaseLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  ogType="article"
+  ogImage={resolvedOgImage}
+  canonicalUrl={pageUrl}
+  articlePublishedTime={isoDate}
+  articleModifiedTime={isoDate}
+  articleAuthor={author}
+  articleTags={tags}
+  maxImagePreview
+  breadcrumbs={breadcrumbs}
+  schemaExtra={schemaExtra}
+>
   <article class="relative">
-    <!-- Header band with ambient glow -->
     <header class="grain relative overflow-hidden border-b border-[var(--color-surface-line)]">
       <GlowField variant="subtle" />
       <div class="relative mx-auto max-w-4xl px-5 pb-12 pt-16 sm:px-8">
-        <a
-          href="/blog"
-          class="group inline-flex items-center gap-1.5 font-mono text-sm text-[var(--color-text-gold)] transition-colors hover:text-[var(--color-brand-gold-bright)]"
-        >
-          <span class="transition-transform group-hover:-translate-x-1" aria-hidden="true">←</span>
-          Back to Blog
-        </a>
+        <Breadcrumbs items={breadcrumbs} />
         <h1 class="reveal mt-5 font-display text-4xl font-semibold leading-[1.1] text-[var(--color-text-primary)] sm:text-5xl">
           {title}
         </h1>
@@ -66,8 +118,13 @@ const structuredData = {
           tags.length > 0 && (
             <ul class="reveal mt-5 flex flex-wrap gap-2">
               {tags.map((tag) => (
-                <li class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-3 py-1 font-mono text-xs text-[var(--color-text-secondary)]">
-                  {tag}
+                <li>
+                  <a
+                    href={`/blog/tag/${tagSlug(tag)}`}
+                    class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-3 py-1 font-mono text-xs text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-gold)]"
+                  >
+                    {tag}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -78,7 +135,6 @@ const structuredData = {
 
     <div class="mx-auto max-w-[1400px] px-5 py-14 sm:px-8">
       <div class="lg:grid lg:grid-cols-[240px_1fr] lg:gap-16">
-        <!-- Sticky table of contents -->
         {
           toc.length > 0 && (
             <aside class="hidden lg:block">
@@ -103,15 +159,28 @@ const structuredData = {
         }
 
         <div class="min-w-0">
+          {quickAnswer && (
+            <QuickAnswer>
+              <p>{quickAnswer}</p>
+            </QuickAnswer>
+          )}
           <div class="reveal rich-text">
             <slot />
           </div>
+          {faqs.length > 0 && <PostFaq faqs={faqs} />}
+          {
+            searchPhrases.length > 0 && (
+              <SearchPhrases phrases={searchPhrases} slug={slug} heading="Related searches" />
+            )
+          }
+          <ShareButtons url={pageUrl} title={title} />
+          <WasThisHelpful />
+          <RelatedPosts posts={relatedPosts} />
         </div>
       </div>
     </div>
   </article>
 
-  <!-- CTA -->
   <ClosingCTA>
     <h2 class="reveal font-display text-4xl font-semibold sm:text-5xl">
       Enjoyed this <span class="text-gold-gradient">piece?</span>
@@ -123,6 +192,4 @@ const structuredData = {
       <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Start a Project →</Button></span>
     </div>
   </ClosingCTA>
-
-  <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
 </BaseLayout>

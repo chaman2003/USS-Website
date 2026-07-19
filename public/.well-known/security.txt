@@ -1,0 +1,4 @@
+Contact: mailto:uss@unitysoftwaresolution.com
+Preferred-Languages: en
+Canonical: https://unitysoftwaresolution.com/
+Policy: https://unitysoftwaresolution.com/security

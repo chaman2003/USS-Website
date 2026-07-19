@@ -1,0 +1,32 @@
+---
+import BlogPostCard from './BlogPostCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const popular = posts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
+---
+
+{
+  popular.length > 0 && (
+    <section class="mt-12">
+      <h2 class="font-display text-xl font-semibold">Popular articles</h2>
+      <ul class="mt-4 flex flex-wrap gap-4">
+        {popular.map((post) => (
+          <li class="flex grow basis-[260px]">
+            <BlogPostCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              author={post.data.author}
+              slug={post.id}
+              tags={post.data.tags}
+              category={post.data.category}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

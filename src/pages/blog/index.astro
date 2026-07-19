@@ -4,31 +4,18 @@ import GlowField from '../../components/fx/GlowField.astro';
 import BlogPostCard from '../../components/ui/BlogPostCard.astro';
 import Button from '../../components/ui/Button.astro';
 import ClosingCTA from '../../components/ui/ClosingCTA.astro';
+import PopularPosts from '../../components/ui/PopularPosts.astro';
 import { getCollection } from 'astro:content';
+import { BLOG_CATEGORY_ORDER, categorySlug } from '../../lib/seo/blog-utils';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const sorted = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-// Show at most 6 posts per category (most recent first).
-const PER_CATEGORY = 6;
-const perCatCount = new Map<string, number>();
-const limited = sorted.filter((p) => {
-  const cat = p.data.category ?? '';
-  const n = (perCatCount.get(cat) ?? 0) + 1;
-  perCatCount.set(cat, n);
-  return n <= PER_CATEGORY;
-});
-
-// Group the limited posts by category, in a fixed display order.
-const order = ['AI', 'Web Development', 'Startups', 'Cybersecurity', 'E-Commerce'];
-const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const groups = order
-  .map((cat) => ({
-    cat,
-    id: slug(cat),
-    posts: limited.filter((p) => p.data.category === cat),
-  }))
-  .filter((g) => g.posts.length > 0);
+const groups = BLOG_CATEGORY_ORDER.map((cat) => ({
+  cat,
+  id: categorySlug(cat),
+  posts: sorted.filter((p) => p.data.category === cat),
+})).filter((g) => g.posts.length > 0);
 
 const title = 'Blog & Insights: AI, Web Dev, Startups & More';
 const description =
@@ -45,7 +32,7 @@ const description =
         Thinking out <span class="text-gold-gradient">loud</span>
       </h1>
       <p class="reveal mx-auto mt-5 max-w-2xl text-lg text-[var(--color-text-secondary)]">
-        Practical thinking on AI, web development, startups, security, and commerce: {limited.length} articles and counting.
+        Practical thinking on AI, web development, startups, security, and commerce: {sorted.length} articles and counting.
       </p>
     </div>
   </section>
@@ -81,7 +68,9 @@ const description =
               {groups.map((g) => (
                 <section id={g.id} class="reveal scroll-mt-28">
                   <div class="mb-6 flex items-baseline justify-between gap-4 border-b border-[var(--color-surface-line)] pb-4">
-                    <h2 class="font-display text-2xl font-semibold sm:text-3xl">{g.cat}</h2>
+                    <h2 class="font-display text-2xl font-semibold sm:text-3xl">
+                      <a href={`/blog/category/${g.id}`} class="hover:text-[var(--color-text-gold)]">{g.cat}</a>
+                    </h2>
                     <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
                       {g.posts.length} {g.posts.length === 1 ? 'article' : 'articles'}
                     </span>
@@ -113,6 +102,7 @@ const description =
   </section>
 
   <!-- Closing CTA -->
+  <PopularPosts />
   <ClosingCTA>
     <h2 class="reveal font-display text-4xl font-semibold sm:text-5xl">
       Have a project <span class="text-gold-gradient">in mind?</span>

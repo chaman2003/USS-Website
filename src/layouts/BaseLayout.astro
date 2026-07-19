@@ -1,8 +1,14 @@
 ---
 import SEOHead from '../components/seo/SEOHead.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
 import SkipLink from '../components/layout/SkipLink.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import CookieConsent from '../components/ui/CookieConsent.astro';
+import { ClientRouter } from 'astro:transitions';
+import { buildPageGraph } from '../lib/seo/schema';
+import type { BreadcrumbItem } from '../lib/seo/schema';
+import { cleanCanonicalUrl } from '../lib/seo/canonical';
 import '../styles/global.css';
 import '../styles/typography.css';
 
@@ -11,24 +17,71 @@ interface Props {
   description: string;
   ogType?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   canonicalUrl?: string;
+  robots?: string;
+  titleTemplate?: boolean;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
+  articleAuthor?: string;
+  articleTags?: string[];
+  keywords?: string;
+  maxImagePreview?: boolean;
+  breadcrumbs?: BreadcrumbItem[];
+  schemaExtra?: Record<string, unknown>[];
 }
 
-const { title, description, ogType, ogImage, canonicalUrl } = Astro.props;
+const {
+  title,
+  description,
+  ogType,
+  ogImage,
+  ogImageAlt,
+  canonicalUrl,
+  robots,
+  titleTemplate,
+  articlePublishedTime,
+  articleModifiedTime,
+  articleAuthor,
+  articleTags,
+  keywords,
+  maxImagePreview,
+  breadcrumbs = [{ name: 'Home', path: '/' }],
+  schemaExtra = [],
+} = Astro.props;
+
+const pageUrl = canonicalUrl ?? cleanCanonicalUrl(Astro.url);
+const pageGraph = buildPageGraph({
+  breadcrumbs,
+  page: { url: pageUrl, name: title, description },
+  extra: schemaExtra,
+});
+
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const gscVerification = import.meta.env.PUBLIC_GSC_VERIFICATION;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)" />
-    <link rel="icon" type="image/png" href="/logo-opt.png" />
-    <link rel="preload" href="/logo-opt.webp" as="image" />
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="icon" href="/logo-opt.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="preload" href="/logo-opt.svg" as="image" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
 
-    <!-- No-flash theme: apply saved preference before first paint. Default DARK. -->
+    {
+      gscVerification && (
+        <meta name="google-site-verification" content={gscVerification} />
+      )
+    }
+
     <script is:inline>
       (function () {
         try {
@@ -43,7 +96,6 @@ const { title, description, ogType, ogImage, canonicalUrl } = Astro.props;
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- media="print" loads the stylesheet without blocking render; onload switches it to screen -->
     <link
       rel="preload"
       as="style"
@@ -67,15 +119,36 @@ const { title, description, ogType, ogImage, canonicalUrl } = Astro.props;
       description={description}
       ogType={ogType}
       ogImage={ogImage}
+      ogImageAlt={ogImageAlt}
       canonicalUrl={canonicalUrl}
+      robots={robots}
+      titleTemplate={titleTemplate}
+      articlePublishedTime={articlePublishedTime}
+      articleModifiedTime={articleModifiedTime}
+      articleAuthor={articleAuthor}
+      articleTags={articleTags}
+      keywords={keywords}
+      maxImagePreview={maxImagePreview}
     />
 
-    <!-- Page-specific head content, e.g. JSON-LD structured data. -->
+    <JsonLd data={pageGraph} />
     <slot name="head" />
+
+    <ClientRouter />
+
+    <script type="speculationrules" is:inline>
+      {
+        "prerender": [
+          {
+            "where": { "href_matches": "/blog/*" },
+            "eagerness": "moderate"
+          }
+        ]
+      }
+    </script>
 
     <noscript>
       <style>
-        /* Without JS the IntersectionObserver never fires - show all content. */
         .reveal {
           opacity: 1 !important;
           transform: none !important;
@@ -91,14 +164,16 @@ const { title, description, ogType, ogImage, canonicalUrl } = Astro.props;
   <body class="bg-[var(--color-surface-base)] text-[var(--color-text-primary)] antialiased">
     <div class="scroll-progress"></div>
     <SkipLink />
-    <Header />
-    <main id="main-content">
+    <Header transition:persist />
+    <main id="main-content" data-pagefind-body>
       <slot />
     </main>
-    <Footer />
+    <Footer transition:persist />
+    <CookieConsent gaId={gaId} />
 
     <script>
       import '../scripts/motion.ts';
+      import '../scripts/web-vitals.ts';
     </script>
   </body>
 </html>

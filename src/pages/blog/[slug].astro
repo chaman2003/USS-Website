@@ -1,6 +1,8 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import { getCollection, render } from 'astro:content';
+import { getBlogAeo } from '../../data/blogAeo';
+import { blogSearchPhrases, metaKeywords, metaWithVariants } from '../../lib/seo/keywords';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (async () => {
@@ -13,16 +15,40 @@ export const getStaticPaths = (async () => {
 
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
+const aeo = getBlogAeo(post.id, post.data.title, post.data.description, post.data.category);
+const searchPhrases = blogSearchPhrases(post.id, post.data.tags, post.data.category);
+const description = metaWithVariants(post.data.description, post.id, searchPhrases);
+const keywords = metaKeywords(searchPhrases, post.id);
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const relatedPosts = allPosts
+  .filter((p) => p.id !== post.id)
+  .map((p) => {
+    const sharedTags = p.data.tags.filter((t) => post.data.tags.includes(t)).length;
+    const sameCategory = p.data.category === post.data.category ? 2 : 0;
+    return { post: p, score: sharedTags + sameCategory };
+  })
+  .filter((r) => r.score > 0)
+  .sort((a, b) => b.score - a.score || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf())
+  .slice(0, 3)
+  .map((r) => r.post);
 ---
 
 <BlogPostLayout
   title={post.data.title}
-  description={post.data.description}
+  description={description}
+  keywords={keywords}
+  searchPhrases={searchPhrases}
   pubDate={post.data.pubDate}
   author={post.data.author}
   tags={post.data.tags}
+  category={post.data.category}
+  slug={post.id}
   ogImage={post.data.ogImage}
   headings={headings}
+  relatedPosts={relatedPosts}
+  quickAnswer={aeo.quickAnswer}
+  faqs={aeo.faqs}
 >
   <Content />
 </BlogPostLayout>
