@@ -134,6 +134,7 @@ function check() {
     '/sitemap-images.xml',
     '/manifest.webmanifest',
     '/og-default.jpg',
+    '/favicon.ico',
   ];
 
   for (const p of requiredPaths) {
