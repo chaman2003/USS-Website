@@ -1,8 +1,24 @@
 User-agent: *
 Allow: /
 
-# Feeds & AI discovery
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
 Sitemap: https://unitysoftwaresolution.com/sitemap-index.xml
+Sitemap: https://unitysoftwaresolution.com/sitemap-images.xml
 
 # LLMs.txt for AI crawlers
 # https://unitysoftwaresolution.com/llms.txt
+# https://unitysoftwaresolution.com/llms-full.txt

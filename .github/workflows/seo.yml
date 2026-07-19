@@ -19,3 +19,5 @@ jobs:
       - run: npm run test
       - run: npm run build
       - run: npx tsx scripts/seo-audit.ts
+      - run: npm run lighthouse
+        continue-on-error: true

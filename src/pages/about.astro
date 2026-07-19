@@ -8,6 +8,8 @@ import ClosingCTA from '../components/ui/ClosingCTA.astro';
 import { team } from '../data/team';
 import { values } from '../data/values';
 import { processSteps } from '../data/processSteps';
+import { buildHowTo, buildPerson } from '../lib/seo/schema';
+import { absoluteUrl } from '../lib/seo/site';
 
 const segments = [
   {
@@ -37,9 +39,26 @@ const sections = [
   { id: 'process', label: 'Process' },
   { id: 'values', label: 'Values' },
 ];
+
+const schemaExtra = [
+  ...team.map((member) =>
+    buildPerson({
+      name: member.name,
+      role: member.role,
+      bio: member.bio,
+      url: absoluteUrl('/about#team'),
+      image: member.image,
+      linkedIn: member.linkedIn,
+    }),
+  ),
+  buildHowTo(
+    'How Unity Software Solution delivers software projects',
+    processSteps.map((step) => ({ name: step.title, text: step.body })),
+  ),
+];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} schemaExtra={schemaExtra}>
   <!-- Hero -->
   <section class="grain relative overflow-hidden border-b border-[var(--color-surface-line)] bg-gradient-to-b from-[var(--color-hero-from)] to-[var(--color-hero-to)]">
     <GlowField variant="section" grid />

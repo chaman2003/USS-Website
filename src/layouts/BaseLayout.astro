@@ -5,10 +5,10 @@ import SkipLink from '../components/layout/SkipLink.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import CookieConsent from '../components/ui/CookieConsent.astro';
-import { ClientRouter } from 'astro:transitions';
 import { buildPageGraph } from '../lib/seo/schema';
 import type { BreadcrumbItem } from '../lib/seo/schema';
 import { cleanCanonicalUrl } from '../lib/seo/canonical';
+import '../styles/fonts.css';
 import '../styles/global.css';
 import '../styles/typography.css';
 
@@ -71,9 +71,8 @@ const gscVerification = import.meta.env.PUBLIC_GSC_VERIFICATION;
     <meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
-    <link rel="icon" href="/logo-opt.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <link rel="preload" href="/logo-opt.svg" as="image" type="image/svg+xml" />
+    <link rel="preload" href="/logo-opt.webp" as="image" type="image/webp" />
     <link rel="manifest" href="/manifest.webmanifest" />
 
     {
@@ -94,26 +93,6 @@ const gscVerification = import.meta.env.PUBLIC_GSC_VERIFICATION;
       })();
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      />
-    </noscript>
-
     <SEOHead
       title={title}
       description={description}
@@ -133,8 +112,6 @@ const gscVerification = import.meta.env.PUBLIC_GSC_VERIFICATION;
 
     <JsonLd data={pageGraph} />
     <slot name="head" />
-
-    <ClientRouter />
 
     <script type="speculationrules" is:inline>
       {
@@ -164,14 +141,15 @@ const gscVerification = import.meta.env.PUBLIC_GSC_VERIFICATION;
   <body class="bg-[var(--color-surface-base)] text-[var(--color-text-primary)] antialiased">
     <div class="scroll-progress"></div>
     <SkipLink />
-    <Header transition:persist />
+    <Header />
     <main id="main-content" data-pagefind-body>
       <slot />
     </main>
-    <Footer transition:persist />
+    <Footer />
     <CookieConsent gaId={gaId} />
 
     <script>
+      import '../scripts/theme.ts';
       import '../scripts/motion.ts';
       import '../scripts/web-vitals.ts';
     </script>

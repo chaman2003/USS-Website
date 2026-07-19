@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { cleanCanonicalUrl } from '../../src/lib/seo/canonical';
 import { categorySlug, tagSlug, slugify } from '../../src/lib/seo/blog-utils';
-import { buildPageGraph, buildFAQPage } from '../../src/lib/seo/schema';
+import { buildPageGraph, buildFAQPage, buildHowTo, buildSpeakable } from '../../src/lib/seo/schema';
 import { getServiceById } from '../../src/data/serviceDetails';
 import { glossaryTerms } from '../../src/data/glossary';
 
@@ -102,6 +102,15 @@ describe('schema', () => {
     const faq = buildFAQPage([{ question: 'Q?', answer: 'A.' }]);
     expect(faq['@type']).toBe('FAQPage');
     expect(faq.mainEntity).toHaveLength(1);
+  });
+
+  it('builds HowTo and Speakable schema', () => {
+    const howTo = buildHowTo('Process', [{ name: 'Step 1', text: 'Do thing' }]);
+    expect(howTo['@type']).toBe('HowTo');
+    expect(howTo.step).toHaveLength(1);
+
+    const speakable = buildSpeakable('https://unitysoftwaresolution.com/blog/test', ['h1']);
+    expect(speakable.speakable.cssSelector).toEqual(['h1']);
   });
 });
 

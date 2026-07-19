@@ -41,6 +41,7 @@ const href = `/blog/${slug}`;
   <h3 class="relative mt-3 font-display text-xl font-semibold leading-snug">
     <a
       href={href}
+      data-astro-prefetch
       class="text-[var(--color-text-primary)] transition-colors before:absolute before:inset-0 before:z-10 before:content-[''] hover:text-[var(--color-text-gold)]"
     >
       {title}
@@ -66,9 +67,10 @@ const href = `/blog/${slug}`;
   <!-- Read More is a real link, raised above the card overlay so it always works -->
   <a
     href={href}
+    data-astro-prefetch
     class="relative z-20 mt-5 inline-flex w-fit items-center text-sm font-medium text-[var(--color-text-gold)] transition-colors hover:text-[var(--color-text-gold-strong)]"
   >
-    Read More
+    Continue reading
     <span class="ml-1 transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true">→</span>
     <span class="sr-only">: {title}</span>
   </a>

@@ -378,8 +378,18 @@ html.dark {
     filter 0.8s var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
+  /* Failsafe: never leave content permanently invisible if JS is slow or fails */
+  animation: reveal-failsafe 0.01s var(--ease-out-expo) 1.2s forwards;
+}
+@keyframes reveal-failsafe {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 .reveal.is-visible {
+  animation: none;
   opacity: 1;
   transform: translateY(0);
   filter: blur(0);

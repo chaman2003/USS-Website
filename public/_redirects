@@ -1,0 +1,20 @@
+# Legacy SEO routes → current site structure
+/solutions/*  /services  301
+/guides/*  /blog  301
+/industries/*  /work  301
+/technologies/*  /services  301
+/glossary/*  /blog  301
+/compare/*  /blog  301
+/tools/*  /services  301
+/team/*  /about  301
+/blog/category/*  /blog  301
+/blog/tag/*  /blog  301
+/blog/archive/*  /blog  301
+/local/*  /about  301
+/pricing  /contact  301
+/process  /about  301
+/security  /faq  301
+/accessibility  /privacy-policy  301
+/brand  /about  301
+/partners  /about  301
+/sitemap  /  301

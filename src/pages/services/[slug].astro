@@ -1,0 +1,33 @@
+---
+import { serviceDetails } from '../../data/serviceDetails';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (() =>
+  serviceDetails.map((service) => ({
+    params: { slug: service.id },
+    props: { id: service.id, name: service.name },
+  }))) satisfies GetStaticPaths;
+
+const { id, name } = Astro.props;
+const target = `/services#${id}`;
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{name} | Services | Unity Software Solution</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://unitysoftwaresolution.com/services" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <script is:inline define:vars={{ target }}>
+      window.location.replace(target);
+    </script>
+  </head>
+  <body>
+    <p>
+      Redirecting to <a href={target}>{name}</a> on our services page…
+    </p>
+  </body>
+</html>

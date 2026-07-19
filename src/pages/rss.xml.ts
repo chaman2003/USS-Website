@@ -11,6 +11,10 @@ export const GET: APIRoute = async () => {
     title: 'Unity Software Solution Blog',
     description: 'Insights on AI, web development, startups, security, and e-commerce from USS Bengaluru.',
     site: getSiteUrl(),
+    customData: `<atom:link href="https://pubsubhubbub.appspot.com/" rel="hub" xmlns:atom="http://www.w3.org/2005/Atom" />`,
+    xmlns: {
+      atom: 'http://www.w3.org/2005/Atom',
+    },
     items: sorted.map((post) => ({
       title: post.data.title,
       description: post.data.description,

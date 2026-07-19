@@ -1,0 +1,47 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+const repo = import.meta.env.PUBLIC_GISCUS_REPO;
+const repoId = import.meta.env.PUBLIC_GISCUS_REPO_ID;
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
+
+const enabled = Boolean(repo && repoId && categoryId);
+---
+
+{
+  enabled && (
+    <section class={`mt-12 border-t border-[var(--color-surface-line)] pt-10 ${className}`} aria-label="Comments">
+      <h2 class="font-display text-2xl font-semibold">Discussion</h2>
+      <p class="mt-2 text-sm text-[var(--color-text-secondary)]">
+        Questions or feedback? Leave a comment below.
+      </p>
+      <div class="giscus mt-6" />
+      <script
+        is:inline
+        define:vars={{ repo, repoId, categoryId }}
+        data-giscus-config
+      >
+        const script = document.createElement('script');
+        script.src = 'https://giscus.app/client.js';
+        script.setAttribute('data-repo', repo);
+        script.setAttribute('data-repo-id', repoId);
+        script.setAttribute('data-category-id', categoryId);
+        script.setAttribute('data-category', 'Announcements');
+        script.setAttribute('data-mapping', 'pathname');
+        script.setAttribute('data-strict', '0');
+        script.setAttribute('data-reactions-enabled', '1');
+        script.setAttribute('data-emit-metadata', '0');
+        script.setAttribute('data-input-position', 'top');
+        script.setAttribute('data-theme', 'preferred_color_scheme');
+        script.setAttribute('data-lang', 'en');
+        script.crossOrigin = 'anonymous';
+        script.async = true;
+        document.querySelector('.giscus')?.appendChild(script);
+      </script>
+    </section>
+  )
+}

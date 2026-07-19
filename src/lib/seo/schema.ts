@@ -119,9 +119,11 @@ export function buildBlogPosting({
   pubDate,
   updatedDate,
   authorName,
+  authorPerson,
   image,
   category,
   tags,
+  wordCount,
 }: {
   title: string;
   description: string;
@@ -129,15 +131,32 @@ export function buildBlogPosting({
   pubDate: Date;
   updatedDate?: Date;
   authorName: string;
+  authorPerson?: {
+    name: string;
+    url: string;
+    image?: string;
+    jobTitle?: string;
+  };
   image?: string;
   category?: string;
   tags?: string[];
+  wordCount?: number;
 }) {
+  const author = authorPerson
+    ? {
+        '@type': 'Person' as const,
+        name: authorPerson.name,
+        url: authorPerson.url,
+        ...(authorPerson.image ? { image: absoluteUrl(authorPerson.image) } : {}),
+        ...(authorPerson.jobTitle ? { jobTitle: authorPerson.jobTitle } : {}),
+      }
+    : { '@type': 'Organization' as const, name: authorName };
+
   return {
     '@type': 'BlogPosting',
     headline: title,
     description,
-    author: { '@type': 'Organization', name: authorName },
+    author,
     datePublished: pubDate.toISOString(),
     dateModified: (updatedDate ?? pubDate).toISOString(),
     url,
@@ -154,6 +173,7 @@ export function buildBlogPosting({
     articleSection: category,
     keywords: tags?.join(', '),
     inLanguage: 'en-IN',
+    ...(wordCount ? { wordCount } : {}),
   };
 }
 
@@ -182,12 +202,14 @@ export function buildCreativeWork({
   url,
   year,
   liveUrl,
+  image,
 }: {
   title: string;
   description: string;
   url: string;
   year?: string;
   liveUrl?: string;
+  image?: string;
 }) {
   return {
     '@type': 'CreativeWork',
@@ -196,7 +218,33 @@ export function buildCreativeWork({
     url,
     dateCreated: year,
     creator: { '@id': absoluteUrl('/#organization') },
+    ...(image ? { image: absoluteUrl(image) } : {}),
     ...(liveUrl ? { sameAs: liveUrl } : {}),
+  };
+}
+
+export function buildHowTo(name: string, steps: { name: string; text: string }[]) {
+  return {
+    '@type': 'HowTo',
+    name,
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+    })),
+  };
+}
+
+export function buildSpeakable(pageUrl: string, cssSelectors: string[]) {
+  return {
+    '@type': 'WebPage',
+    '@id': `${pageUrl}#speakable`,
+    url: pageUrl,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: cssSelectors,
+    },
   };
 }
 

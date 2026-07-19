@@ -73,33 +73,37 @@ function initScroll() {
 }
 
 /* ── Scroll reveal ── */
+let revealObserver: IntersectionObserver | null = null;
+
 function initReveal() {
+  if (revealObserver) {
+    revealObserver.disconnect();
+    revealObserver = null;
+  }
+
   const els = document.querySelectorAll<HTMLElement>('.reveal');
   if (!els.length) return;
   if (reduceMotion || !('IntersectionObserver' in window)) {
     els.forEach((el) => el.classList.add('is-visible'));
     return;
   }
-  const io = new IntersectionObserver(
+
+  revealObserver = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
+          revealObserver?.unobserve(entry.target);
         }
       }
     },
-    // Reveal as soon as any part of the element is near the viewport. The
-    // positive bottom rootMargin starts the transition ~10% before the element
-    // scrolls into view, so on tall mobile sections you never scroll into a
-    // blank gap waiting for it to fire.
     { threshold: 0, rootMargin: '0px 0px 10% 0px' },
   );
-  els.forEach((el) => io.observe(el));
+  els.forEach((el) => {
+    el.classList.remove('is-visible');
+    revealObserver!.observe(el);
+  });
 
-  // Failsafe: if anything is already within the viewport on load (or the
-  // observer is slow to deliver its first callback), force-reveal it so the
-  // first screenful is never stuck invisible.
   const revealInView = () => {
     const vh = window.innerHeight || document.documentElement.clientHeight;
     els.forEach((el) => {
@@ -107,12 +111,12 @@ function initReveal() {
       const r = el.getBoundingClientRect();
       if (r.top < vh && r.bottom > 0) {
         el.classList.add('is-visible');
-        io.unobserve(el);
+        revealObserver?.unobserve(el);
       }
     });
   };
   revealInView();
-  window.addEventListener('load', revealInView, { once: true });
+  requestAnimationFrame(revealInView);
 }
 
 /* ── Count-up stats ── */
@@ -207,12 +211,19 @@ function initMagnetic() {
 }
 
 /* ── Active section indicator for the services anchor rail ── */
+let scrollSpyObserver: IntersectionObserver | null = null;
+
 function initScrollSpy() {
+  if (scrollSpyObserver) {
+    scrollSpyObserver.disconnect();
+    scrollSpyObserver = null;
+  }
+
   const links = document.querySelectorAll<HTMLAnchorElement>('[data-spy-link]');
   if (!links.length || !('IntersectionObserver' in window)) return;
   const byId = new Map<string, HTMLAnchorElement>();
   links.forEach((l) => byId.set(l.getAttribute('href')!.replace('#', ''), l));
-  const io = new IntersectionObserver(
+  scrollSpyObserver = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
@@ -225,7 +236,7 @@ function initScrollSpy() {
   );
   byId.forEach((_, id) => {
     const section = document.getElementById(id);
-    if (section) io.observe(section);
+    if (section) scrollSpyObserver!.observe(section);
   });
 }
 

@@ -8,7 +8,7 @@ interface Props {
   linkedIn?: string;
 }
 
-const { name, role, bio, slug, image, linkedIn } = Astro.props;
+const { name, role, bio, image, linkedIn } = Astro.props;
 
 const initials = name
   .split(/\s+/)
@@ -49,13 +49,7 @@ const initials = name
   </div>
 
   <h3 class="relative mt-5 font-display text-lg font-semibold text-[var(--color-text-primary)]">
-    {
-      slug ? (
-        <a href={`/team/${slug}`} class="hover:text-[var(--color-text-gold)]">{name}</a>
-      ) : (
-        name
-      )
-    }
+    {name}
   </h3>
   <p class="relative whitespace-pre-line font-mono text-xs uppercase tracking-wider text-[var(--color-text-gold)]">
     {role}

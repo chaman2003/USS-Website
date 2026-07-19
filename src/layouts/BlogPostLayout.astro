@@ -9,16 +9,20 @@ import QuickAnswer from '../components/mdx/QuickAnswer.astro';
 import PostFaq from '../components/seo/PostFaq.astro';
 import ShareButtons from '../components/ui/ShareButtons.astro';
 import WasThisHelpful from '../components/ui/WasThisHelpful.astro';
+import GiscusComments from '../components/ui/GiscusComments.astro';
 import SearchPhrases from '../components/seo/SearchPhrases.astro';
-import { buildBlogPosting, buildFAQPage } from '../lib/seo/schema';
+import { buildBlogPosting, buildFAQPage, buildSpeakable } from '../lib/seo/schema';
+import { resolveBlogAuthor } from '../lib/seo/authors';
+import { getServiceIdForCategory } from '../lib/seo/internal-links';
+import { serviceDetails } from '../data/serviceDetails';
 import { cleanCanonicalUrl } from '../lib/seo/canonical';
-import { categorySlug, tagSlug } from '../lib/seo/blog-utils';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   title: string;
   description: string;
   pubDate: Date;
+  updatedDate?: Date;
   author: string;
   tags: string[];
   category?: string;
@@ -36,6 +40,7 @@ const {
   title,
   description,
   pubDate,
+  updatedDate,
   author,
   tags,
   category,
@@ -61,13 +66,17 @@ const dateFormatter = new Intl.DateTimeFormat('en-IN', {
   day: '2-digit',
 });
 const formattedDate = dateFormatter.format(pubDate);
+const modifiedDate = updatedDate ?? pubDate;
+const isoModified = modifiedDate.toISOString();
+
+const authorMember = resolveBlogAuthor(category);
+const serviceId = getServiceIdForCategory(category);
+const relatedService = serviceId ? serviceDetails.find((s) => s.id === serviceId) : undefined;
 
 const breadcrumbs = [
   { name: 'Home', path: '/' },
   { name: 'Blog', path: '/blog' },
-  ...(category
-    ? [{ name: category, path: `/blog/category/${categorySlug(category)}` }]
-    : []),
+  ...(category ? [{ name: category, path: '/blog' }] : []),
   { name: title, path: `/blog/${slug}` },
 ];
 
@@ -77,11 +86,21 @@ const schemaExtra = [
     description,
     url: pageUrl,
     pubDate,
+    updatedDate: modifiedDate,
     authorName: author,
+    authorPerson: authorMember
+      ? {
+          name: authorMember.name,
+          url: '/about#team',
+          image: authorMember.image,
+          jobTitle: authorMember.role.replace(/\n/g, ' '),
+        }
+      : undefined,
     image: resolvedOgImage,
     category,
     tags,
   }),
+  buildSpeakable(pageUrl, ['.quick-answer', 'article h1']),
   ...(faqs.length ? [buildFAQPage(faqs)] : []),
 ];
 ---
@@ -94,8 +113,8 @@ const schemaExtra = [
   ogImage={resolvedOgImage}
   canonicalUrl={pageUrl}
   articlePublishedTime={isoDate}
-  articleModifiedTime={isoDate}
-  articleAuthor={author}
+  articleModifiedTime={isoModified}
+  articleAuthor={authorMember?.name ?? author}
   articleTags={tags}
   maxImagePreview
   breadcrumbs={breadcrumbs}
@@ -110,9 +129,19 @@ const schemaExtra = [
           {title}
         </h1>
         <div class="reveal mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm text-[var(--color-text-muted)]">
-          <span>{author}</span>
+          <span>{authorMember?.name ?? author}</span>
           <span aria-hidden="true" class="text-[var(--color-brand-gold)]/50">/</span>
           <time datetime={isoDate}>{formattedDate}</time>
+          {
+            updatedDate && updatedDate.getTime() !== pubDate.getTime() && (
+              <>
+                <span aria-hidden="true" class="text-[var(--color-brand-gold)]/50">/</span>
+                <span>
+                  Updated <time datetime={isoModified}>{dateFormatter.format(updatedDate)}</time>
+                </span>
+              </>
+            )
+          }
         </div>
         {
           tags.length > 0 && (
@@ -120,7 +149,7 @@ const schemaExtra = [
               {tags.map((tag) => (
                 <li>
                   <a
-                    href={`/blog/tag/${tagSlug(tag)}`}
+                    href={`/search?q=${encodeURIComponent(tag)}`}
                     class="rounded-[var(--radius-pill)] border border-[var(--color-surface-line)] px-3 py-1 font-mono text-xs text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-gold)]"
                   >
                     {tag}
@@ -164,6 +193,16 @@ const schemaExtra = [
               <p>{quickAnswer}</p>
             </QuickAnswer>
           )}
+          {
+            relatedService && (
+              <p class="mb-6 text-sm text-[var(--color-text-secondary)]">
+                Related service:{' '}
+                <a href={`/services#${relatedService.id}`} class="text-[var(--color-text-gold)] hover:underline">
+                  {relatedService.name}
+                </a>
+              </p>
+            )
+          }
           <div class="reveal rich-text">
             <slot />
           </div>
@@ -174,6 +213,7 @@ const schemaExtra = [
             )
           }
           <ShareButtons url={pageUrl} title={title} />
+          <GiscusComments />
           <WasThisHelpful />
           <RelatedPosts posts={relatedPosts} />
         </div>

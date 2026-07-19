@@ -68,8 +68,8 @@ const description =
               {groups.map((g) => (
                 <section id={g.id} class="reveal scroll-mt-28">
                   <div class="mb-6 flex items-baseline justify-between gap-4 border-b border-[var(--color-surface-line)] pb-4">
-                    <h2 class="font-display text-2xl font-semibold sm:text-3xl">
-                      <a href={`/blog/category/${g.id}`} class="hover:text-[var(--color-text-gold)]">{g.cat}</a>
+                    <h2 class="font-display text-2xl font-semibold sm:text-3xl" id={g.id}>
+                      {g.cat}
                     </h2>
                     <span class="font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
                       {g.posts.length} {g.posts.length === 1 ? 'article' : 'articles'}

@@ -8,12 +8,16 @@ const navLinks = [
   { label: 'About', href: '/about' },
   { label: 'Work', href: '/work' },
   { label: 'Blog', href: '/blog' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'Careers', href: '/careers' },
 ];
 
-const pathname = Astro.url.pathname;
-const isActive = (href: string) =>
-  href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => {
+  const target = href.replace(/\/$/, '') || '/';
+  if (target === '/') return pathname === '/';
+  return pathname === target || pathname.startsWith(`${target}/`);
+};
 ---
 
 <header data-header class="site-header text-[var(--color-text-primary)]">

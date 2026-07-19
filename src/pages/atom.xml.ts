@@ -25,6 +25,7 @@ export const GET: APIRoute = async () => {
   <title>Unity Software Solution Blog</title>
   <link href="${site}/atom.xml" rel="self" />
   <link href="${site}" />
+  <link href="https://pubsubhubbub.appspot.com/" rel="hub" />
   <id>${site}/</id>
   <updated>${sorted[0]?.data.pubDate.toISOString() ?? new Date().toISOString()}</updated>${entries}
 </feed>`;

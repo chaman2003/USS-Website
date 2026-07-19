@@ -47,6 +47,12 @@ const { gaId } = Astro.props;
     function gtag() {
       window.dataLayer.push(arguments);
     }
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      analytics_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
     gtag('js', new Date());
     gtag('config', gaId, { anonymize_ip: true });
     const script = document.createElement('script');
@@ -55,12 +61,25 @@ const { gaId } = Astro.props;
     document.head.appendChild(script);
   }
 
+  function grantConsent() {
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    gtag('consent', 'update', {
+      analytics_storage: 'granted',
+    });
+  }
+
   function setConsent(value) {
     try {
       localStorage.setItem(STORAGE_KEY, value);
     } catch (_) {}
     banner?.classList.add('hidden');
-    if (value === 'accepted') loadGa();
+    if (value === 'accepted') {
+      loadGa();
+      grantConsent();
+    }
   }
 
   const saved = (() => {
@@ -73,6 +92,7 @@ const { gaId } = Astro.props;
 
   if (saved === 'accepted') {
     loadGa();
+    grantConsent();
   } else if (saved !== 'declined') {
     banner?.classList.remove('hidden');
   }
