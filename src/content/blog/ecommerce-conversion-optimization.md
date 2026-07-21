@@ -54,7 +54,7 @@ The cadence of continuous testing, even small improvements compounded over month
 
 ## Speed and Mobile Performance
 
-Site speed has a direct, well-documented relationship with conversion rate. Each second of additional load time costs real revenue. Core Web Vitals, Google's framework for measuring real-world page experience, have become a practical optimization target not just for SEO but for conversion.
+Site speed has a direct, well-documented relationship with conversion rate. Each second of additional load time costs real revenue. [Core Web Vitals](/blog/web-core-web-vitals-inp), Google's framework for measuring real-world page experience, have become a practical optimization target not just for search performance but for conversion.
 
 On mobile, which accounts for the majority of e-commerce sessions in India, performance is both more impactful and harder to achieve. Images that are properly sized and formatted for mobile, scripts that don't block rendering, and checkout flows designed for thumb navigation all matter.
 

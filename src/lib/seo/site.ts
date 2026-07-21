@@ -1,5 +1,6 @@
 export const SITE_NAME = 'Unity Software Solution';
 export const SITE_SHORT = 'USS';
+export const SITE_DOMAIN = 'unitysoftwaresolution.com';
 export const SITE_TAGLINE = 'Software Studio, Bengaluru';
 export const SITE_EMAIL = 'uss@unitysoftwaresolution.com';
 export const SITE_LOCATION = 'Bengaluru, Karnataka, India';

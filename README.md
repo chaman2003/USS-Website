@@ -91,6 +91,6 @@ npx wrangler pages deploy dist
 
 Made with ☕ by Unity Software Solution
 
-[unitysoftwaresolution.com](https://unitysoftwaresolution.com) · [contact@unitysoftwaresolution.com](mailto:contact@unitysoftwaresolution.com)
+[unitysoftwaresolution.com](https://unitysoftwaresolution.com) · [uss@unitysoftwaresolution.com](mailto:uss@unitysoftwaresolution.com)
 
 </div>

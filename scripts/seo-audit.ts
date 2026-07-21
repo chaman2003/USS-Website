@@ -31,10 +31,6 @@ function extractInternalLinks(html: string): string[] {
   return hrefs;
 }
 
-function isServiceRedirect(rel: string): boolean {
-  return /^\/services\/[^/]+\/?$/.test(rel);
-}
-
 function routeExists(href: string): boolean {
   const pathOnly = href.split('?')[0].split('#')[0];
   if (!pathOnly || pathOnly === '/') {
@@ -86,14 +82,14 @@ function check() {
       if (len < 80 || len > 170) warnings.push(`${rel}: description length ${len} (target 120-160)`);
     }
 
-    if (!rel.includes('/404') && !rel.includes('/search') && !isServiceRedirect(rel)) {
+    if (!rel.includes('/404') && !rel.includes('/search')) {
       if (h1Count !== 1) warnings.push(`${rel}: expected 1 H1, found ${h1Count}`);
       if (canonicalMatch && !canonicalMatch[1].startsWith(SITE)) {
         warnings.push(`${rel}: canonical should use production SITE_URL`);
       }
     }
 
-    if (rel.includes('/404') || isServiceRedirect(rel)) {
+    if (rel.includes('/404')) {
       if (rel.includes('/404') && !html.includes('noindex')) warnings.push(`${rel}: 404 should have noindex`);
     } else if (!rel.includes('/search')) {
       if (!html.includes('<title>')) errors.push(`${rel}: missing <title>`);
@@ -115,7 +111,7 @@ function check() {
 
   const indexable = htmlFiles
     .map(normalizePath)
-    .filter((p) => !p.includes('/404') && !p.includes('/search') && !isServiceRedirect(p));
+    .filter((p) => !p.includes('/404') && !p.includes('/search'));
 
   for (const page of indexable) {
     const key = page.replace(/\/$/, '') || '/';

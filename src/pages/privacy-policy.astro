@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GlowField from '../components/fx/GlowField.astro';
-
-const privacyEmail = 'privacy@unitysoftwaresolution.com';
+import { SITE_EMAIL } from '../lib/seo/site';
 
 const title = 'Privacy Policy';
 const description =
@@ -103,7 +102,7 @@ const sections = [
         <h2 id="contact" class="scroll-mt-28">6. Contact for Privacy Enquiries</h2>
         <p>
           For any questions about this policy or your data, email us at
-          <a href={`mailto:${privacyEmail}`}>{privacyEmail}</a>.
+          <a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a>.
         </p>
         </article>
       </div>

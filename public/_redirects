@@ -11,6 +11,8 @@
 /blog/tag/*  /blog  301
 /blog/archive/*  /blog  301
 /local/*  /about  301
+/services/:slug/  /services  301
+/services/:slug  /services  301
 /pricing  /contact  301
 /process  /about  301
 /security  /faq  301

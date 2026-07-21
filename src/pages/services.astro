@@ -201,4 +201,21 @@ const breadcrumbs = [
       <span class="inline-block"><Button href="/contact" variant="primary" size="lg" magnetic>Get in Touch</Button></span>
     </div>
   </ClosingCTA>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const hash = window.location.hash.slice(1);
+    const section = params.get('section') || hash;
+
+    if (section) {
+      const el = document.getElementById(section);
+      if (el) {
+        requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+      }
+    }
+
+    if (section || window.location.search) {
+      history.replaceState(null, '', '/services');
+    }
+  </script>
 </BaseLayout>

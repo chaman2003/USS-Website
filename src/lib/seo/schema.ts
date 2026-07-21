@@ -6,6 +6,7 @@ import {
   SITE_LOCATION,
   SITE_NAME,
   SITE_SHORT,
+  SITE_DOMAIN,
   absoluteUrl,
 } from './site';
 
@@ -69,7 +70,8 @@ export function buildWebSite() {
     '@type': 'WebSite',
     '@id': absoluteUrl('/#website'),
     name: SITE_NAME,
-    alternateName: [SITE_SHORT, ...SITE_ALTERNATE_NAMES],
+    // Keep WebSite alternates short — Google uses these for SERP site-name selection.
+    alternateName: [SITE_SHORT, SITE_DOMAIN],
     url: absoluteUrl('/'),
     publisher: { '@id': absoluteUrl('/#organization') },
     inLanguage: 'en-IN',

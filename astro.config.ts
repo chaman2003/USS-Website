@@ -64,8 +64,7 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/404') &&
         !page.includes('/search') &&
-        !page.includes('/og/') &&
-        !/\/services\/[^/]+\/?$/.test(page.replace(/\/$/, '')),
+        !page.includes('/og/'),
       serialize: serializeSitemapItem,
     }),
     mdx(),

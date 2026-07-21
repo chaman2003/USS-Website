@@ -148,13 +148,14 @@ const schemaExtra = [
       </p>
       <div class="mt-8 card-grid">
         {
-          team.map((member) => (
+          team.map((member, index) => (
             <TeamMemberCard
               name={member.name}
               role={member.role}
               bio={member.bio}
               image={member.image}
               linkedIn={member.linkedIn}
+              wide={index === team.length - 1 && team.length % 2 === 1}
             />
           ))
         }

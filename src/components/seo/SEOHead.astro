@@ -1,6 +1,6 @@
 ---
 import { cleanCanonicalUrl } from '../../lib/seo/canonical';
-import { isPreviewDeploy } from '../../lib/seo/site';
+import { isPreviewDeploy, SITE_NAME } from '../../lib/seo/site';
 
 interface Props {
   title?: string;
@@ -39,9 +39,9 @@ const {
 
 const fullTitle = title
   ? titleTemplate
-    ? `${title} | Unity Software Solution`
+    ? `${title} | ${SITE_NAME}`
     : title
-  : 'Unity Software Solution (USS) | Software Studio, Bengaluru';
+  : `${SITE_NAME} (USS) | Software Studio, Bengaluru`;
 
 const resolvedOgImage = ogImage
   ? new URL(ogImage, siteUrl).href
@@ -55,8 +55,8 @@ const resolvedOgImageAlt = ogImageAlt ?? fullTitle;
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 {keywords && <meta name="keywords" content={keywords} />}
-<meta name="application-name" content="Unity Software Solution" />
-<meta name="apple-mobile-web-app-title" content="Unity Software Solution" />
+<meta name="application-name" content={SITE_NAME} />
+<meta name="apple-mobile-web-app-title" content={SITE_NAME} />
 <link rel="canonical" href={resolvedCanonical} />
 
 <meta property="og:title" content={fullTitle} />
@@ -65,7 +65,7 @@ const resolvedOgImageAlt = ogImageAlt ?? fullTitle;
 <meta property="og:type" content={ogType} />
 <meta property="og:image" content={resolvedOgImage} />
 <meta property="og:image:alt" content={resolvedOgImageAlt} />
-<meta property="og:site_name" content="Unity Software Solution" />
+<meta property="og:site_name" content={SITE_NAME} />
 <meta property="og:locale" content="en_IN" />
 
 <meta name="twitter:card" content="summary_large_image" />

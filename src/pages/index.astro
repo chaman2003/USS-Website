@@ -80,15 +80,15 @@ const starsNear = makeStars(22, 200);
     <div class="relative mx-auto grid w-full max-w-[1400px] items-center gap-12 px-5 py-20 sm:px-8 sm:py-24 lg:grid-cols-[1.1fr_0.9fr]">
       <!-- Left: copy -->
       <div class="text-center lg:text-left">
-        <p class="eyebrow word-rise mb-5 sm:mb-6" style="--i: 0">
+        <h1 class="eyebrow word-rise mb-5 sm:mb-6" style="--i: 0">
           <span class="mr-2 inline-block h-1.5 w-1.5 animate-pulse-glow rounded-full bg-[var(--color-brand-gold)] align-middle"></span>
           <span class="align-middle">Unity Software Solution</span>
           <br class="sm:hidden" />
           <span class="mr-2 inline-block h-1 w-1 animate-pulse-glow rounded-full bg-[var(--color-brand-gold)] align-middle sm:ml-2"></span>
           <span class="align-middle">Bengaluru</span>
-        </p>
+        </h1>
 
-        <h1 class="word-rise font-display text-4xl font-semibold leading-[1.06] tracking-tight sm:text-5xl md:text-6xl xl:text-7xl">
+        <h2 class="word-rise font-display text-4xl font-semibold leading-[1.06] tracking-tight sm:text-5xl md:text-6xl xl:text-7xl">
           {
             heroWords.map((word, i) => (
               <span style={`--i: ${i + 1}`} class={word === 'Secure' || word === 'Intelligent' ? 'text-shimmer' : ''}>
@@ -96,7 +96,7 @@ const starsNear = makeStars(22, 200);
               </span>
             ))
           }
-        </h1>
+        </h2>
 
         <p class="word-rise mx-auto mt-6 max-w-xl text-base text-[var(--color-text-secondary)] sm:mt-7 sm:text-lg lg:mx-0" style={`--i: ${heroWords.length + 1}`}>
           <span>

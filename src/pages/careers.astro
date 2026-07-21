@@ -4,6 +4,7 @@ import GlowField from '../components/fx/GlowField.astro';
 import PillarCard from '../components/ui/PillarCard.astro';
 import Button from '../components/ui/Button.astro';
 import ClosingCTA from '../components/ui/ClosingCTA.astro';
+import { SITE_EMAIL } from '../lib/seo/site';
 
 const benefits = [
   {
@@ -71,9 +72,6 @@ const applicationSteps = [
     body: 'If it\'s a fit on both sides, we move quickly and welcome you to the team.',
   },
 ];
-
-// USS contact address for speculative applications. TODO: replace with the real hiring inbox.
-const careersEmail = 'careers@unitysoftwaresolution.com';
 
 // Jump-to rail entries.
 const sections = [
@@ -185,9 +183,9 @@ const description =
           We don't have open positions right now, but we're always interested in meeting talented
           people. Send us your resume at
           <a
-            href={`mailto:${careersEmail}`}
+            href={`mailto:${SITE_EMAIL}`}
             class="font-medium text-[var(--color-text-gold)] underline-offset-4 hover:underline"
-            >{careersEmail}</a
+            >{SITE_EMAIL}</a
           >
           and we'll reach out when something fits.
         </p>
