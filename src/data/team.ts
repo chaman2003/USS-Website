@@ -59,7 +59,7 @@ export const team: TeamMember[] = [
     name: 'Shree Madhu N',
     role: 'Software Engineer',
     bio: 'Turns requirements into working software with attention to detail across backend and frontend delivery.',
-    image: '/people/shree-madhu-n.png',
+    image: '/people/shree-madhu-n.png?v=2',
     linkedIn: 'https://www.linkedin.com/in/shree-madhu-n-3225a7312/',
   },
   {
