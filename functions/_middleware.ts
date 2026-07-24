@@ -20,5 +20,11 @@ export const onRequest: PagesFunction = async (context) => {
     return Response.redirect(`${url.origin}/services`, 301);
   }
 
+  const removedBlogPosts = new Set(['/blog/startups-saas-india-global']);
+  const blogPath = url.pathname.replace(/\/$/, '');
+  if (removedBlogPosts.has(blogPath)) {
+    return Response.redirect(`${url.origin}/blog`, 301);
+  }
+
   return context.next();
 };
