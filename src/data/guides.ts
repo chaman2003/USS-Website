@@ -98,7 +98,6 @@ export const pillarGuides: PillarGuide[] = [
       'From MVP to scale: funding context, SaaS go-global, Bengaluru ecosystem, bootstrapping vs VC, and AI-first company building.',
     spokes: [
       'startups-mvp-to-scale',
-      'startups-saas-india-global',
       'startups-ai-first-companies',
       'startups-bengaluru-deeptech',
       'startups-bootstrapping-vs-vc',
